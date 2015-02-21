@@ -41,6 +41,25 @@ namespace Overflow.Test
             Assert.Equal(op2, FakeOperation.ExecutedOperations[2]);
         }
 
+        [Fact]
+        public void The_operation_resolver_is_assigned()
+        {
+            var result = Operation.Resolver;
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void The_operation_resolver_is_the_same_as_the_one_you_assign_to_it()
+        {
+            var resolver = new FakeOperationResolver();
+            Operation.Resolver = resolver;
+
+            var result = Operation.Resolver;
+
+            Assert.Equal(resolver, result);
+        }
+
         private class TestOperation : Operation {
             protected override void OnExecute() { }
         }
