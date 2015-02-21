@@ -4,12 +4,7 @@ namespace Overflow
 {
     public abstract class Operation : IOperation
     {
-        private static IOperationResolver _resolver;
-        public static IOperationResolver Resolver
-        {
-            get { return _resolver ?? (_resolver = new SimpleOperationResolver()); }
-            set { _resolver = value; }
-        }
+        public static IOperationResolver Resolver { get; set; }
 
         protected abstract void OnExecute();
 
