@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Overflow
@@ -19,6 +20,15 @@ namespace Overflow
         public virtual IEnumerable<IOperation> GetChildOperations()
         {
             return new IOperation[0];
+        }
+
+        public static IOperation Create<TOperation>()
+            where TOperation : IOperation
+        {
+            if (Resolver == null)
+                throw new InvalidOperationException("Operation.Resolver was not set. You can set it to a SimpleOperationResolver instance or add a more full featured, external implementation.");
+
+            return Resolver.Resolve<TOperation>();
         }
     }
 }

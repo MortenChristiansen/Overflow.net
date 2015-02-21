@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Overflow.Test.Fakes;
 using Xunit;
@@ -44,12 +45,30 @@ namespace Overflow.Test
         [Fact]
         public void The_operation_resolver_is_the_same_as_the_one_you_assign_to_it()
         {
-            var resolver = new FakeOperationResolver();
+            var resolver = new SimpleOperationResolver();
             Operation.Resolver = resolver;
 
             var result = Operation.Resolver;
 
             Assert.Equal(resolver, result);
+        }
+
+        [Fact]
+        public void You_can_create_operations_when_the_operation_resolver_is_set()
+        {
+            Operation.Resolver = new SimpleOperationResolver();
+
+            var result = Operation.Create<TestOperation>();
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void You_cannot_create_operations_when_the_operation_resolver_is_not_set()
+        {
+            Operation.Resolver = null;
+
+            Assert.Throws<InvalidOperationException>(() => Operation.Create<TestOperation>());
         }
 
         private class TestOperation : Operation {
