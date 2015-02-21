@@ -3,6 +3,7 @@ namespace Overflow.Test.Fakes
     class FakeOperationResolver : IOperationResolver
     {
         public void RegisterOperationDependency<TDependency, TDependencyImplementation>()
+             where TDependencyImplementation : TDependency
         {
             
         }
