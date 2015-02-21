@@ -1,6 +1,6 @@
 namespace Overflow
 {
-    public interface ITask
+    public interface IOperation
     {
         void Execute();
     }

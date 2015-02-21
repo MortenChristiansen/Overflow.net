@@ -1,6 +1,6 @@
 namespace Overflow.Test.Fakes
 {
-    class FakeTask : Task
+    class FakeOperation : Operation
     {
         public bool HasExecuted { get; private set; }
 

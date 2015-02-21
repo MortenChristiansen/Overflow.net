@@ -40,9 +40,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fakes\FakeTask.cs" />
+    <Compile Include="Fakes\FakeOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TaskTests.cs" />
+    <Compile Include="OperationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Overflow\Overflow.csproj">

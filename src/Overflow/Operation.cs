@@ -1,6 +1,6 @@
 namespace Overflow
 {
-    public abstract class Task : ITask
+    public abstract class Operation : IOperation
     {
         protected abstract void OnExecute();
 

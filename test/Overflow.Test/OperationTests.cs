@@ -3,12 +3,12 @@ using Xunit;
 
 namespace Overflow.Test
 {
-    public class TaskTests
+    public class OperationTests
     {
         [Fact]
-        public void Executing_a_task_calls_the_OnExecute_method()
+        public void Executing_an_operation_calls_the_OnExecute_method()
         {
-            var sut = new FakeTask();
+            var sut = new FakeOperation();
 
             sut.Execute();
             
