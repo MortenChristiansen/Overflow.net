@@ -1,4 +1,4 @@
-using System;
+using Overflow.Test.Fakes;
 using Xunit;
 
 namespace Overflow.Test
@@ -9,7 +9,7 @@ namespace Overflow.Test
         public void Registering_output_handlers_calls_registration_methods_on_output_operation()
         {
             var sut = new OperationContext();
-            var operation = new OutputOperation<object>();
+            var operation = new FakeOutputOperation<object>();
 
             sut.RegisterOutputHandlers(operation);
 
@@ -20,8 +20,8 @@ namespace Overflow.Test
         public void Data_flows_from_output_to_input_operations()
         {
             var sut = new OperationContext();
-            var outputOperation = new OutputOperation<object> { OutputValue = new object() };
-            var inputOperation = new InputOperation<object>();
+            var outputOperation = new FakeOutputOperation<object> { OutputValue = new object() };
+            var inputOperation = new FakeInputOperation<object>();
             sut.RegisterOutputHandlers(outputOperation);
 
             outputOperation.Execute();
@@ -34,9 +34,9 @@ namespace Overflow.Test
         public void The_most_recently_outputted_instance_of_a_data_type_is_available_as_input()
         {
             var sut = new OperationContext();
-            var outputOperation1 = new OutputOperation<object> { OutputValue = new object() };
-            var outputOperation2 = new OutputOperation<object> { OutputValue = new object() };
-            var inputOperation = new InputOperation<object>();
+            var outputOperation1 = new FakeOutputOperation<object> { OutputValue = new object() };
+            var outputOperation2 = new FakeOutputOperation<object> { OutputValue = new object() };
+            var inputOperation = new FakeInputOperation<object>();
             sut.RegisterOutputHandlers(outputOperation1);
             sut.RegisterOutputHandlers(outputOperation2);
 
@@ -51,7 +51,7 @@ namespace Overflow.Test
         public void Input_data_is_null_when_no_output_is_available()
         {
             var sut = new OperationContext();
-            var inputOperation = new InputOperation<object>();
+            var inputOperation = new FakeInputOperation<object>();
 
             sut.ProvideInputs(inputOperation);
 
@@ -62,9 +62,9 @@ namespace Overflow.Test
         public void Data_flows_from_output_to_multiple_input_operations()
         {
             var sut = new OperationContext();
-            var outputOperation = new OutputOperation<object> { OutputValue = new object() };
-            var inputOperation1 = new InputOperation<object>();
-            var inputOperation2 = new InputOperation<object>();
+            var outputOperation = new FakeOutputOperation<object> { OutputValue = new object() };
+            var inputOperation1 = new FakeInputOperation<object>();
+            var inputOperation2 = new FakeInputOperation<object>();
             sut.RegisterOutputHandlers(outputOperation);
 
             outputOperation.Execute();
@@ -79,10 +79,10 @@ namespace Overflow.Test
         public void Data_flows_from_the_most_recent_output_to_the_following_input_operation()
         {
             var sut = new OperationContext();
-            var outputOperation1 = new OutputOperation<object> { OutputValue = new object() };
-            var outputOperation2 = new OutputOperation<object> { OutputValue = new object() };
-            var inputOperation1 = new InputOperation<object>();
-            var inputOperation2 = new InputOperation<object>();
+            var outputOperation1 = new FakeOutputOperation<object> { OutputValue = new object() };
+            var outputOperation2 = new FakeOutputOperation<object> { OutputValue = new object() };
+            var inputOperation1 = new FakeInputOperation<object>();
+            var inputOperation2 = new FakeInputOperation<object>();
             sut.RegisterOutputHandlers(outputOperation1);
             sut.RegisterOutputHandlers(outputOperation2);
 
@@ -95,32 +95,27 @@ namespace Overflow.Test
             Assert.Equal(outputOperation2.OutputValue, inputOperation2.ProvidedInput);
         }
 
-        private class OutputOperation<TOutput> : Operation, IOutputOperation<TOutput> where TOutput : class
+        [Fact]
+        public void You_can_get_output_directly_from_the_context()
         {
-            public Action<TOutput> OnReceiveOutput { get; private set; }
-            public TOutput OutputValue { get; set; }
+            var sut = new OperationContext();
+            var outputOperation = new FakeOutputOperation<object> { OutputValue = new object() };
+            sut.RegisterOutputHandlers(outputOperation);
+            outputOperation.Execute();
 
-            protected override void OnExecute()
-            {
-                OnReceiveOutput(OutputValue);
-            }
+            var result = sut.GetOutput<object>();
 
-            public void Output(Action<TOutput> onReceiveOutput)
-            {
-                OnReceiveOutput = onReceiveOutput;
-            }
+            Assert.Equal(outputOperation.OutputValue, result);
         }
 
-        private class InputOperation<TInput> : Operation, IInputOperation<TInput> where TInput : class
+        [Fact]
+        public void Getting_an_unavailable_output_type_from_the_context_returns_null()
         {
-            public TInput ProvidedInput { get; private set; }
+            var sut = new OperationContext();
 
-            protected override void OnExecute() { }
+            var result = sut.GetOutput<object>();
 
-            public void Input(TInput input)
-            {
-                ProvidedInput = input;
-            }
+            Assert.Null(result);
         }
     }
 }

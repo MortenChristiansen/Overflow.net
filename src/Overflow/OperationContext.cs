@@ -54,15 +54,21 @@ namespace Overflow
             var inputType = inputOperationType.GetGenericArguments()[0];
             var provideInputMethod = inputOperationType.GetMethod("Input");
 
-            var input = GetInput(inputType);
-            provideInputMethod.Invoke(operation, new []{ input });
+            var output = GetOutput(inputType);
+            provideInputMethod.Invoke(operation, new []{ output });
         }
 
-        private object GetInput(Type inputType)
+        private object GetOutput(Type inputType)
         {
             if (!_values.ContainsKey(inputType)) return null;
 
             return _values[inputType];
+        }
+
+        public TOutput GetOutput<TOutput>()
+            where TOutput : class
+        {
+            return (TOutput)GetOutput(typeof(TOutput));
         }
     }
 }

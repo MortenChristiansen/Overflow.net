@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Overflow.Test.Fakes;
 using Xunit;
@@ -71,8 +72,44 @@ namespace Overflow.Test
             Assert.Throws<InvalidOperationException>(() => Operation.Create<TestOperation>());
         }
 
+        [Fact]
+        public void Data_flows_between_child_operations()
+        {
+            var inputOperation = new FakeInputOperation<object>();
+            var outpuOperation = new FakeOutputOperation<object> { OutputValue = new object() };
+            var sut = new FakeOperation(outpuOperation, inputOperation);
+
+            sut.Execute();
+
+            Assert.Equal(outpuOperation.OutputValue, inputOperation.ProvidedInput);
+        }
+
+        [Fact]
+        public void You_can_get_outputted_values_from_within_the_operation()
+        {
+            var sut = new OutputtingOperation { ExpectedOutput = new object() };
+
+            sut.Execute();
+
+            Assert.Equal(sut.ExpectedOutput, sut.ActualOutput);
+        }
+
         private class TestOperation : Operation {
             protected override void OnExecute() { }
+        }
+
+        private class OutputtingOperation : Operation
+        {
+            public object ExpectedOutput { get; set; }
+            public object ActualOutput { get; private set; }
+
+            protected override void OnExecute() { }
+
+            public override IEnumerable<IOperation> GetChildOperations()
+            {
+                yield return new FakeOutputOperation<object> { OutputValue = ExpectedOutput };
+                ActualOutput = GetChildOutputValue<object>();
+            }
         }
     }
 }
