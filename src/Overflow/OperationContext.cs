@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -8,7 +7,7 @@ namespace Overflow
 {
     class OperationContext
     {
-        private Dictionary<Type, object> _values = new Dictionary<Type, object>(); 
+        private readonly Dictionary<Type, object> _values = new Dictionary<Type, object>(); 
 
         public void RegisterOutputHandlers(IOperation operation)
         {
@@ -36,8 +35,11 @@ namespace Overflow
 
         private void OnOutput<TOutput>(TOutput output)
         {
-            Debug.WriteLine("Output: " + output);
-            _values.Add(typeof(TOutput), output);
+            var key = typeof (TOutput);
+            if (_values.ContainsKey(key))
+                _values.Remove(key);
+
+            _values.Add(key, output);
         }
 
         public void ProvideInputs(IOperation operation)
@@ -58,6 +60,8 @@ namespace Overflow
 
         private object GetInput(Type inputType)
         {
+            if (!_values.ContainsKey(inputType)) return null;
+
             return _values[inputType];
         }
     }
