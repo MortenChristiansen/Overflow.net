@@ -94,6 +94,32 @@ namespace Overflow.Test
             Assert.Equal(sut.ExpectedOutput, sut.ActualOutput);
         }
 
+        [Fact]
+        public void Input_data_automatically_flows_to_child_operations_when_consumed_in_parent_operation()
+        {
+            var outputOperation = new FakeOutputOperation<object> { OutputValue = new object() };
+            var childInputOperation = new FakeInputOperation<object>();
+            var parentInputOperation = new FakeInputOperation<object>(childInputOperation);
+            var sut = new FakeOperation(outputOperation, parentInputOperation);
+
+            sut.Execute();
+
+            Assert.Equal(outputOperation.OutputValue, childInputOperation.ProvidedInput);
+        }
+
+        [Fact]
+        public void Input_data_flow_is_cut_off_from_child_operations_if_not_consumed_by_parent_operation()
+        {
+            var outputOperation = new FakeOutputOperation<object> { OutputValue = new object() };
+            var childInputOperation = new FakeInputOperation<object>();
+            var parentInputOperation = new FakeOperation(childInputOperation);
+            var sut = new FakeOperation(outputOperation, parentInputOperation);
+
+            sut.Execute();
+
+            Assert.Null(childInputOperation.ProvidedInput);
+        }
+
         private class TestOperation : Operation {
             protected override void OnExecute() { }
         }

@@ -2,12 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Overflow
 {
     class OperationContext
     {
-        private readonly Dictionary<Type, object> _values = new Dictionary<Type, object>(); 
+        private readonly Dictionary<Type, object> _values;
+
+        private OperationContext(Dictionary<Type, object> values)
+        {
+            _values = values;
+        }
 
         public void RegisterOutputHandlers(IOperation operation)
         {
@@ -56,6 +62,8 @@ namespace Overflow
 
             var output = GetOutput(inputType);
             provideInputMethod.Invoke(operation, new []{ output });
+            
+            SaveValueForFutureChildOperationContexts(operation, inputType, output);
         }
 
         private object GetOutput(Type inputType)
@@ -65,10 +73,23 @@ namespace Overflow
             return _values[inputType];
         }
 
+        private static void SaveValueForFutureChildOperationContexts(IOperation operation, Type inputType, object output)
+        {
+            var operationData = _operationData.GetOrCreateValue(operation);
+            operationData.Add(inputType, output);
+        }
+
         public TOutput GetOutput<TOutput>()
             where TOutput : class
         {
             return (TOutput)GetOutput(typeof(TOutput));
+        }
+
+        private static readonly ConditionalWeakTable<IOperation, Dictionary<Type, object>> _operationData = new ConditionalWeakTable<IOperation, Dictionary<Type, object>>();
+
+        public static OperationContext Create(IOperation operation)
+        {
+            return new OperationContext(_operationData.GetOrCreateValue(operation));
         }
     }
 }

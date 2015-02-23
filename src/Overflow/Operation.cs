@@ -5,7 +5,7 @@ namespace Overflow
 {
     public abstract class Operation : IOperation
     {
-        private readonly OperationContext _context = new OperationContext();
+        private OperationContext _context;
 
         public static IOperationResolver Resolver { get; set; }
 
@@ -13,6 +13,8 @@ namespace Overflow
 
         public void Execute()
         {
+            _context = OperationContext.Create(this);
+
             OnExecute();
 
             foreach (var childOperation in GetChildOperations())
