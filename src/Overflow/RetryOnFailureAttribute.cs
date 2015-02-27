@@ -1,7 +1,7 @@
-using System;
-
 namespace Overflow
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class RetryOnFailureAttribute : Attribute { }
+    public class RetryOnFailureAttribute : OperationBehaviorAttribute
+    {
+        public RetryOnFailureAttribute() : base(typeof(RetryOnFailureOperationDecorator)) { }
+    }
 }

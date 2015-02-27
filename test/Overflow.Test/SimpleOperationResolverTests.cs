@@ -1,4 +1,5 @@
 using System;
+using Overflow.Test.Fakes;
 using Xunit;
 
 namespace Overflow.Test
@@ -135,14 +136,30 @@ namespace Overflow.Test
         }
 
         [Fact]
-        public void Operations_with_retry_on_error_attribute_are_decorated_with_retry_decorator()
+        public void Operations_with_an_operation_behavior_attribute_are_decorated_with_the_corresponding_decorator_type()
         {
             var sut = new SimpleOperationResolver();
 
-            var result = sut.Resolve<RetryOnFailureOperation>();
+            var result = sut.Resolve<BehaviorOperation>();
 
-            Assert.IsType<RetryOnFailureOperationDecorator>(result);
-            Assert.IsType<RetryOnFailureOperation>((result as OperationDecorator).DecoratedOperation);
+            Assert.IsType<FakeOperationDecorator>(result);
+            Assert.IsType<BehaviorOperation>((result as OperationDecorator).DecoratedOperation);
+        }
+
+        [Fact]
+        public void You_cannot_use_the_operation_behavior_attribute_with_operation_types_other_than_operation_decorator_types()
+        {
+            var sut = new SimpleOperationResolver();
+
+            Assert.Throws<InvalidOperationException>(() => sut.Resolve<IncorrectTypeBehaviorOperation>());
+        }
+
+        [Fact]
+        public void You_cannot_use_the_operation_behavior_attribute_with_operation_types_that_do_not_have_a_constructor_taking_only_an_IOperation_instance()
+        {
+            var sut = new SimpleOperationResolver();
+
+            Assert.Throws<InvalidOperationException>(() => sut.Resolve<IncorrectConstructorBehaviorOperation>());
         }
 
         #region Dependencies
@@ -230,10 +247,27 @@ namespace Overflow.Test
             protected override void OnExecute() { }
         }
 
-        [RetryOnFailure]
-        private class RetryOnFailureOperation : Operation
+        [FakeOperationBehavior(typeof(FakeOperationDecorator))]
+        private class BehaviorOperation : Operation
         {
             protected override void OnExecute() { }
+        }
+
+        [FakeOperationBehavior(typeof(object))]
+        private class IncorrectTypeBehaviorOperation : Operation
+        {
+            protected override void OnExecute() { }
+        }
+
+        [FakeOperationBehavior(typeof(IncorrectConstructorOperationBehavior))]
+        private class IncorrectConstructorBehaviorOperation : Operation
+        {
+            protected override void OnExecute() { }
+        }
+
+        private class IncorrectConstructorOperationBehavior : OperationDecorator
+        {
+            public IncorrectConstructorOperationBehavior() : base(new FakeOperation()) { }
         }
 
         #endregion

@@ -40,6 +40,7 @@
     <Compile Include="IOutputOperation.cs" />
     <Compile Include="IOperation.cs" />
     <Compile Include="IOperationResolver.cs" />
+    <Compile Include="OperationBehaviorAttribute.cs" />
     <Compile Include="OperationContext.cs" />
     <Compile Include="OperationDecorator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

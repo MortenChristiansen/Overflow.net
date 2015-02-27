@@ -10,7 +10,7 @@ namespace Overflow
         protected OperationDecorator(IOperation decoratedOperation)
         {
             if (decoratedOperation == null)
-                throw new NullReferenceException("decoratedOperation");
+                throw new ArgumentNullException("decoratedOperation");
 
             DecoratedOperation = decoratedOperation;
         }

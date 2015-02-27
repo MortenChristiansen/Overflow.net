@@ -19,7 +19,7 @@ namespace Overflow.Test
         [Fact]
         public void The_decorated_operation_is_required_for_creating_a_new_decorator()
         {
-            Assert.Throws<NullReferenceException>(() => new TestDecorator(null));
+            Assert.Throws<ArgumentNullException>(() => new TestDecorator(null));
         }
 
         [Fact]
