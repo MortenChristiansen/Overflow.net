@@ -85,8 +85,8 @@ namespace Overflow.Test
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            var result1 = sut.Resolve<OperationWithDependencies>();
-            var result2 = sut.Resolve<OperationWithDependencies>();
+            var result1 = sut.Resolve<OperationWithDependencies>() as OperationWithDependencies;
+            var result2 = sut.Resolve<OperationWithDependencies>() as OperationWithDependencies;
 
             Assert.NotSame(result1.Dependency, result2.Dependency);
         }
@@ -122,16 +122,27 @@ namespace Overflow.Test
         }
 
         [Fact]
-        public void The_last_registered_Dependency_of_a_given_type_wins()
+        public void The_last_registered_dependency_of_a_given_type_wins()
         {
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
             sut.RegisterOperationDependency<IDependency, SimpleDependency>();
             sut.RegisterOperationDependency<IDependency, ComplexDependency>();
 
-            var result = sut.Resolve<OperationWithInterfaceDependency>();
+            var result = sut.Resolve<OperationWithInterfaceDependency>() as OperationWithInterfaceDependency;
 
             Assert.IsType<ComplexDependency>(result.Dependency);
+        }
+
+        [Fact]
+        public void Operations_with_retry_on_error_attribute_are_decorated_with_retry_decorator()
+        {
+            var sut = new SimpleOperationResolver();
+
+            var result = sut.Resolve<RetryOnFailureOperation>();
+
+            Assert.IsType<RetryOnFailureOperationDecorator>(result);
+            Assert.IsType<RetryOnFailureOperation>((result as OperationDecorator).DecoratedOperation);
         }
 
         #region Dependencies
@@ -216,6 +227,12 @@ namespace Overflow.Test
                 Dependency = dependency;
             }
 
+            protected override void OnExecute() { }
+        }
+
+        [RetryOnFailure]
+        private class RetryOnFailureOperation : Operation
+        {
             protected override void OnExecute() { }
         }
 

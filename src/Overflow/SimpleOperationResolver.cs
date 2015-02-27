@@ -17,7 +17,17 @@ namespace Overflow
             _mappings.Add(dependencyType, typeof(TDependencyImplementation));
         }
 
-        public TOperation Resolve<TOperation>() where TOperation : IOperation
+        public IOperation Resolve<TOperation>() where TOperation : IOperation
+        {
+            var actualOperation = GetActualOperation<TOperation>();
+
+            if (typeof (TOperation).GetCustomAttributes(typeof (RetryOnFailureAttribute), inherit: false).Length > 0)
+                return new RetryOnFailureOperationDecorator(actualOperation);
+
+            return actualOperation;
+        }
+
+        private IOperation GetActualOperation<TOperation>() where TOperation : IOperation
         {
             var operationType = typeof (TOperation);
             var parameters = ResolveConstructorParameters(operationType);

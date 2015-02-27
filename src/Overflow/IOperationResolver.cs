@@ -2,6 +2,6 @@
 {
     public interface IOperationResolver
     {
-        TOperation Resolve<TOperation>() where TOperation : IOperation;
+        IOperation Resolve<TOperation>() where TOperation : IOperation;
     }
 }

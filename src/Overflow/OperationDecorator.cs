@@ -5,7 +5,7 @@ namespace Overflow
 {
     public abstract class OperationDecorator : IOperation
     {
-        public IOperation DecoratedOperation { get; private set; }
+        internal IOperation DecoratedOperation { get; private set; }
 
         protected OperationDecorator(IOperation decoratedOperation)
         {
