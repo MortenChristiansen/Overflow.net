@@ -125,5 +125,59 @@ namespace Overflow.Test
 
             Assert.NotNull(result);
         }
+
+        [Fact]
+        public void Registering_output_handlers_calls_registration_methods_on_decorated_output_operation()
+        {
+            var sut = OperationContext.Create(new FakeOperation());
+            var decoratedOperation = new FakeOutputOperation<object>();
+            var operation = new FakeOperationDecorator(decoratedOperation);
+
+            sut.RegisterOutputHandlers(operation);
+
+            Assert.NotNull(decoratedOperation.OnReceiveOutput);
+        }
+
+        [Fact]
+        public void Data_flows_from_output_to_decorated_input_operations()
+        {
+            var sut = OperationContext.Create(new FakeOperation());
+            var outputOperation = new FakeOutputOperation<object> { OutputValue = new object() };
+            var inputOperation = new FakeInputOperation<object>();
+            var decoratedInputOperation = new FakeOperationDecorator(inputOperation);
+            sut.RegisterOutputHandlers(outputOperation);
+
+            outputOperation.Execute();
+            sut.ProvideInputs(decoratedInputOperation);
+
+            Assert.Equal(outputOperation.OutputValue, inputOperation.ProvidedInput);
+        }
+
+        [Fact]
+        public void Registering_output_handlers_calls_registration_methods_on_nested_decorated_output_operation()
+        {
+            var sut = OperationContext.Create(new FakeOperation());
+            var decoratedOperation = new FakeOutputOperation<object>();
+            var operation = new FakeOperationDecorator(new FakeOperationDecorator(decoratedOperation));
+
+            sut.RegisterOutputHandlers(operation);
+
+            Assert.NotNull(decoratedOperation.OnReceiveOutput);
+        }
+
+        [Fact]
+        public void Data_flows_from_output_to_nested_decorated_input_operations()
+        {
+            var sut = OperationContext.Create(new FakeOperation());
+            var outputOperation = new FakeOutputOperation<object> { OutputValue = new object() };
+            var inputOperation = new FakeInputOperation<object>();
+            var decoratedInputOperation = new FakeOperationDecorator(new FakeOperationDecorator(inputOperation));
+            sut.RegisterOutputHandlers(outputOperation);
+
+            outputOperation.Execute();
+            sut.ProvideInputs(decoratedInputOperation);
+
+            Assert.Equal(outputOperation.OutputValue, inputOperation.ProvidedInput);
+        }
     }
 }

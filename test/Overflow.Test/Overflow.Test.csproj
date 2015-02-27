@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Fakes\FakeInputOperation.cs" />
+    <Compile Include="Fakes\FakeOperationDecorator.cs" />
     <Compile Include="Fakes\FakeOutputOperation.cs" />
     <Compile Include="Fakes\FakeOperation.cs" />
     <Compile Include="OperationContextTests.cs" />

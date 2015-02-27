@@ -17,9 +17,20 @@ namespace Overflow
 
         public void RegisterOutputHandlers(IOperation operation)
         {
-            var outputOperationInterfaces = operation.GetType().GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof (IOutputOperation<>));
+            var innerOperation = GetDecoratedOperation(operation);
+
+            var outputOperationInterfaces = innerOperation.GetType().GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IOutputOperation<>));
             foreach (var outputOperationType in outputOperationInterfaces)
-                RegisterOutputHandler(operation, outputOperationType);
+                RegisterOutputHandler(innerOperation, outputOperationType);
+        }
+
+        private IOperation GetDecoratedOperation(IOperation operation)
+        {
+            var decorated = operation as OperationDecorator;
+            if (decorated == null)
+                return operation;
+
+            return GetDecoratedOperation(decorated.DecoratedOperation);
         }
 
         private void RegisterOutputHandler(IOperation operation, Type outputOperationType)
@@ -50,9 +61,11 @@ namespace Overflow
 
         public void ProvideInputs(IOperation operation)
         {
-            var inputOperationInterfaces = operation.GetType().GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IInputOperation<>));
+            var innerOperation = GetDecoratedOperation(operation);
+
+            var inputOperationInterfaces = innerOperation.GetType().GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IInputOperation<>));
             foreach (var inputOperationType in inputOperationInterfaces)
-                ProvideInput(operation, inputOperationType);
+                ProvideInput(innerOperation, inputOperationType);
         }
 
         private void ProvideInput(IOperation operation, Type inputOperationType)
