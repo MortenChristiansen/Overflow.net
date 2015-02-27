@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Overflow.Test.Fakes
@@ -7,6 +8,8 @@ namespace Overflow.Test.Fakes
         private readonly IOperation[] _childOperations;
 
         public static readonly List<IOperation> ExecutedOperations = new List<IOperation>();
+
+        public Exception ThrowOnExecute { get; set; }
 
         public FakeOperation(params IOperation[] childOperations)
         {
@@ -20,6 +23,9 @@ namespace Overflow.Test.Fakes
         {
             HasExecuted = true;
             ExecutedOperations.Add(this);
+
+            if (ThrowOnExecute != null)
+                throw ThrowOnExecute;
         }
 
         public override IEnumerable<IOperation> GetChildOperations()

@@ -44,8 +44,10 @@
     <Compile Include="Fakes\FakeOutputOperation.cs" />
     <Compile Include="Fakes\FakeOperation.cs" />
     <Compile Include="OperationContextTests.cs" />
+    <Compile Include="OperationDecoratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OperationTests.cs" />
+    <Compile Include="RetryOnFailureOperationDecoratorTests.cs" />
     <Compile Include="SimpleOperationResolverTests.cs" />
   </ItemGroup>
   <ItemGroup>
