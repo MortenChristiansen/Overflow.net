@@ -131,7 +131,7 @@ namespace Overflow.Test
         {
             var sut = OperationContext.Create(new FakeOperation());
             var decoratedOperation = new FakeOutputOperation<object>();
-            var operation = new FakeOperationDecorator(decoratedOperation);
+            var operation = new FakeOperationBehavior(decoratedOperation);
 
             sut.RegisterOutputHandlers(operation);
 
@@ -144,7 +144,7 @@ namespace Overflow.Test
             var sut = OperationContext.Create(new FakeOperation());
             var outputOperation = new FakeOutputOperation<object> { OutputValue = new object() };
             var inputOperation = new FakeInputOperation<object>();
-            var decoratedInputOperation = new FakeOperationDecorator(inputOperation);
+            var decoratedInputOperation = new FakeOperationBehavior(inputOperation);
             sut.RegisterOutputHandlers(outputOperation);
 
             outputOperation.Execute();
@@ -158,7 +158,7 @@ namespace Overflow.Test
         {
             var sut = OperationContext.Create(new FakeOperation());
             var decoratedOperation = new FakeOutputOperation<object>();
-            var operation = new FakeOperationDecorator(new FakeOperationDecorator(decoratedOperation));
+            var operation = new FakeOperationBehavior(new FakeOperationBehavior(decoratedOperation));
 
             sut.RegisterOutputHandlers(operation);
 
@@ -171,7 +171,7 @@ namespace Overflow.Test
             var sut = OperationContext.Create(new FakeOperation());
             var outputOperation = new FakeOutputOperation<object> { OutputValue = new object() };
             var inputOperation = new FakeInputOperation<object>();
-            var decoratedInputOperation = new FakeOperationDecorator(new FakeOperationDecorator(inputOperation));
+            var decoratedInputOperation = new FakeOperationBehavior(new FakeOperationBehavior(inputOperation));
             sut.RegisterOutputHandlers(outputOperation);
 
             outputOperation.Execute();

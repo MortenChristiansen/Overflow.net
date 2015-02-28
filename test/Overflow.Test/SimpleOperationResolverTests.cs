@@ -142,8 +142,8 @@ namespace Overflow.Test
 
             var result = sut.Resolve<BehaviorOperation>();
 
-            Assert.IsType<FakeOperationDecorator>(result);
-            Assert.IsType<BehaviorOperation>((result as OperationDecorator).DecoratedOperation);
+            Assert.IsType<FakeOperationBehavior>(result);
+            Assert.IsType<BehaviorOperation>((result as OperationBehavior).InnerOperation);
         }
 
         #region Dependencies

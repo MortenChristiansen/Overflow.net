@@ -4,29 +4,29 @@ using Xunit;
 
 namespace Overflow.Test
 {
-    public class OperationDecoratorTests
+    public class OperationBehaviorTests
     {
         [Fact]
         public void Creating_a_decorator_sets_the_decorated_operation_property()
         {
             var operation = new FakeOperation();
 
-            var sut = new TestDecorator(operation);
+            var sut = new TestBehavior(operation);
 
-            Assert.Equal(operation, sut.DecoratedOperation);
+            Assert.Equal(operation, sut.InnerOperation);
         }
 
         [Fact]
         public void The_decorated_operation_is_required_for_creating_a_new_decorator()
         {
-            Assert.Throws<ArgumentNullException>(() => new TestDecorator(null));
+            Assert.Throws<ArgumentNullException>(() => new TestBehavior(null));
         }
 
         [Fact]
         public void The_decorated_operation_provides_the_child_operations()
         {
             var operation = new FakeOperation(new FakeOperation(), new FakeOperation());
-            var sut = new TestDecorator(operation);
+            var sut = new TestBehavior(operation);
 
             var result = sut.GetChildOperations();
 
@@ -37,16 +37,16 @@ namespace Overflow.Test
         public void The_decorator_fowards_the_execution_to_the_decorated_operation()
         {
             var operation = new FakeOperation();
-            var sut = new TestDecorator(operation);
+            var sut = new TestBehavior(operation);
 
             sut.Execute();
 
             Assert.True(operation.HasExecuted);
         }
 
-        private class TestDecorator : OperationDecorator
+        private class TestBehavior : OperationBehavior
         {
-            public TestDecorator(IOperation operation)
+            public TestBehavior(IOperation operation)
                 : base(operation)
             {
                 

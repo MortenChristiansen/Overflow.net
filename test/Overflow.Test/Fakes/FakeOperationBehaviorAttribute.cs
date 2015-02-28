@@ -4,7 +4,7 @@ namespace Overflow.Test.Fakes
     {
         public override IOperation AddBehavior(IOperation operation)
         {
-            return new FakeOperationDecorator(operation);
+            return new FakeOperationBehavior(operation);
         }
     }
 }
