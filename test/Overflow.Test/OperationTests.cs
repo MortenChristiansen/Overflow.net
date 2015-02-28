@@ -44,32 +44,26 @@ namespace Overflow.Test
         }
 
         [Fact]
-        public void The_operation_resolver_is_the_same_as_the_one_you_assign_to_it()
+        public void You_can_create_operation_statically_with_a_configuration_containing_a_resolver()
         {
-            var resolver = new SimpleOperationResolver();
-            Operation.Resolver = resolver;
+            var correctConfiguration = new WorkflowConfiguration { Resolver = new SimpleOperationResolver() };
 
-            var result = Operation.Resolver;
-
-            Assert.Equal(resolver, result);
-        }
-
-        [Fact]
-        public void You_can_create_operations_when_the_operation_resolver_is_set()
-        {
-            Operation.Resolver = new SimpleOperationResolver();
-
-            var result = Operation.Create<TestOperation>();
+            var result = Operation.Create<TestOperation>(correctConfiguration);
 
             Assert.NotNull(result);
+        }
+
+
+        [Fact]
+        public void You_cannot_create_operations_when_the_workflow_configuration_is_not_set()
+        {
+            Assert.Throws<InvalidOperationException>(() => Operation.Create<TestOperation>(null));
         }
 
         [Fact]
         public void You_cannot_create_operations_when_the_operation_resolver_is_not_set()
         {
-            Operation.Resolver = null;
-
-            Assert.Throws<InvalidOperationException>(() => Operation.Create<TestOperation>());
+            Assert.Throws<InvalidOperationException>(() => Operation.Create<TestOperation>(new WorkflowConfiguration()));
         }
 
         [Fact]

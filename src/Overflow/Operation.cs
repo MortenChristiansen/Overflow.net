@@ -7,7 +7,7 @@ namespace Overflow
     {
         private OperationContext _context;
 
-        public static IOperationResolver Resolver { get; set; }
+        public WorkflowConfiguration Configuration { get; set; }
 
         protected abstract void OnExecute();
 
@@ -34,13 +34,22 @@ namespace Overflow
             return new IOperation[0];
         }
 
-        public static IOperation Create<TOperation>()
+        public static IOperation Create<TOperation>(WorkflowConfiguration configuration)
             where TOperation : IOperation
         {
-            if (Resolver == null)
-                throw new InvalidOperationException("Operation.Resolver was not set. You can set it to a SimpleOperationResolver instance or add a more full featured, external implementation.");
+            if (configuration == null)
+                throw new InvalidOperationException("Operation.Configuration was not set.");
 
-            return Resolver.Resolve<TOperation>();
+            if (configuration.Resolver == null)
+                throw new InvalidOperationException("Operation.Configuration.Resolver was not set. You can set it to a SimpleOperationResolver instance or add a more full featured, external implementation.");
+
+            return configuration.Resolver.Resolve<TOperation>();
+        }
+
+        protected IOperation Create<TOperation>()
+            where TOperation : IOperation
+        {
+            return Create<TOperation>(Configuration);
         }
 
         protected TOutput GetChildOutputValue<TOutput>()

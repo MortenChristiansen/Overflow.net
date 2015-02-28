@@ -51,6 +51,8 @@
     <Compile Include="OperationTests.cs" />
     <Compile Include="ContinueOnFailureOperationBehaviorTests.cs" />
     <Compile Include="SimpleOperationResolverTests.cs" />
+    <Compile Include="WorkflowConfigurationTests.cs" />
+    <Compile Include="WorkflowTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Overflow\Overflow.csproj">
