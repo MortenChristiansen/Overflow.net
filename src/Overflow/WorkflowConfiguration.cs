@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Overflow
 {
     public class WorkflowConfiguration<TOperation> : WorkflowConfiguration
@@ -13,6 +15,12 @@ namespace Overflow
     {
         public IOperationResolver Resolver { get; set; }
         public IWorkflowLogger Logger { get; set; }
+        public IList<IOperationBehaviorBuilder> BehaviorBuilders { get; private set; }
+
+        public WorkflowConfiguration()
+        {
+            BehaviorBuilders = new List<IOperationBehaviorBuilder>();
+        }
 
         public WorkflowConfiguration WithResolver(IOperationResolver resolver)
         {
@@ -24,6 +32,13 @@ namespace Overflow
         public WorkflowConfiguration WithLogger(IWorkflowLogger logger)
         {
             Logger = logger;
+
+            return this;
+        }
+
+        public WorkflowConfiguration WithBehaviorBuilder(IOperationBehaviorBuilder builder)
+        {
+            BehaviorBuilders.Add(builder);
 
             return this;
         }

@@ -47,7 +47,7 @@ namespace Overflow
             if (configuration.Resolver == null)
                 throw new InvalidOperationException("Operation.Configuration.Resolver was not set. You can set it to a SimpleOperationResolver instance or add a more full featured, external implementation.");
 
-            var operation = configuration.Resolver.Resolve<TOperation>();
+            var operation = configuration.Resolver.Resolve<TOperation>(null);
             operation.Initialize(configuration);
             return operation;
         }

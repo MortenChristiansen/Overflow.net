@@ -17,19 +17,22 @@ namespace Overflow
             _mappings.Add(dependencyType, typeof(TDependencyImplementation));
         }
 
-        public IOperation Resolve<TOperation>() where TOperation : IOperation
+        public IOperation Resolve<TOperation>(WorkflowConfiguration configuration) where TOperation : IOperation
         {
             var actualOperation = GetActualOperation<TOperation>();
-            return GetDecoratedOperation<TOperation>(actualOperation) ?? actualOperation;
+            return GetDecoratedOperation<TOperation>(actualOperation, configuration) ?? actualOperation;
         }
 
-        private IOperation GetDecoratedOperation<TOperation>(IOperation innerOperation) where TOperation : IOperation
+        private IOperation GetDecoratedOperation<TOperation>(IOperation innerOperation, WorkflowConfiguration configuration) where TOperation : IOperation
         {
             var decoratorAttributes = typeof (TOperation).GetCustomAttributes(typeof (OperationBehaviorAttribute), inherit: false);
-            if (decoratorAttributes.Length == 0) return null;
+            if (decoratorAttributes.Length == 0 && configuration.BehaviorBuilders.Count == 0) return null;
 
             foreach (var decoratorAttribute in decoratorAttributes.OfType<OperationBehaviorAttribute>())
                 innerOperation = decoratorAttribute.AddBehavior(innerOperation);
+
+            foreach (var behaviorBuilder in configuration.BehaviorBuilders)
+                innerOperation = behaviorBuilder.ApplyBehavior(innerOperation);
 
             return innerOperation;
         }

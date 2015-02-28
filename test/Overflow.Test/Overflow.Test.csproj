@@ -40,6 +40,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fakes\FakeOperationBehaviorBuilder.cs" />
     <Compile Include="Fakes\FakeInputOperation.cs" />
     <Compile Include="Fakes\FakeWorkflowLogger.cs" />
     <Compile Include="Fakes\FakeOperationBehaviorAttribute.cs" />

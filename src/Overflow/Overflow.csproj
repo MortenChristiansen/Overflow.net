@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="IOperationBehaviorBuilder.cs" />
     <Compile Include="IInputOperation.cs" />
     <Compile Include="IWorkflowLogger.cs" />
     <Compile Include="IOutputOperation.cs" />

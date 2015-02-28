@@ -2,6 +2,6 @@
 {
     public interface IOperationResolver
     {
-        IOperation Resolve<TOperation>() where TOperation : IOperation;
+        IOperation Resolve<TOperation>(WorkflowConfiguration configuration) where TOperation : IOperation;
     }
 }

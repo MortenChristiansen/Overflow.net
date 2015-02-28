@@ -11,7 +11,7 @@ namespace Overflow.Test
         {
             var sut = new SimpleOperationResolver();
 
-            var result = sut.Resolve<SimpleTestOperation>();
+            var result = sut.Resolve<SimpleTestOperation>(new WorkflowConfiguration());
 
             Assert.NotNull(result);
         }
@@ -22,7 +22,7 @@ namespace Overflow.Test
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            var result = sut.Resolve<OperationWithDependencies>();
+            var result = sut.Resolve<OperationWithDependencies>(new WorkflowConfiguration());
 
             Assert.NotNull(result);
         }
@@ -34,7 +34,7 @@ namespace Overflow.Test
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            var result = sut.Resolve<OperationWithDependencies>();
+            var result = sut.Resolve<OperationWithDependencies>(new WorkflowConfiguration());
 
             Assert.NotNull(result);
         }
@@ -46,7 +46,7 @@ namespace Overflow.Test
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
             sut.RegisterOperationDependency<ComplexDependency, ComplexDependency>();
 
-            var result = sut.Resolve<OperationWithComplexDependencies>();
+            var result = sut.Resolve<OperationWithComplexDependencies>(new WorkflowConfiguration());
 
             Assert.NotNull(result);
         }
@@ -56,7 +56,7 @@ namespace Overflow.Test
         {
             var sut = new SimpleOperationResolver();
 
-            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithDependencies>());
+            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithDependencies>(new WorkflowConfiguration()));
         }
 
         [Fact]
@@ -65,7 +65,7 @@ namespace Overflow.Test
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<ComplexDependency, ComplexDependency>();
 
-            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithComplexDependencies>());
+            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithComplexDependencies>(new WorkflowConfiguration()));
         }
 
         [Fact]
@@ -74,8 +74,8 @@ namespace Overflow.Test
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            var result1 = sut.Resolve<SimpleTestOperation>();
-            var result2 = sut.Resolve<SimpleTestOperation>();
+            var result1 = sut.Resolve<SimpleTestOperation>(new WorkflowConfiguration());
+            var result2 = sut.Resolve<SimpleTestOperation>(new WorkflowConfiguration());
 
             Assert.NotSame(result1, result2);
         }
@@ -86,8 +86,8 @@ namespace Overflow.Test
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            var result1 = sut.Resolve<OperationWithDependencies>() as OperationWithDependencies;
-            var result2 = sut.Resolve<OperationWithDependencies>() as OperationWithDependencies;
+            var result1 = sut.Resolve<OperationWithDependencies>(new WorkflowConfiguration()) as OperationWithDependencies;
+            var result2 = sut.Resolve<OperationWithDependencies>(new WorkflowConfiguration()) as OperationWithDependencies;
 
             Assert.NotSame(result1.Dependency, result2.Dependency);
         }
@@ -98,7 +98,7 @@ namespace Overflow.Test
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithTwoConstructors>());
+            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithTwoConstructors>(new WorkflowConfiguration()));
         }
 
         [Fact]
@@ -108,7 +108,7 @@ namespace Overflow.Test
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
             sut.RegisterOperationDependency<DependencyWithTwoConstructors, DependencyWithTwoConstructors>();
 
-            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithDualConstructorDependency>());
+            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithDualConstructorDependency>(new WorkflowConfiguration()));
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace Overflow.Test
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<IDependency, SimpleDependency>();
 
-            var result = sut.Resolve<OperationWithInterfaceDependency>();
+            var result = sut.Resolve<OperationWithInterfaceDependency>(new WorkflowConfiguration());
 
             Assert.NotNull(result);
         }
@@ -130,7 +130,7 @@ namespace Overflow.Test
             sut.RegisterOperationDependency<IDependency, SimpleDependency>();
             sut.RegisterOperationDependency<IDependency, ComplexDependency>();
 
-            var result = sut.Resolve<OperationWithInterfaceDependency>() as OperationWithInterfaceDependency;
+            var result = sut.Resolve<OperationWithInterfaceDependency>(new WorkflowConfiguration()) as OperationWithInterfaceDependency;
 
             Assert.IsType<ComplexDependency>(result.Dependency);
         }
@@ -140,10 +140,22 @@ namespace Overflow.Test
         {
             var sut = new SimpleOperationResolver();
 
-            var result = sut.Resolve<BehaviorOperation>();
+            var result = sut.Resolve<BehaviorOperation>(new WorkflowConfiguration());
 
             Assert.IsType<FakeOperationBehavior>(result);
             Assert.IsType<BehaviorOperation>((result as OperationBehavior).InnerOperation);
+        }
+
+        [Fact]
+        public void Resolving_operations_applies_all_behavior_builders_to_the_creataed_operations()
+        {
+            var sut = new SimpleOperationResolver();
+            var workflow = new WorkflowConfiguration().WithBehaviorBuilder(new FakeOperationBehaviorBuilder());
+
+            var result = sut.Resolve<SimpleTestOperation>(workflow);
+
+            Assert.IsType<FakeOperationBehavior>(result);
+            Assert.IsType<SimpleTestOperation>((result as OperationBehavior).InnerOperation);
         }
 
         #region Dependencies

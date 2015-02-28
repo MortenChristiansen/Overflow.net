@@ -6,6 +6,15 @@ namespace Overflow.Test
     public class WorkflowConfigurationTests
     {
         [Fact]
+        public void There_are_no_behavior_builders_by_default()
+        {
+            var sut = new WorkflowConfiguration();
+
+            Assert.NotNull(sut.BehaviorBuilders);
+            Assert.Equal(0, sut.BehaviorBuilders.Count);
+        }
+
+        [Fact]
         public void You_can_create_an_operation_from_the_configuration()
         {
             var sut = new WorkflowConfiguration<TestOperation>() { Resolver = new SimpleOperationResolver() };
@@ -53,6 +62,28 @@ namespace Overflow.Test
             var sut = new WorkflowConfiguration();
 
             var result = sut.WithLogger(new FakeWorkflowLogger());
+
+            Assert.Equal(sut, result);
+        }
+
+        [Fact]
+        public void You_can_fluently_assign_behavior_builders()
+        {
+            var sut = new WorkflowConfiguration();
+            var builder = new FakeOperationBehaviorBuilder();
+
+            sut.WithBehaviorBuilder(builder);
+
+            Assert.Equal(1, sut.BehaviorBuilders.Count);
+            Assert.Equal(builder, sut.BehaviorBuilders[0]);
+        }
+
+        [Fact]
+        public void Fluently_assigning_behavior_builders_returns_configuration()
+        {
+            var sut = new WorkflowConfiguration();
+
+            var result = sut.WithBehaviorBuilder(new FakeOperationBehaviorBuilder());
 
             Assert.Equal(sut, result);
         }
