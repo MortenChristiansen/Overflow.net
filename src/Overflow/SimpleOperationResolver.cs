@@ -20,16 +20,12 @@ namespace Overflow
         public IOperation Resolve<TOperation>(WorkflowConfiguration configuration) where TOperation : IOperation
         {
             var actualOperation = GetActualOperation<TOperation>();
-            return GetDecoratedOperation<TOperation>(actualOperation, configuration) ?? actualOperation;
+            return GetDecoratedOperation(actualOperation, configuration) ?? actualOperation;
         }
 
-        private IOperation GetDecoratedOperation<TOperation>(IOperation innerOperation, WorkflowConfiguration configuration) where TOperation : IOperation
+        private IOperation GetDecoratedOperation(IOperation innerOperation, WorkflowConfiguration configuration)
         {
-            var decoratorAttributes = typeof (TOperation).GetCustomAttributes(typeof (OperationBehaviorAttribute), inherit: false);
-            if (decoratorAttributes.Length == 0 && configuration.BehaviorBuilders.Count == 0) return null;
-
-            foreach (var decoratorAttribute in decoratorAttributes.OfType<OperationBehaviorAttribute>())
-                innerOperation = decoratorAttribute.AddBehavior(innerOperation);
+            if (configuration.BehaviorBuilders.Count == 0) return null;
 
             foreach (var behaviorBuilder in configuration.BehaviorBuilders)
                 innerOperation = behaviorBuilder.ApplyBehavior(innerOperation);

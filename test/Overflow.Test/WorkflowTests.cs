@@ -18,8 +18,9 @@ namespace Overflow.Test
         {
             var result = Workflow.Configure<FakeOperation>();
 
-            Assert.NotNull(result.Resolver);
-            Assert.IsType<SimpleOperationResolver>(result.Resolver);
+
+            Assert.Equal(1, result.BehaviorBuilders.Count);
+            Assert.IsType<OperationBehaviorAttributeBuilder>(result.BehaviorBuilders[0]);
         }
     }
 }

@@ -47,6 +47,7 @@
     <Compile Include="Fakes\FakeOperationBehavior.cs" />
     <Compile Include="Fakes\FakeOutputOperation.cs" />
     <Compile Include="Fakes\FakeOperation.cs" />
+    <Compile Include="OperationBehaviorAttributeBuilderTests.cs" />
     <Compile Include="OperationContextTests.cs" />
     <Compile Include="OperationBehaviorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

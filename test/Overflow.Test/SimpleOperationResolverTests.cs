@@ -136,17 +136,6 @@ namespace Overflow.Test
         }
 
         [Fact]
-        public void Operations_with_an_operation_behavior_attribute_are_decorated_with_the_corresponding_decorator_type()
-        {
-            var sut = new SimpleOperationResolver();
-
-            var result = sut.Resolve<BehaviorOperation>(new WorkflowConfiguration());
-
-            Assert.IsType<FakeOperationBehavior>(result);
-            Assert.IsType<BehaviorOperation>((result as OperationBehavior).InnerOperation);
-        }
-
-        [Fact]
         public void Resolving_operations_applies_all_behavior_builders_to_the_creataed_operations()
         {
             var sut = new SimpleOperationResolver();
@@ -240,12 +229,6 @@ namespace Overflow.Test
                 Dependency = dependency;
             }
 
-            protected override void OnExecute() { }
-        }
-
-        [FakeOperationBehavior]
-        private class BehaviorOperation : Operation
-        {
             protected override void OnExecute() { }
         }
 

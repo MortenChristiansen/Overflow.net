@@ -4,7 +4,10 @@ namespace Overflow
     {
         public static WorkflowConfiguration<TOperation> Configure<TOperation>() where TOperation : IOperation
         {
-            return new WorkflowConfiguration<TOperation> { Resolver = new SimpleOperationResolver() };
+            return 
+                new WorkflowConfiguration<TOperation> { Resolver = new SimpleOperationResolver() }.
+                WithBehaviorBuilder(new OperationBehaviorAttributeBuilder())
+                as WorkflowConfiguration<TOperation>;
         }
     }
 }
