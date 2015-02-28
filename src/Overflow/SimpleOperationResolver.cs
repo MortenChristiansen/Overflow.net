@@ -28,7 +28,7 @@ namespace Overflow
             if (configuration.BehaviorBuilders.Count == 0) return null;
 
             foreach (var behaviorBuilder in configuration.BehaviorBuilders)
-                innerOperation = behaviorBuilder.ApplyBehavior(innerOperation);
+                innerOperation = behaviorBuilder.ApplyBehavior(innerOperation, configuration);
 
             return innerOperation;
         }

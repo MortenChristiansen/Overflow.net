@@ -1,3 +1,4 @@
+using System;
 using Overflow.Test.Fakes;
 using Xunit;
 
@@ -11,7 +12,7 @@ namespace Overflow.Test
             var sut = new OperationBehaviorAttributeBuilder();
             var operation = new BehaviorOperation();
 
-            var result = sut.ApplyBehavior(operation);
+            var result = sut.ApplyBehavior(operation, new WorkflowConfiguration());
 
             Assert.IsType<FakeOperationBehavior>(result);
             Assert.IsType<BehaviorOperation>((result as OperationBehavior).InnerOperation);
@@ -23,9 +24,17 @@ namespace Overflow.Test
             var sut = new OperationBehaviorAttributeBuilder();
             var operation = new FakeOperation();
 
-            var result = sut.ApplyBehavior(operation);
+            var result = sut.ApplyBehavior(operation, new WorkflowConfiguration());
 
             Assert.Equal(operation, result);
+        }
+
+        [Fact]
+        public void You_cannot_apply_behavior_without_an_operation()
+        {
+            var sut = new OperationBehaviorAttributeBuilder();
+
+            Assert.Throws<ArgumentNullException>(() => sut.ApplyBehavior(null, new WorkflowConfiguration()));
         }
 
         [FakeOperationBehavior]

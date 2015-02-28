@@ -6,7 +6,8 @@ namespace Overflow
         {
             return 
                 new WorkflowConfiguration<TOperation> { Resolver = new SimpleOperationResolver() }.
-                WithBehaviorBuilder(new OperationBehaviorAttributeBuilder())
+                WithBehaviorBuilder(new OperationBehaviorAttributeBuilder()).
+                WithBehaviorBuilder(new OperationLoggingBehaviorBuilder())
                 as WorkflowConfiguration<TOperation>;
         }
     }
