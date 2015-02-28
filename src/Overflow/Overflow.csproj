@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="IInputOperation.cs" />
+    <Compile Include="IWorkflowLogger.cs" />
     <Compile Include="IOutputOperation.cs" />
     <Compile Include="IOperation.cs" />
     <Compile Include="IOperationResolver.cs" />

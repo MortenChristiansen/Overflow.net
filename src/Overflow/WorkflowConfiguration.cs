@@ -13,5 +13,20 @@ namespace Overflow
     public class WorkflowConfiguration
     {
         public IOperationResolver Resolver { get; set; }
+        public IWorkflowLogger Logger { get; set; }
+
+        public WorkflowConfiguration WithResolver(IOperationResolver resolver)
+        {
+            Resolver = resolver;
+
+            return this;
+        }
+
+        public WorkflowConfiguration WithLogger(IWorkflowLogger logger)
+        {
+            Logger = logger;
+
+            return this;
+        }
     }
 }
