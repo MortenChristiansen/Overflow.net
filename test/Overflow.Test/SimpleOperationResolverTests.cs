@@ -146,22 +146,6 @@ namespace Overflow.Test
             Assert.IsType<BehaviorOperation>((result as OperationDecorator).DecoratedOperation);
         }
 
-        [Fact]
-        public void You_cannot_use_the_operation_behavior_attribute_with_operation_types_other_than_operation_decorator_types()
-        {
-            var sut = new SimpleOperationResolver();
-
-            Assert.Throws<InvalidOperationException>(() => sut.Resolve<IncorrectTypeBehaviorOperation>());
-        }
-
-        [Fact]
-        public void You_cannot_use_the_operation_behavior_attribute_with_operation_types_that_do_not_have_a_constructor_taking_only_an_IOperation_instance()
-        {
-            var sut = new SimpleOperationResolver();
-
-            Assert.Throws<InvalidOperationException>(() => sut.Resolve<IncorrectConstructorBehaviorOperation>());
-        }
-
         #region Dependencies
 
         private class SimpleTestOperation : Operation
@@ -247,27 +231,10 @@ namespace Overflow.Test
             protected override void OnExecute() { }
         }
 
-        [FakeOperationBehavior(typeof(FakeOperationDecorator))]
+        [FakeOperationBehavior]
         private class BehaviorOperation : Operation
         {
             protected override void OnExecute() { }
-        }
-
-        [FakeOperationBehavior(typeof(object))]
-        private class IncorrectTypeBehaviorOperation : Operation
-        {
-            protected override void OnExecute() { }
-        }
-
-        [FakeOperationBehavior(typeof(IncorrectConstructorOperationBehavior))]
-        private class IncorrectConstructorBehaviorOperation : Operation
-        {
-            protected override void OnExecute() { }
-        }
-
-        private class IncorrectConstructorOperationBehavior : OperationDecorator
-        {
-            public IncorrectConstructorOperationBehavior() : base(new FakeOperation()) { }
         }
 
         #endregion

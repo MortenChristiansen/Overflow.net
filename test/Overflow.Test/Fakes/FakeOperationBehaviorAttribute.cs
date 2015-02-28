@@ -1,9 +1,10 @@
-using System;
-
 namespace Overflow.Test.Fakes
 {
     class FakeOperationBehaviorAttribute : OperationBehaviorAttribute
     {
-        public FakeOperationBehaviorAttribute(Type operationType) : base(operationType) { }
+        public override IOperation AddBehavior(IOperation operation)
+        {
+            return new FakeOperationDecorator(operation);
+        }
     }
 }

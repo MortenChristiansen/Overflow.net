@@ -2,6 +2,9 @@ namespace Overflow
 {
     public class RetryOnFailureAttribute : OperationBehaviorAttribute
     {
-        public RetryOnFailureAttribute() : base(typeof(RetryOnFailureOperationDecorator)) { }
+        public override IOperation AddBehavior(IOperation operation)
+        {
+            return new RetryOnFailureOperationDecorator(operation);
+        }
     }
 }
