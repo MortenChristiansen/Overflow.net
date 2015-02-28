@@ -44,13 +44,21 @@ namespace Overflow.Test
             Assert.True(operation.HasExecuted);
         }
 
+        [Fact]
+        public void The_decorator_fowards_the_initialization_to_the_decorated_operation()
+        {
+            var operation = new FakeOperation();
+            var sut = new TestBehavior(operation);
+            var configuration = new WorkflowConfiguration();
+
+            sut.Initialize(configuration);
+
+            Assert.Equal(configuration, operation.InitializedConfiguration);
+        }
+
         private class TestBehavior : OperationBehavior
         {
-            public TestBehavior(IOperation operation)
-                : base(operation)
-            {
-                
-            } 
+            public TestBehavior(IOperation operation) : base(operation) { } 
         }
     }
 }

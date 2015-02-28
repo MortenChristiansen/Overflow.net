@@ -6,10 +6,14 @@ namespace Overflow
     public abstract class Operation : IOperation
     {
         private OperationContext _context;
-
-        public WorkflowConfiguration Configuration { get; set; }
+        private WorkflowConfiguration _configuration;
 
         protected abstract void OnExecute();
+
+        public virtual void Initialize(WorkflowConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         public void Execute()
         {
@@ -43,13 +47,15 @@ namespace Overflow
             if (configuration.Resolver == null)
                 throw new InvalidOperationException("Operation.Configuration.Resolver was not set. You can set it to a SimpleOperationResolver instance or add a more full featured, external implementation.");
 
-            return configuration.Resolver.Resolve<TOperation>();
+            var operation = configuration.Resolver.Resolve<TOperation>();
+            operation.Initialize(configuration);
+            return operation;
         }
 
         protected IOperation Create<TOperation>()
             where TOperation : IOperation
         {
-            return Create<TOperation>(Configuration);
+            return Create<TOperation>(_configuration);
         }
 
         protected TOutput GetChildOutputValue<TOutput>()

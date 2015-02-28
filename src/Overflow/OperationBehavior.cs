@@ -15,6 +15,10 @@ namespace Overflow
             InnerOperation = innerOperation;
         }
 
+        public void Initialize(WorkflowConfiguration configuration)
+        {
+            InnerOperation.Initialize(configuration);
+        }
 
         public virtual void Execute()
         {

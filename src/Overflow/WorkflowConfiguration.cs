@@ -5,9 +5,8 @@ namespace Overflow
     {
         public IOperation CreateOperation()
         {
-            return (TOperation)new SimpleOperationResolver().Resolve<TOperation>();
+            return (TOperation)Operation.Create<TOperation>(this);
         }
-
     }
 
     public class WorkflowConfiguration

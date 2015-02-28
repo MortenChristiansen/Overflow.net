@@ -8,7 +8,7 @@ namespace Overflow.Test
         [Fact]
         public void You_can_create_an_operation_from_the_configuration()
         {
-            var sut = new WorkflowConfiguration<TestOperation>();
+            var sut = new WorkflowConfiguration<TestOperation>() { Resolver = new SimpleOperationResolver() };
 
             var result = sut.CreateOperation();
 
