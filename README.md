@@ -122,6 +122,6 @@ The behavior can interfere with the execution of the operation in an effort to c
 
 The behavior can make changes to to external/persisted data as a result of an error, but does not otherwise interfere with the execution of the operation. Only FullIntegrity mode behaviors are allowed to run before this behavior mode.
 
-**Full integrity 400)**
+**Full integrity (400)**
 
 The behavior does not interfere with the execution of the operation, with the exception of catching and rethrowing exceptions. The workflow applies all behaviors with this integrity mode before behaviors with any other mode. If the integrity mode is respected in the behaviors, they will all have a chance to perform their logic, no matter what happens.
