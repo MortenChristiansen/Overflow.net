@@ -2,7 +2,10 @@ namespace Overflow
 {
     class ContinueOnFailureOperationBehavior : OperationBehavior
     {
-        public ContinueOnFailureOperationBehavior(IOperation innerOperation) : base(innerOperation) { }
+        public override BehaviorIntegrityMode IntegrityMode
+        {
+            get { return BehaviorIntegrityMode.MaintainsOperationIntegrity; }
+        }
 
         public override void Execute()
         {

@@ -7,26 +7,38 @@ namespace Overflow.Test
     public class OperationBehaviorTests
     {
         [Fact]
-        public void Creating_a_decorator_sets_the_decorated_operation_property()
+        public void Attaching_a_behavior_sets_the_inner_operation_property()
         {
             var operation = new FakeOperation();
+            var sut = new TestBehavior();
 
-            var sut = new TestBehavior(operation);
+            sut.Attach(operation);
 
             Assert.Equal(operation, sut.InnerOperation);
         }
 
         [Fact]
-        public void The_decorated_operation_is_required_for_creating_a_new_decorator()
+        public void Attaching_a_behavior_returns_the_same_behavior()
         {
-            Assert.Throws<ArgumentNullException>(() => new TestBehavior(null));
+            var operation = new FakeOperation();
+            var sut = new TestBehavior();
+
+            var result = sut.Attach(operation);
+
+            Assert.Equal(sut, result);
+        }
+
+        [Fact]
+        public void The_operation_to_decorate_is_required_for_attaching_a_behavior()
+        {
+            Assert.Throws<ArgumentNullException>(() => new TestBehavior().Attach(null));
         }
 
         [Fact]
         public void The_decorated_operation_provides_the_child_operations()
         {
             var operation = new FakeOperation(new FakeOperation(), new FakeOperation());
-            var sut = new TestBehavior(operation);
+            var sut = new TestBehavior().Attach(operation);
 
             var result = sut.GetChildOperations();
 
@@ -34,10 +46,10 @@ namespace Overflow.Test
         }
 
         [Fact]
-        public void The_decorator_fowards_the_execution_to_the_decorated_operation()
+        public void The_decorator_forwards_the_execution_to_the_decorated_operation()
         {
             var operation = new FakeOperation();
-            var sut = new TestBehavior(operation);
+            var sut = new TestBehavior().Attach(operation);
 
             sut.Execute();
 
@@ -45,10 +57,10 @@ namespace Overflow.Test
         }
 
         [Fact]
-        public void The_decorator_fowards_the_initialization_to_the_decorated_operation()
+        public void The_decorator_forwards_the_initialization_to_the_decorated_operation()
         {
             var operation = new FakeOperation();
-            var sut = new TestBehavior(operation);
+            var sut = new TestBehavior().Attach(operation);
             var configuration = new WorkflowConfiguration();
 
             sut.Initialize(configuration);
@@ -58,7 +70,10 @@ namespace Overflow.Test
 
         private class TestBehavior : OperationBehavior
         {
-            public TestBehavior(IOperation operation) : base(operation) { } 
+            public override BehaviorIntegrityMode IntegrityMode
+            {
+                get { return BehaviorIntegrityMode.FullIntegrity; }
+            }
         }
     }
 }

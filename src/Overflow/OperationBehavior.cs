@@ -7,12 +7,16 @@ namespace Overflow
     {
         internal IOperation InnerOperation { get; private set; }
 
-        protected OperationBehavior(IOperation innerOperation)
+        public abstract BehaviorIntegrityMode IntegrityMode { get; }
+
+        public IOperation Attach(IOperation innerOperation)
         {
             if (innerOperation == null)
                 throw new ArgumentNullException("innerOperation");
 
             InnerOperation = innerOperation;
+
+            return this;
         }
 
         public void Initialize(WorkflowConfiguration configuration)

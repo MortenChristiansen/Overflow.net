@@ -2,9 +2,9 @@ namespace Overflow.Test.Fakes
 {
     class FakeOperationBehaviorAttribute : OperationBehaviorAttribute
     {
-        public override IOperation AddBehavior(IOperation operation)
+        public override OperationBehavior CreateBehavior()
         {
-            return new FakeOperationBehavior(operation);
+            return new FakeOperationBehavior();
         }
     }
 }

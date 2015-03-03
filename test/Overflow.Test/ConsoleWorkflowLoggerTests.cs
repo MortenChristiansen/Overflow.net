@@ -131,7 +131,7 @@ namespace Overflow.Test
                 sut.OperationFailed(new FakeOperation(), new InvalidOperationException("MESSAGE"));
                 sut.OperationFinished(new FakeOperation());
 
-                Assert.Equal("FakeOperation {\r\n  Error [InvalidOperationException]: MESSAGE\r\n}", sw.ToString());
+                Assert.Equal("FakeOperation {\r\n  FakeOperation\r\n\r\n  Error [InvalidOperationException]: MESSAGE\r\n}", sw.ToString());
             }
         }
 

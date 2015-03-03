@@ -2,6 +2,11 @@ namespace Overflow.Test.Fakes
 {
     class FakeOperationBehavior : OperationBehavior
     {
-        public FakeOperationBehavior(IOperation innerOperation) : base(innerOperation) { }
+        public BehaviorIntegrityMode SetIntegrityMode { get; set; }
+
+        public override BehaviorIntegrityMode IntegrityMode
+        {
+            get { return SetIntegrityMode; }
+        }
     }
 }

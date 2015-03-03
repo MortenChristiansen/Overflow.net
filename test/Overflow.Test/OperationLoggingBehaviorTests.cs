@@ -11,7 +11,7 @@ namespace Overflow.Test
         {
             var innerOperation = new FakeOperation();
             var logger = new FakeWorkflowLogger();
-            var sut = new OperationLoggingBehavior(innerOperation, logger);
+            var sut = new OperationLoggingBehavior(logger).Attach(innerOperation);
 
             sut.Execute();
 
@@ -26,7 +26,7 @@ namespace Overflow.Test
         {
             var innerOperation = new FakeOperation();
             var logger = new FakeWorkflowLogger();
-            var sut = new OperationLoggingBehavior(new FakeOperationBehavior(innerOperation), logger);
+            var sut = new OperationLoggingBehavior(logger).Attach(new FakeOperationBehavior().Attach(innerOperation));
 
             sut.Execute();
 
@@ -39,7 +39,7 @@ namespace Overflow.Test
         {
             var innerOperation = new FakeOperation { ThrowOnExecute = new Exception() };
             var logger = new FakeWorkflowLogger();
-            var sut = new OperationLoggingBehavior(innerOperation, logger);
+            var sut = new OperationLoggingBehavior(logger).Attach(innerOperation);
 
             try { sut.Execute(); }
             catch { }
@@ -53,7 +53,7 @@ namespace Overflow.Test
         public void Logged_exceptions_are_rethrown()
         {
             var innerOperation = new FakeOperation { ThrowOnExecute = new Exception() };
-            var sut = new OperationLoggingBehavior(innerOperation, new FakeWorkflowLogger());
+            var sut = new OperationLoggingBehavior(new FakeWorkflowLogger()).Attach(innerOperation);
 
             Assert.Throws<Exception>(() => sut.Execute());
         }
@@ -63,7 +63,7 @@ namespace Overflow.Test
         {
             var innerOperation = new FakeOperation { ThrowOnExecute = new Exception() };
             var logger = new FakeWorkflowLogger();
-            var sut = new OperationLoggingBehavior(innerOperation, logger);
+            var sut = new OperationLoggingBehavior(logger).Attach(innerOperation);
 
             try { sut.Execute(); }
             catch { }

@@ -6,7 +6,12 @@ namespace Overflow
     {
         private readonly IWorkflowLogger _logger;
 
-        public OperationLoggingBehavior(IOperation innerOperation, IWorkflowLogger logger) : base(innerOperation)
+        public override BehaviorIntegrityMode IntegrityMode
+        {
+            get { return BehaviorIntegrityMode.FullIntegrity; }
+        }
+
+        public OperationLoggingBehavior(IWorkflowLogger logger)
         {
             _logger = logger;
         }

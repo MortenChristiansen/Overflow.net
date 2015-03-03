@@ -25,10 +25,14 @@ namespace Overflow
 
         private IOperation GetDecoratedOperation(IOperation innerOperation, WorkflowConfiguration configuration)
         {
-            if (configuration.BehaviorBuilders.Count == 0) return null;
+            if (configuration.BehaviorFactories.Count == 0) return null;
 
-            foreach (var behaviorBuilder in configuration.BehaviorBuilders)
-                innerOperation = behaviorBuilder.ApplyBehavior(innerOperation, configuration);
+            foreach (var behaviorFactory in configuration.BehaviorFactories)
+            {
+                var behaviors = behaviorFactory.CreateBehaviors(innerOperation, configuration);
+                foreach (var behavior in behaviors.OrderBy(b => b.IntegrityMode))
+                    innerOperation = behavior.Attach(innerOperation);
+            }
 
             return innerOperation;
         }

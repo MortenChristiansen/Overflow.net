@@ -136,15 +136,41 @@ namespace Overflow.Test
         }
 
         [Fact]
-        public void Resolving_operations_applies_all_behavior_builders_to_the_creataed_operations()
+        public void Resolving_operations_creates_and_applies_all_behaviors_to_the_created_operations()
         {
             var sut = new SimpleOperationResolver();
-            var workflow = new WorkflowConfiguration().WithBehaviorBuilder(new FakeOperationBehaviorBuilder());
+            var factory = new FakeOperationBehaviorFactory();
+            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetIntegrityMode = BehaviorIntegrityMode.MaintainsDataIntegrity });
+            var workflow = new WorkflowConfiguration().WithBehaviorFactory(factory);
 
             var result = sut.Resolve<SimpleTestOperation>(workflow);
 
             Assert.IsType<FakeOperationBehavior>(result);
             Assert.IsType<SimpleTestOperation>((result as OperationBehavior).InnerOperation);
+        }
+
+        [Fact]
+        public void Behaviors_are_applied_sorted_by_integrity_mode_with_the_higher_priority_modes_on_the_outside()
+        {
+            var sut = new SimpleOperationResolver();
+            var factory = new FakeOperationBehaviorFactory();
+            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetIntegrityMode = BehaviorIntegrityMode.MaintainsDataIntegrity });
+            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetIntegrityMode = BehaviorIntegrityMode.FullIntegrity });
+            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetIntegrityMode = BehaviorIntegrityMode.MaintainsWorkflowIntegrity });
+            var workflow = new WorkflowConfiguration().WithBehaviorFactory(factory);
+
+            var result = sut.Resolve<SimpleTestOperation>(workflow);
+
+            Assert.IsType<FakeOperationBehavior>(result);
+            var behavior1 = (OperationBehavior)result;
+            Assert.Equal(BehaviorIntegrityMode.FullIntegrity, behavior1.IntegrityMode);
+            Assert.IsType<FakeOperationBehavior>(behavior1.InnerOperation);
+            var behavior2 = (OperationBehavior)behavior1.InnerOperation;
+            Assert.Equal(BehaviorIntegrityMode.MaintainsDataIntegrity, behavior2.IntegrityMode);
+            Assert.IsType<FakeOperationBehavior>(behavior2.InnerOperation);
+            var behavior3 = (OperationBehavior)behavior2.InnerOperation;
+            Assert.Equal(BehaviorIntegrityMode.MaintainsWorkflowIntegrity, behavior3.IntegrityMode);
+            Assert.IsType<SimpleTestOperation>(behavior3.InnerOperation);
         }
 
         #region Dependencies

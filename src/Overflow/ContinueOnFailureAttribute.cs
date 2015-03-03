@@ -2,9 +2,9 @@ namespace Overflow
 {
     public class ContinueOnFailureAttribute : OperationBehaviorAttribute
     {
-        public override IOperation AddBehavior(IOperation operation)
+        public override OperationBehavior CreateBehavior()
         {
-            return new ContinueOnFailureOperationBehavior(operation);
+            return null; //new ContinueOnFailureOperationBehavior(operation);
         }
     }
 }

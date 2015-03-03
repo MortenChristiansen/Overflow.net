@@ -6,12 +6,12 @@ namespace Overflow.Test
     public class WorkflowConfigurationTests
     {
         [Fact]
-        public void There_are_no_behavior_builders_by_default()
+        public void There_are_no_behavior_factories_by_default()
         {
             var sut = new WorkflowConfiguration();
 
-            Assert.NotNull(sut.BehaviorBuilders);
-            Assert.Equal(0, sut.BehaviorBuilders.Count);
+            Assert.NotNull(sut.BehaviorFactories);
+            Assert.Equal(0, sut.BehaviorFactories.Count);
         }
 
         [Fact]
@@ -67,23 +67,23 @@ namespace Overflow.Test
         }
 
         [Fact]
-        public void You_can_fluently_assign_behavior_builders()
+        public void You_can_fluently_assign_behavior_factories()
         {
             var sut = new WorkflowConfiguration();
-            var builder = new FakeOperationBehaviorBuilder();
+            var factory = new FakeOperationBehaviorFactory();
 
-            sut.WithBehaviorBuilder(builder);
+            sut.WithBehaviorFactory(factory);
 
-            Assert.Equal(1, sut.BehaviorBuilders.Count);
-            Assert.Equal(builder, sut.BehaviorBuilders[0]);
+            Assert.Equal(1, sut.BehaviorFactories.Count);
+            Assert.Equal(factory, sut.BehaviorFactories[0]);
         }
 
         [Fact]
-        public void Fluently_assigning_behavior_builders_returns_configuration()
+        public void Fluently_assigning_behavior_factories_returns_configuration()
         {
             var sut = new WorkflowConfiguration();
 
-            var result = sut.WithBehaviorBuilder(new FakeOperationBehaviorBuilder());
+            var result = sut.WithBehaviorFactory(new FakeOperationBehaviorFactory());
 
             Assert.Equal(sut, result);
         }

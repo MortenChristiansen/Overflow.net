@@ -15,11 +15,11 @@ namespace Overflow
     {
         public IOperationResolver Resolver { get; set; }
         public IWorkflowLogger Logger { get; set; }
-        public IList<IOperationBehaviorBuilder> BehaviorBuilders { get; private set; }
+        public IList<IOperationBehaviorFactory> BehaviorFactories { get; private set; }
 
         public WorkflowConfiguration()
         {
-            BehaviorBuilders = new List<IOperationBehaviorBuilder>();
+            BehaviorFactories = new List<IOperationBehaviorFactory>();
         }
 
         public WorkflowConfiguration WithResolver(IOperationResolver resolver)
@@ -36,9 +36,9 @@ namespace Overflow
             return this;
         }
 
-        public WorkflowConfiguration WithBehaviorBuilder(IOperationBehaviorBuilder builder)
+        public WorkflowConfiguration WithBehaviorFactory(IOperationBehaviorFactory factory)
         {
-            BehaviorBuilders.Add(builder);
+            BehaviorFactories.Add(factory);
 
             return this;
         }

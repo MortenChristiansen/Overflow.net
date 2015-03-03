@@ -41,17 +41,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleWorkflowLoggerTests.cs" />
-    <Compile Include="Fakes\FakeOperationBehaviorBuilder.cs" />
+    <Compile Include="Fakes\FakeOperationBehaviorFactory.cs" />
     <Compile Include="Fakes\FakeInputOperation.cs" />
     <Compile Include="Fakes\FakeWorkflowLogger.cs" />
     <Compile Include="Fakes\FakeOperationBehaviorAttribute.cs" />
     <Compile Include="Fakes\FakeOperationBehavior.cs" />
     <Compile Include="Fakes\FakeOutputOperation.cs" />
     <Compile Include="Fakes\FakeOperation.cs" />
-    <Compile Include="OperationBehaviorAttributeBuilderTests.cs" />
+    <Compile Include="OperationBehaviorAttributeFactoryTests.cs" />
     <Compile Include="OperationContextTests.cs" />
     <Compile Include="OperationBehaviorTests.cs" />
-    <Compile Include="OperationLoggingBehaviorBuilderTests.cs" />
+    <Compile Include="OperationLoggingBehaviorFactoryTests.cs" />
     <Compile Include="OperationLoggingBehaviorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OperationTests.cs" />

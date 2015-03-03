@@ -36,17 +36,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="IOperationBehaviorBuilder.cs" />
+    <Compile Include="IOperationBehaviorFactory.cs" />
     <Compile Include="IInputOperation.cs" />
     <Compile Include="IWorkflowLogger.cs" />
     <Compile Include="IOutputOperation.cs" />
     <Compile Include="IOperation.cs" />
     <Compile Include="IOperationResolver.cs" />
-    <Compile Include="OperationLoggingBehaviorBuilder.cs" />
+    <Compile Include="OperationLoggingBehaviorFactory.cs" />
     <Compile Include="OperationLoggingBehavior.cs" />
+    <Compile Include="BehaviorIntegrityMode.cs" />
     <Compile Include="TextWriterWorkflowLogger.cs" />
     <Compile Include="OperationBehaviorAttribute.cs" />
-    <Compile Include="OperationBehaviorAttributeBuilder.cs" />
+    <Compile Include="OperationBehaviorAttributeFactory.cs" />
     <Compile Include="OperationContext.cs" />
     <Compile Include="OperationBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
