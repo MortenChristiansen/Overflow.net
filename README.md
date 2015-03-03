@@ -44,7 +44,7 @@ Internally, the library uses its own extensibility model for attaching behaviors
 
 Behaviors are implemented as decorators for the operations but the infrastructure takes care of applying them and in the right order.
 
-### Adding beahviors using `OperationBehaviorAttributeFactory`
+### Adding behaviors using `OperationBehaviorAttributeFactory`
 
 This is the easiest way to extend the workflow model to add custom behaviors. You simply have to create an attribute class inheriting from the abstract class `OperationBehaviorAttribute`. The only thing required to implement the class is to instantiate your custom behavior. The behavior will be attached automatically to operations with the attribute. To illustrate this, take the way that the `ContinueOnFailureOperationBehavior` class and its associated behavior attribute are implemented:
 
@@ -100,7 +100,7 @@ Both the behavior factories mentioned so far are registered by default but if yo
         WithBehaviorFactory(new MyCustomFactory()).
         CreateOperation();
 
-### A note about behavior integrity modes
+### Behavior integrity modes
 
 There are many different types of behaviors and to make sure that they are applied in an order that makes sense, they are grouped into a set of modes with specific semantic meaning. Each mode describes the impact that the behavior can have on the operation and workflow. This impact determines how the behavior interacts with other behaviors which is important for keeping your workflows functioning the way you would expect. For example, consider a behavior that retries an operation a number of times in case of an error. If this behavior runs before the logging behavior, the log would not catch all the attempts but would instead see it as a single operation execution which might not even fail. In this case, a potential problem is hidden from the logging behavior because of the ordering of the operations.
 
