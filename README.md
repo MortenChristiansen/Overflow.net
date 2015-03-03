@@ -1,9 +1,8 @@
 #Overflow.net
 
-| Platform | Build status |
-| -- | ------------ |
-| windows / .net | [![Build status](https://ci.appveyor.com/api/projects/status/m8qkwl9p91jwncjo/branch/master?svg=true)](https://ci.appveyor.com/project/MortenChristiansen/overflow-net/branch/master) |
-| linux / mono | [![Build Status](https://travis-ci.org/MortenChristiansen/Overflow.net.svg?branch=creating-operations-and-resolving-dependencies)](https://travis-ci.org/MortenChristiansen/Overflow.net) |
+####[![Build status](https://ci.appveyor.com/api/projects/status/m8qkwl9p91jwncjo/branch/master?svg=true)](https://ci.appveyor.com/project/MortenChristiansen/overflow-net/branch/master) // windows / .net
+
+####[![Build Status](https://travis-ci.org/MortenChristiansen/Overflow.net.svg?branch=creating-operations-and-resolving-dependencies)](https://travis-ci.org/MortenChristiansen/Overflow.net) // linux / mono
 
 Overflow is an open source C# portable class library for modeling workflows using simple objects. It allows you to define workflows using a simple and clean syntax, while you apply operational behaviors such as error handling strategies in a declarative fashion using attributes.
 
