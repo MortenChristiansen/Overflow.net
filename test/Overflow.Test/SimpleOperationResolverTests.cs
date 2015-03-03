@@ -163,13 +163,13 @@ namespace Overflow.Test
 
             Assert.IsType<FakeOperationBehavior>(result);
             var behavior1 = (OperationBehavior)result;
-            Assert.Equal(BehaviorIntegrityMode.FullIntegrity, behavior1.IntegrityMode);
+            Assert.Equal(BehaviorIntegrityMode.MaintainsWorkflowIntegrity, behavior1.IntegrityMode);
             Assert.IsType<FakeOperationBehavior>(behavior1.InnerOperation);
             var behavior2 = (OperationBehavior)behavior1.InnerOperation;
             Assert.Equal(BehaviorIntegrityMode.MaintainsDataIntegrity, behavior2.IntegrityMode);
             Assert.IsType<FakeOperationBehavior>(behavior2.InnerOperation);
             var behavior3 = (OperationBehavior)behavior2.InnerOperation;
-            Assert.Equal(BehaviorIntegrityMode.MaintainsWorkflowIntegrity, behavior3.IntegrityMode);
+            Assert.Equal(BehaviorIntegrityMode.FullIntegrity, behavior3.IntegrityMode);
             Assert.IsType<SimpleTestOperation>(behavior3.InnerOperation);
         }
 

@@ -30,7 +30,7 @@ namespace Overflow
             foreach (var behaviorFactory in configuration.BehaviorFactories)
             {
                 var behaviors = behaviorFactory.CreateBehaviors(innerOperation, configuration);
-                foreach (var behavior in behaviors.OrderBy(b => b.IntegrityMode))
+                foreach (var behavior in behaviors.OrderByDescending(b => b.IntegrityMode))
                     innerOperation = behavior.Attach(innerOperation);
             }
 

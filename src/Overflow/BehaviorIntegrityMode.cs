@@ -14,7 +14,7 @@ namespace Overflow
         /// </summary>
         MaintainsWorkflowIntegrity = 100,
         /// <summary>
-        /// The operation can interfere with the execution of the operation in an effort to correct errors
+        /// The behavior can interfere with the execution of the operation in an effort to correct errors
         /// or otherwise avoid problems from escalating out of the operation. The FullIntegrity and 
         /// MaintainsDataIntegrity modes are allowed to run before this behavior mode.
         /// </summary>
@@ -26,9 +26,9 @@ namespace Overflow
         /// </summary>
         MaintainsDataIntegrity = 300,
         /// <summary>
-        /// The behavior does not interfere with the execution of the operation, with the expection of
-        /// catching and rethrowing excetpions. The workflow applies all behaviors with this integrity 
-        /// mode before behviors with any other mode. If the integrity mode is respected in the behaviors,
+        /// The behavior does not interfere with the execution of the operation, with the exception of
+        /// catching and rethrowing exceptions. The workflow applies all behaviors with this integrity 
+        /// mode before behaviors with any other mode. If the integrity mode is respected in the behaviors,
         /// they will all have a chance to perform their logic, no matter what happens.
         /// </summary>
         FullIntegrity = 400,
