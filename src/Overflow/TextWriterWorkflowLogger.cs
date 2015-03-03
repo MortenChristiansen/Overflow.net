@@ -58,7 +58,7 @@ namespace Overflow
             var levelInfo = _levelInfo.Pop();
 
             if (levelInfo.Children > 0)
-                _writer.Write("\r\n}");
+                _writer.Write(Environment.NewLine + "}");
         }
 
         public void OperationFailed(IOperation operation, Exception error)

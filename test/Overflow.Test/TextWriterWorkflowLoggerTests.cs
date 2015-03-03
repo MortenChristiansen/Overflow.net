@@ -5,8 +5,10 @@ using Xunit;
 
 namespace Overflow.Test
 {
-    public class ConsoleWorkflowLoggerTests
+    public class TextWriterWorkflowLoggerTests
     {
+        private static readonly string NL = Environment.NewLine;
+
         [Fact]
         public void Logging_an_operation_start_writes_the_operation_type_to_the_output()
         {
@@ -49,7 +51,7 @@ namespace Overflow.Test
                 sut.OperationStarted(new FakeOperation());
                 sut.OperationStarted(new FakeOperation());
 
-                Assert.Equal("FakeOperation {\r\n  FakeOperation", sw.ToString());
+                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation", NL), sw.ToString());
             }
         }
 
@@ -65,7 +67,7 @@ namespace Overflow.Test
                 sut.OperationFinished(new FakeOperation());
                 sut.OperationFinished(new FakeOperation());
 
-                Assert.Equal("FakeOperation {\r\n  FakeOperation\r\n}", sw.ToString());
+                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation{0}}}", NL), sw.ToString());
             }
         }
 
@@ -83,7 +85,7 @@ namespace Overflow.Test
                 sut.OperationFinished(new FakeOperation());
                 sut.OperationFinished(new FakeOperation());
 
-                Assert.Equal("FakeOperation {\r\n  FakeOperation\r\n\r\n  FakeOperation\r\n}", sw.ToString());
+                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation{0}{0}  FakeOperation{0}}}", NL), sw.ToString());
             }
         }
 
@@ -99,7 +101,7 @@ namespace Overflow.Test
                 sut.OperationStarted(new FakeOperation());
                 sut.OperationStarted(new FakeOperation());
 
-                Assert.Equal("FakeOperation {\r\n  FakeOperation {\r\n    FakeOperation {\r\n      FakeOperation", sw.ToString());
+                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation {{{0}    FakeOperation {{{0}      FakeOperation", NL), sw.ToString());
             }
         }
 
@@ -114,7 +116,7 @@ namespace Overflow.Test
                 sut.OperationFailed(new FakeOperation(), new InvalidOperationException("MESSAGE"));
                 sut.OperationFinished(new FakeOperation());
 
-                Assert.Equal("FakeOperation {\r\n  Error [InvalidOperationException]: MESSAGE\r\n}", sw.ToString());
+                Assert.Equal(string.Format("FakeOperation {{{0}  Error [InvalidOperationException]: MESSAGE{0}}}", NL), sw.ToString());
             }
         }
 
@@ -131,7 +133,7 @@ namespace Overflow.Test
                 sut.OperationFailed(new FakeOperation(), new InvalidOperationException("MESSAGE"));
                 sut.OperationFinished(new FakeOperation());
 
-                Assert.Equal("FakeOperation {\r\n  FakeOperation\r\n\r\n  Error [InvalidOperationException]: MESSAGE\r\n}", sw.ToString());
+                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation{0}{0}  Error [InvalidOperationException]: MESSAGE{0}}}", NL), sw.ToString());
             }
         }
 
