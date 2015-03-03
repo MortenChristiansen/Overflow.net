@@ -1,4 +1,5 @@
 using System;
+using Overflow.Test.Fakes;
 using Xunit;
 
 namespace Overflow.Test
@@ -10,7 +11,7 @@ namespace Overflow.Test
         {
             var sut = new SimpleOperationResolver();
 
-            var result = sut.Resolve<SimpleTestOperation>();
+            var result = sut.Resolve<SimpleTestOperation>(new FakeWorkflowConfiguration());
 
             Assert.NotNull(result);
         }
@@ -21,7 +22,7 @@ namespace Overflow.Test
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            var result = sut.Resolve<OperationWithDependencies>();
+            var result = sut.Resolve<OperationWithDependencies>(new FakeWorkflowConfiguration());
 
             Assert.NotNull(result);
         }
@@ -33,7 +34,7 @@ namespace Overflow.Test
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            var result = sut.Resolve<OperationWithDependencies>();
+            var result = sut.Resolve<OperationWithDependencies>(new FakeWorkflowConfiguration());
 
             Assert.NotNull(result);
         }
@@ -45,7 +46,7 @@ namespace Overflow.Test
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
             sut.RegisterOperationDependency<ComplexDependency, ComplexDependency>();
 
-            var result = sut.Resolve<OperationWithComplexDependencies>();
+            var result = sut.Resolve<OperationWithComplexDependencies>(new FakeWorkflowConfiguration());
 
             Assert.NotNull(result);
         }
@@ -55,7 +56,7 @@ namespace Overflow.Test
         {
             var sut = new SimpleOperationResolver();
 
-            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithDependencies>());
+            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithDependencies>(new FakeWorkflowConfiguration()));
         }
 
         [Fact]
@@ -64,7 +65,7 @@ namespace Overflow.Test
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<ComplexDependency, ComplexDependency>();
 
-            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithComplexDependencies>());
+            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithComplexDependencies>(new FakeWorkflowConfiguration()));
         }
 
         [Fact]
@@ -73,8 +74,8 @@ namespace Overflow.Test
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            var result1 = sut.Resolve<SimpleTestOperation>();
-            var result2 = sut.Resolve<SimpleTestOperation>();
+            var result1 = sut.Resolve<SimpleTestOperation>(new FakeWorkflowConfiguration());
+            var result2 = sut.Resolve<SimpleTestOperation>(new FakeWorkflowConfiguration());
 
             Assert.NotSame(result1, result2);
         }
@@ -85,8 +86,8 @@ namespace Overflow.Test
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            var result1 = sut.Resolve<OperationWithDependencies>() as OperationWithDependencies;
-            var result2 = sut.Resolve<OperationWithDependencies>() as OperationWithDependencies;
+            var result1 = sut.Resolve<OperationWithDependencies>(new FakeWorkflowConfiguration()) as OperationWithDependencies;
+            var result2 = sut.Resolve<OperationWithDependencies>(new FakeWorkflowConfiguration()) as OperationWithDependencies;
 
             Assert.NotSame(result1.Dependency, result2.Dependency);
         }
@@ -97,7 +98,7 @@ namespace Overflow.Test
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithTwoConstructors>());
+            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithTwoConstructors>(new FakeWorkflowConfiguration()));
         }
 
         [Fact]
@@ -107,7 +108,7 @@ namespace Overflow.Test
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
             sut.RegisterOperationDependency<DependencyWithTwoConstructors, DependencyWithTwoConstructors>();
 
-            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithDualConstructorDependency>());
+            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithDualConstructorDependency>(new FakeWorkflowConfiguration()));
         }
 
         [Fact]
@@ -116,7 +117,7 @@ namespace Overflow.Test
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<IDependency, SimpleDependency>();
 
-            var result = sut.Resolve<OperationWithInterfaceDependency>();
+            var result = sut.Resolve<OperationWithInterfaceDependency>(new FakeWorkflowConfiguration());
 
             Assert.NotNull(result);
         }
@@ -129,20 +130,47 @@ namespace Overflow.Test
             sut.RegisterOperationDependency<IDependency, SimpleDependency>();
             sut.RegisterOperationDependency<IDependency, ComplexDependency>();
 
-            var result = sut.Resolve<OperationWithInterfaceDependency>() as OperationWithInterfaceDependency;
+            var result = sut.Resolve<OperationWithInterfaceDependency>(new FakeWorkflowConfiguration()) as OperationWithInterfaceDependency;
 
             Assert.IsType<ComplexDependency>(result.Dependency);
         }
 
         [Fact]
-        public void Operations_with_retry_on_error_attribute_are_decorated_with_retry_decorator()
+        public void Resolving_operations_creates_and_applies_all_behaviors_to_the_created_operations()
         {
             var sut = new SimpleOperationResolver();
+            var factory = new FakeOperationBehaviorFactory();
+            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetIntegrityMode = BehaviorIntegrityMode.MaintainsDataIntegrity });
+            var workflow = new FakeWorkflowConfiguration().WithBehaviorFactory(factory);
 
-            var result = sut.Resolve<RetryOnFailureOperation>();
+            var result = sut.Resolve<SimpleTestOperation>(workflow);
 
-            Assert.IsType<RetryOnFailureOperationDecorator>(result);
-            Assert.IsType<RetryOnFailureOperation>((result as OperationDecorator).DecoratedOperation);
+            Assert.IsType<FakeOperationBehavior>(result);
+            Assert.IsType<SimpleTestOperation>((result as OperationBehavior).InnerOperation);
+        }
+
+        [Fact]
+        public void Behaviors_are_applied_sorted_by_integrity_mode_with_the_higher_priority_modes_on_the_outside()
+        {
+            var sut = new SimpleOperationResolver();
+            var factory = new FakeOperationBehaviorFactory();
+            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetIntegrityMode = BehaviorIntegrityMode.MaintainsDataIntegrity });
+            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetIntegrityMode = BehaviorIntegrityMode.FullIntegrity });
+            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetIntegrityMode = BehaviorIntegrityMode.MaintainsWorkflowIntegrity });
+            var workflow = new FakeWorkflowConfiguration().WithBehaviorFactory(factory);
+
+            var result = sut.Resolve<SimpleTestOperation>(workflow);
+
+            Assert.IsType<FakeOperationBehavior>(result);
+            var behavior1 = (OperationBehavior)result;
+            Assert.Equal(BehaviorIntegrityMode.MaintainsWorkflowIntegrity, behavior1.IntegrityMode);
+            Assert.IsType<FakeOperationBehavior>(behavior1.InnerOperation);
+            var behavior2 = (OperationBehavior)behavior1.InnerOperation;
+            Assert.Equal(BehaviorIntegrityMode.MaintainsDataIntegrity, behavior2.IntegrityMode);
+            Assert.IsType<FakeOperationBehavior>(behavior2.InnerOperation);
+            var behavior3 = (OperationBehavior)behavior2.InnerOperation;
+            Assert.Equal(BehaviorIntegrityMode.FullIntegrity, behavior3.IntegrityMode);
+            Assert.IsType<SimpleTestOperation>(behavior3.InnerOperation);
         }
 
         #region Dependencies
@@ -227,12 +255,6 @@ namespace Overflow.Test
                 Dependency = dependency;
             }
 
-            protected override void OnExecute() { }
-        }
-
-        [RetryOnFailure]
-        private class RetryOnFailureOperation : Operation
-        {
             protected override void OnExecute() { }
         }
 

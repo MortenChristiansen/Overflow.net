@@ -36,17 +36,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="IOperationBehaviorFactory.cs" />
     <Compile Include="IInputOperation.cs" />
+    <Compile Include="IWorkflowLogger.cs" />
     <Compile Include="IOutputOperation.cs" />
     <Compile Include="IOperation.cs" />
     <Compile Include="IOperationResolver.cs" />
+    <Compile Include="OperationLoggingBehaviorFactory.cs" />
+    <Compile Include="OperationLoggingBehavior.cs" />
+    <Compile Include="BehaviorIntegrityMode.cs" />
+    <Compile Include="TextWriterWorkflowLogger.cs" />
+    <Compile Include="OperationBehaviorAttribute.cs" />
+    <Compile Include="OperationBehaviorAttributeFactory.cs" />
     <Compile Include="OperationContext.cs" />
-    <Compile Include="OperationDecorator.cs" />
+    <Compile Include="OperationBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Operation.cs" />
-    <Compile Include="RetryOnFailureAttribute.cs" />
-    <Compile Include="RetryOnFailureOperationDecorator.cs" />
+    <Compile Include="ContinueOnFailureAttribute.cs" />
+    <Compile Include="ContinueOnFailureOperationBehavior.cs" />
     <Compile Include="SimpleOperationResolver.cs" />
+    <Compile Include="Workflow.cs" />
+    <Compile Include="WorkflowConfiguration.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

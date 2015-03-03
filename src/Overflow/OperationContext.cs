@@ -17,20 +17,20 @@ namespace Overflow
 
         public void RegisterOutputHandlers(IOperation operation)
         {
-            var innerOperation = GetDecoratedOperation(operation);
+            var innerOperation = GetInnerOperation(operation);
 
             var outputOperationInterfaces = innerOperation.GetType().GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IOutputOperation<>));
             foreach (var outputOperationType in outputOperationInterfaces)
                 RegisterOutputHandler(innerOperation, outputOperationType);
         }
 
-        private IOperation GetDecoratedOperation(IOperation operation)
+        private IOperation GetInnerOperation(IOperation operation)
         {
-            var decorated = operation as OperationDecorator;
-            if (decorated == null)
+            var behavior = operation as OperationBehavior;
+            if (behavior == null)
                 return operation;
 
-            return GetDecoratedOperation(decorated.DecoratedOperation);
+            return GetInnerOperation(behavior.InnerOperation);
         }
 
         private void RegisterOutputHandler(IOperation operation, Type outputOperationType)
@@ -50,6 +50,7 @@ namespace Overflow
             return Delegate.CreateDelegate(actionT, this, genericMethod);
         }
 
+        // Used with generics
         private void OnOutput<TOutput>(TOutput output)
         {
             var key = typeof (TOutput);
@@ -61,7 +62,7 @@ namespace Overflow
 
         public void ProvideInputs(IOperation operation)
         {
-            var innerOperation = GetDecoratedOperation(operation);
+            var innerOperation = GetInnerOperation(operation);
 
             var inputOperationInterfaces = innerOperation.GetType().GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IInputOperation<>));
             foreach (var inputOperationType in inputOperationInterfaces)

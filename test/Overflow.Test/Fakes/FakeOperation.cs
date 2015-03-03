@@ -10,14 +10,14 @@ namespace Overflow.Test.Fakes
         public static readonly List<IOperation> ExecutedOperations = new List<IOperation>();
 
         public Exception ThrowOnExecute { get; set; }
+        public bool HasExecuted { get; private set; }
+        public WorkflowConfiguration InitializedConfiguration { get; private set; }
 
         public FakeOperation(params IOperation[] childOperations)
         {
             _childOperations = childOperations;
             ExecutedOperations.Clear();
         }
-
-        public bool HasExecuted { get; private set; }
 
         protected override void OnExecute()
         {
@@ -26,6 +26,11 @@ namespace Overflow.Test.Fakes
 
             if (ThrowOnExecute != null)
                 throw ThrowOnExecute;
+        }
+
+        public override void Initialize(WorkflowConfiguration configuration)
+        {
+            InitializedConfiguration = configuration;
         }
 
         public override IEnumerable<IOperation> GetChildOperations()

@@ -44,32 +44,35 @@ namespace Overflow.Test
         }
 
         [Fact]
-        public void The_operation_resolver_is_the_same_as_the_one_you_assign_to_it()
+        public void You_can_create_operation_with_a_configuration_containing_a_resolver()
         {
-            var resolver = new SimpleOperationResolver();
-            Operation.Resolver = resolver;
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = new SimpleOperationResolver() };
 
-            var result = Operation.Resolver;
-
-            Assert.Equal(resolver, result);
-        }
-
-        [Fact]
-        public void You_can_create_operations_when_the_operation_resolver_is_set()
-        {
-            Operation.Resolver = new SimpleOperationResolver();
-
-            var result = Operation.Create<TestOperation>();
+            var result = Operation.Create<TestOperation>(correctConfiguration);
 
             Assert.NotNull(result);
         }
 
         [Fact]
+        public void Creating_an_operation_initializes_it_with_the_configuration_of_the_parent_operation()
+        {
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = new SimpleOperationResolver() };
+
+            var result = (TestOperation)Operation.Create<TestOperation>(correctConfiguration);
+
+            Assert.Equal(correctConfiguration, result.Configuration);
+        }
+
+        [Fact]
+        public void You_cannot_create_operations_when_the_workflow_configuration_is_not_set()
+        {
+            Assert.Throws<InvalidOperationException>(() => Operation.Create<TestOperation>(null));
+        }
+
+        [Fact]
         public void You_cannot_create_operations_when_the_operation_resolver_is_not_set()
         {
-            Operation.Resolver = null;
-
-            Assert.Throws<InvalidOperationException>(() => Operation.Create<TestOperation>());
+            Assert.Throws<InvalidOperationException>(() => Operation.Create<TestOperation>(new FakeWorkflowConfiguration()));
         }
 
         [Fact]
@@ -121,6 +124,13 @@ namespace Overflow.Test
         }
 
         private class TestOperation : Operation {
+            public WorkflowConfiguration Configuration { get; private set; }
+
+            public override void Initialize(WorkflowConfiguration configuration)
+            {
+                Configuration = configuration;
+            }
+
             protected override void OnExecute() { }
         }
 
