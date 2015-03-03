@@ -4,7 +4,7 @@ namespace Overflow
     {
         public override OperationBehavior CreateBehavior()
         {
-            return null; //new ContinueOnFailureOperationBehavior(operation);
+            return new ContinueOnFailureOperationBehavior();
         }
     }
 }
