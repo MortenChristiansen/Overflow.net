@@ -61,7 +61,7 @@ namespace Overflow.Test
         {
             var operation = new FakeOperation();
             var sut = new TestBehavior().Attach(operation);
-            var configuration = new WorkflowConfiguration();
+            var configuration = new FakeWorkflowConfiguration();
 
             sut.Initialize(configuration);
 

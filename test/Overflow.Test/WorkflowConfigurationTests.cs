@@ -8,7 +8,7 @@ namespace Overflow.Test
         [Fact]
         public void There_are_no_behavior_factories_by_default()
         {
-            var sut = new WorkflowConfiguration();
+            var sut = new FakeWorkflowConfiguration();
 
             Assert.NotNull(sut.BehaviorFactories);
             Assert.Equal(0, sut.BehaviorFactories.Count);
@@ -27,7 +27,7 @@ namespace Overflow.Test
         [Fact]
         public void You_can_fluently_assign_the_operation_resolver()
         {
-            var sut = new WorkflowConfiguration();
+            var sut = new FakeWorkflowConfiguration();
             var resolver = new SimpleOperationResolver();
 
             sut.WithResolver(resolver);
@@ -38,7 +38,7 @@ namespace Overflow.Test
         [Fact]
         public void Fluently_assigning_operation_resolver_returns_configuration()
         {
-            var sut = new WorkflowConfiguration();
+            var sut = new FakeWorkflowConfiguration();
 
             var result = sut.WithResolver(new SimpleOperationResolver());
 
@@ -48,7 +48,7 @@ namespace Overflow.Test
         [Fact]
         public void You_can_fluently_assign_the_workflow_logger()
         {
-            var sut = new WorkflowConfiguration();
+            var sut = new FakeWorkflowConfiguration();
             var logger = new FakeWorkflowLogger();
 
             sut.WithLogger(logger);
@@ -59,7 +59,7 @@ namespace Overflow.Test
         [Fact]
         public void Fluently_assigning_workflow_logger_returns_configuration()
         {
-            var sut = new WorkflowConfiguration();
+            var sut = new FakeWorkflowConfiguration();
 
             var result = sut.WithLogger(new FakeWorkflowLogger());
 
@@ -69,7 +69,7 @@ namespace Overflow.Test
         [Fact]
         public void You_can_fluently_assign_behavior_factories()
         {
-            var sut = new WorkflowConfiguration();
+            var sut = new FakeWorkflowConfiguration();
             var factory = new FakeOperationBehaviorFactory();
 
             sut.WithBehaviorFactory(factory);
@@ -81,7 +81,7 @@ namespace Overflow.Test
         [Fact]
         public void Fluently_assigning_behavior_factories_returns_configuration()
         {
-            var sut = new WorkflowConfiguration();
+            var sut = new FakeWorkflowConfiguration();
 
             var result = sut.WithBehaviorFactory(new FakeOperationBehaviorFactory());
 

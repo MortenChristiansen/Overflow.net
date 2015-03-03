@@ -12,7 +12,7 @@ namespace Overflow.Test
             var sut = new OperationBehaviorAttributeFactory();
             var operation = new BehaviorOperation();
 
-            var result = sut.CreateBehaviors(operation, new WorkflowConfiguration());
+            var result = sut.CreateBehaviors(operation, new FakeWorkflowConfiguration());
 
             Assert.Equal(1, result.Count);
             Assert.IsType<FakeOperationBehavior>(result[0]);
@@ -24,7 +24,7 @@ namespace Overflow.Test
             var sut = new OperationBehaviorAttributeFactory();
             var operation = new FakeOperation();
 
-            var result = sut.CreateBehaviors(operation, new WorkflowConfiguration());
+            var result = sut.CreateBehaviors(operation, new FakeWorkflowConfiguration());
 
             Assert.Equal(0, result.Count);
         }
@@ -34,7 +34,7 @@ namespace Overflow.Test
         {
             var sut = new OperationBehaviorAttributeFactory();
 
-            Assert.Throws<ArgumentNullException>(() => sut.CreateBehaviors(null, new WorkflowConfiguration()));
+            Assert.Throws<ArgumentNullException>(() => sut.CreateBehaviors(null, new FakeWorkflowConfiguration()));
         }
 
         [FakeOperationBehavior]

@@ -43,6 +43,7 @@
     <Compile Include="ConsoleWorkflowLoggerTests.cs" />
     <Compile Include="Fakes\FakeOperationBehaviorFactory.cs" />
     <Compile Include="Fakes\FakeInputOperation.cs" />
+    <Compile Include="Fakes\FakeWorkflowConfiguration.cs" />
     <Compile Include="Fakes\FakeWorkflowLogger.cs" />
     <Compile Include="Fakes\FakeOperationBehaviorAttribute.cs" />
     <Compile Include="Fakes\FakeOperationBehavior.cs" />

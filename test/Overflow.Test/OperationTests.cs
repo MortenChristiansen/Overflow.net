@@ -46,7 +46,7 @@ namespace Overflow.Test
         [Fact]
         public void You_can_create_operation_with_a_configuration_containing_a_resolver()
         {
-            var correctConfiguration = new WorkflowConfiguration { Resolver = new SimpleOperationResolver() };
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = new SimpleOperationResolver() };
 
             var result = Operation.Create<TestOperation>(correctConfiguration);
 
@@ -56,7 +56,7 @@ namespace Overflow.Test
         [Fact]
         public void Creating_an_operation_initializes_it_with_the_configuration_of_the_parent_operation()
         {
-            var correctConfiguration = new WorkflowConfiguration { Resolver = new SimpleOperationResolver() };
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = new SimpleOperationResolver() };
 
             var result = (TestOperation)Operation.Create<TestOperation>(correctConfiguration);
 
@@ -72,7 +72,7 @@ namespace Overflow.Test
         [Fact]
         public void You_cannot_create_operations_when_the_operation_resolver_is_not_set()
         {
-            Assert.Throws<InvalidOperationException>(() => Operation.Create<TestOperation>(new WorkflowConfiguration()));
+            Assert.Throws<InvalidOperationException>(() => Operation.Create<TestOperation>(new FakeWorkflowConfiguration()));
         }
 
         [Fact]
