@@ -4,6 +4,8 @@
 
 ####[![Build Status](https://travis-ci.org/MortenChristiansen/Overflow.net.svg?branch=creating-operations-and-resolving-dependencies)](https://travis-ci.org/MortenChristiansen/Overflow.net) // linux / mono
 
+####[![Coverage Status](https://coveralls.io/repos/MortenChristiansen/Overflow.net/badge.svg)](https://coveralls.io/r/MortenChristiansen/Overflow.net)
+
 Overflow is an open source C# portable class library for modeling workflows using simple objects. It allows you to define workflows using a simple and clean syntax, while you apply operational behaviors such as error handling strategies in a declarative fashion using attributes.
 
     public class SendPartyInvitesOperation : Operation
