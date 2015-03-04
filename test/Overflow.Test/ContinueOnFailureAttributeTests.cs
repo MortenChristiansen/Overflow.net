@@ -12,6 +12,7 @@ namespace Overflow.Test
             var result = sut.CreateBehavior();
 
             Assert.NotNull(result);
+            Assert.IsType<ContinueOnFailureBehavior>(result);
         }
     }
 }

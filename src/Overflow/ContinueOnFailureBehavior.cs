@@ -1,6 +1,6 @@
 namespace Overflow
 {
-    class ContinueOnFailureOperationBehavior : OperationBehavior
+    class ContinueOnFailureBehavior : OperationBehavior
     {
         public override BehaviorIntegrityMode IntegrityMode
         {

@@ -48,7 +48,7 @@ Behaviors are implemented as decorators for the operations but the infrastructur
 
 ### Adding behaviors using `OperationBehaviorAttributeFactory`
 
-This is the easiest way to extend the workflow model to add custom behaviors. You simply have to create an attribute class inheriting from the abstract class `OperationBehaviorAttribute`. The only thing required to implement the class is to instantiate your custom behavior. The behavior will be attached automatically to operations with the attribute. To illustrate this, take the way that the `ContinueOnFailureOperationBehavior` class and its associated behavior attribute are implemented:
+This is the easiest way to extend the workflow model to add custom behaviors. You simply have to create an attribute class inheriting from the abstract class `OperationBehaviorAttribute`. The only thing required to implement the class is to instantiate your custom behavior. The behavior will be attached automatically to operations with the attribute. To illustrate this, take the way that the `ContinueOnFailureBehavior` class and its associated behavior attribute are implemented:
 
     public class ContinueOnFailureAttribute : OperationBehaviorAttribute
     {
@@ -58,7 +58,7 @@ This is the easiest way to extend the workflow model to add custom behaviors. Yo
         }
     }
 
-    class ContinueOnFailureOperationBehavior : OperationBehavior
+    class ContinueOnFailureBehavior : OperationBehavior
     {
         public override BehaviorIntegrityMode IntegrityMode
         {

@@ -57,7 +57,7 @@
     <Compile Include="OperationLoggingBehaviorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OperationTests.cs" />
-    <Compile Include="ContinueOnFailureOperationBehaviorTests.cs" />
+    <Compile Include="ContinueOnFailureBehaviorTests.cs" />
     <Compile Include="SimpleOperationResolverTests.cs" />
     <Compile Include="WorkflowConfigurationTests.cs" />
     <Compile Include="WorkflowTests.cs" />

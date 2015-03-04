@@ -4,13 +4,13 @@ using Xunit;
 
 namespace Overflow.Test
 {
-    public class ContinueOnFailureOperationBehaviorTests
+    public class ContinueOnFailureBehaviorTests
     {
         [Fact]
         public void Exceptions_during_the_execution_of_the_decorated_operation_are_not_propagated()
         {
             var operation = new FakeOperation { ThrowOnExecute = new Exception() };
-            var sut = new ContinueOnFailureOperationBehavior();
+            var sut = new ContinueOnFailureBehavior();
             sut.Attach(operation);
 
             sut.Execute();
