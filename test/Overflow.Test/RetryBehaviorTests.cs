@@ -21,6 +21,15 @@ namespace Overflow.Test
         }
 
         [Fact]
+        public void Retry_properties_are_populated_from_constructor_arguments()
+        {
+            var sut = new RetryBehavior(3, TimeSpan.FromSeconds(5));
+
+            Assert.Equal(3, sut.TimesToRetry);
+            Assert.Equal(TimeSpan.FromSeconds(5), sut.RetryDelay);
+        }
+
+        [Fact]
         public void Failing_operations_are_retried()
         {
             var operation = new FakeOperation { ThrowOnExecute = new Exception(), ErrorCount = 1 };

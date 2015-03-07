@@ -5,8 +5,8 @@ namespace Overflow
 {
     class RetryBehavior : OperationBehavior
     {
-        private int _timesToRetry;
-        private readonly TimeSpan _retryDelay;
+        public int TimesToRetry { get; private set; }
+        public TimeSpan RetryDelay { get; private set; }
 
         public RetryBehavior(int timesToRetry, TimeSpan retryDelay)
         {
@@ -16,8 +16,8 @@ namespace Overflow
             if (retryDelay.Ticks < 0)
                 throw new ArgumentOutOfRangeException("retryDelay", "Delay must be non-negative.");
 
-            _timesToRetry = timesToRetry;
-            _retryDelay = retryDelay;
+            TimesToRetry = timesToRetry;
+            RetryDelay = retryDelay;
         }
 
         public override BehaviorIntegrityMode IntegrityMode
@@ -27,12 +27,12 @@ namespace Overflow
 
         public override void Execute()
         {
-            if (_timesToRetry-- > 0)
+            if (TimesToRetry-- > 0)
             {
                 try { base.Execute(); }
                 catch
                 {
-                    Time.Wait(_retryDelay);
+                    Time.Wait(RetryDelay);
                     Execute();
                 }
             }
