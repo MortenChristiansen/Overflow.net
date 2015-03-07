@@ -45,6 +45,7 @@
     <Compile Include="OperationLoggingBehaviorFactory.cs" />
     <Compile Include="OperationLoggingBehavior.cs" />
     <Compile Include="BehaviorIntegrityMode.cs" />
+    <Compile Include="RetryBehavior.cs" />
     <Compile Include="TextWriterWorkflowLogger.cs" />
     <Compile Include="OperationBehaviorAttribute.cs" />
     <Compile Include="OperationBehaviorAttributeFactory.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="ContinueOnFailureAttribute.cs" />
     <Compile Include="ContinueOnFailureBehavior.cs" />
     <Compile Include="SimpleOperationResolver.cs" />
+    <Compile Include="Utilities\Time.cs" />
     <Compile Include="Workflow.cs" />
     <Compile Include="WorkflowConfiguration.cs" />
   </ItemGroup>

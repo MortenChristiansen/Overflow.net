@@ -12,9 +12,11 @@ namespace Overflow.Test.Fakes
         public Exception ThrowOnExecute { get; set; }
         public bool HasExecuted { get; private set; }
         public WorkflowConfiguration InitializedConfiguration { get; private set; }
+        public int ErrorCount { get; set; }
 
         public FakeOperation(params IOperation[] childOperations)
         {
+            ErrorCount = -1;
             _childOperations = childOperations;
             ExecutedOperations.Clear();
         }
@@ -24,7 +26,7 @@ namespace Overflow.Test.Fakes
             HasExecuted = true;
             ExecutedOperations.Add(this);
 
-            if (ThrowOnExecute != null)
+            if (ThrowOnExecute != null && ErrorCount-- > 0)
                 throw ThrowOnExecute;
         }
 
