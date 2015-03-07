@@ -68,6 +68,17 @@ namespace Overflow.Test
             Assert.Equal(configuration, operation.InitializedConfiguration);
         }
 
+        [Fact]
+        public void The_decorator_forwards_the_executed_child_operations_to_the_decorated_operation()
+        {
+            var operation = new FakeOperation();
+            var sut = new TestBehavior().Attach(operation);
+
+            sut.Execute();
+
+            Assert.Equal(operation.ExecutedChildOperations, sut.ExecutedChildOperations);
+        }
+
         private class TestBehavior : OperationBehavior
         {
             public override BehaviorIntegrityMode IntegrityMode

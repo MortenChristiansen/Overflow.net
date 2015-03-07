@@ -36,6 +36,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ExecutionInfo.cs" />
+    <Compile Include="IndempotentAttribute.cs" />
     <Compile Include="IOperationBehaviorFactory.cs" />
     <Compile Include="IInputOperation.cs" />
     <Compile Include="IWorkflowLogger.cs" />

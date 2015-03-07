@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Overflow.Utilities;
 
 namespace Overflow
@@ -34,12 +35,25 @@ namespace Overflow
                 {
                     Time.Wait(RetryDelay);
                     Execute();
+
+                    if (HasExecutedNonIndempotentChildOperations())
+                        throw;
                 }
             }
             else
             {
                 base.Execute();
             }
+        }
+
+        private bool HasExecutedNonIndempotentChildOperations()
+        {
+            return InnerOperation.GetExecutedChildOperationsForOperationHierarchy().Any(o => !IsIndempotent(o.Operation));
+        }
+
+        private bool IsIndempotent(IOperation operation)
+        {
+            return operation.GetType().GetCustomAttributes(typeof(IndempotentAttribute), false).Any();
         }
     }
 }

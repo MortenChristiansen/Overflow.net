@@ -74,5 +74,28 @@ namespace Overflow.Test
             var duration = Time.OffsetUtcNow - before;
             Assert.Equal(TimeSpan.FromSeconds(5), duration); 
         }
+
+        [Fact]
+        public void You_cannot_retry_an_operation_where_a_non_indempotent_child_operation_has_executed()
+        {
+            var operation = new FakeOperation(new IndempotentOperation(), new FakeOperation { ThrowOnExecute = new Exception(), ErrorCount = 1 });
+            var sut = new RetryBehavior(1, TimeSpan.Zero);
+            sut.Attach(operation);
+
+            Assert.Throws<Exception>(() => sut.Execute());
+        }
+
+        [Fact]
+        public void You_can_retry_an_operation_where_an_indempotent_child_operation_has_executed()
+        {
+            var operation = new FakeOperation(new IndempotentOperation { ThrowOnExecute = new Exception(), ErrorCount = 1 });
+            var sut = new RetryBehavior(1, TimeSpan.Zero);
+            sut.Attach(operation);
+
+            sut.Execute();
+        }
+
+        [Indempotent]
+        private class IndempotentOperation : FakeOperation { }
     }
 }

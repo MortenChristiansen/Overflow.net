@@ -19,6 +19,8 @@ namespace Overflow
             return this;
         }
 
+        public IEnumerable<ExecutionInfo> ExecutedChildOperations { get { return InnerOperation.ExecutedChildOperations; } }
+
         public void Initialize(WorkflowConfiguration configuration)
         {
             InnerOperation.Initialize(configuration);
