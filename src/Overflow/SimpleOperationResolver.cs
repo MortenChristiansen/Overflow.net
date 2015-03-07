@@ -42,9 +42,6 @@ namespace Overflow
             var operationType = typeof (TOperation);
             var parameters = ResolveConstructorParameters(operationType);
 
-            if (parameters == null)
-                return default(TOperation);
-
             return (TOperation)Activator.CreateInstance(operationType, parameters);
         }
 

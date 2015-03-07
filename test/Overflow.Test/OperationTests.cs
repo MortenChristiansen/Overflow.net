@@ -76,6 +76,18 @@ namespace Overflow.Test
         }
 
         [Fact]
+        public void You_can_create_a_new_operation_from_an_initialized_operation_instance()
+        {
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = new SimpleOperationResolver() };
+            var operation = new FakeOperation();
+            operation.Initialize(correctConfiguration);
+
+            var result = operation.PublicCreate<TestOperation>();
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
         public void Data_flows_between_child_operations()
         {
             var inputOperation = new FakeInputOperation<object>();

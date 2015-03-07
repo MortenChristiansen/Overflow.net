@@ -31,11 +31,19 @@ namespace Overflow.Test.Fakes
         public override void Initialize(WorkflowConfiguration configuration)
         {
             InitializedConfiguration = configuration;
+
+            base.Initialize(configuration);
         }
 
         public override IEnumerable<IOperation> GetChildOperations()
         {
             return _childOperations;
+        }
+
+        public IOperation PublicCreate<T>() 
+            where T : IOperation
+        {
+            return Create<T>();
         }
     }
 }

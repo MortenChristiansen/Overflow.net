@@ -7,6 +7,14 @@ namespace Overflow.Test
     public class OperationLoggingBehaviorTests
     {
         [Fact]
+        public void The_behavior_maintains_full_integrity()
+        {
+            var sut = new OperationLoggingBehavior(new FakeWorkflowLogger());
+
+            Assert.Equal(BehaviorIntegrityMode.FullIntegrity, sut.IntegrityMode);
+        }
+
+        [Fact]
         public void Executing_the_behavior_logs_the_start_and_end_of_the_operation()
         {
             var innerOperation = new FakeOperation();
