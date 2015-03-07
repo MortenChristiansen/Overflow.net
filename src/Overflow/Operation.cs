@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Overflow.Utilities;
 
 namespace Overflow
 {
@@ -7,8 +8,11 @@ namespace Overflow
     {
         private OperationContext _context;
         private WorkflowConfiguration _configuration;
+        private IList<ExecutionInfo>  _executedChildOperations = new List<ExecutionInfo>();
 
         protected abstract void OnExecute();
+
+        public IEnumerable<ExecutionInfo> ExecutedChildOperations { get { return _executedChildOperations; }}
 
         public virtual void Initialize(WorkflowConfiguration configuration)
         {
@@ -30,7 +34,18 @@ namespace Overflow
             _context.RegisterOutputHandlers(childOperation);
             _context.ProvideInputs(childOperation);
 
-            childOperation.Execute();
+            var started = Time.OffsetUtcNow;
+            try
+            {
+                childOperation.Execute();
+                _executedChildOperations.Add(new ExecutionInfo(childOperation, null, started, Time.OffsetUtcNow));
+                
+            }
+            catch (Exception e)
+            {
+                _executedChildOperations.Add(new ExecutionInfo(childOperation, e, started, Time.OffsetUtcNow));
+                throw;
+            }
         }
 
         public virtual IEnumerable<IOperation> GetChildOperations()

@@ -36,6 +36,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ExecutionInfo.cs" />
+    <Compile Include="IndempotentAttribute.cs" />
     <Compile Include="IOperationBehaviorFactory.cs" />
     <Compile Include="IInputOperation.cs" />
     <Compile Include="IWorkflowLogger.cs" />
@@ -45,6 +47,8 @@
     <Compile Include="OperationLoggingBehaviorFactory.cs" />
     <Compile Include="OperationLoggingBehavior.cs" />
     <Compile Include="BehaviorIntegrityMode.cs" />
+    <Compile Include="RetryAttribute.cs" />
+    <Compile Include="RetryBehavior.cs" />
     <Compile Include="TextWriterWorkflowLogger.cs" />
     <Compile Include="OperationBehaviorAttribute.cs" />
     <Compile Include="OperationBehaviorAttributeFactory.cs" />
@@ -55,6 +59,7 @@
     <Compile Include="ContinueOnFailureAttribute.cs" />
     <Compile Include="ContinueOnFailureBehavior.cs" />
     <Compile Include="SimpleOperationResolver.cs" />
+    <Compile Include="Utilities\Time.cs" />
     <Compile Include="Workflow.cs" />
     <Compile Include="WorkflowConfiguration.cs" />
   </ItemGroup>

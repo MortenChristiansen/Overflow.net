@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Overflow.Test.Fakes;
+using Overflow.Utilities;
 using Xunit;
 
 namespace Overflow.Test
@@ -133,6 +134,46 @@ namespace Overflow.Test
             sut.Execute();
 
             Assert.Null(childInputOperation.ProvidedInput);
+        }
+
+        [Fact]
+        public void Executed_child_operations_are_added_to_the_execution_info_list()
+        {
+            var childOperation = new FakeOperation();
+            var sut = new FakeOperation(childOperation);
+
+            sut.Execute();
+
+            Assert.Equal(1, sut.ExecutedChildOperations.Count());
+            Assert.Equal(childOperation, sut.ExecutedChildOperations.ElementAt(0).Operation);
+        }
+
+        [Fact]
+        public void Child_operation_execution_info_contains_error_info()
+        {
+            var childOperation = new FakeOperation { ThrowOnExecute = new Exception() };
+            var sut = new FakeOperation(childOperation);
+
+            try { sut.Execute(); }
+            catch { }
+
+            Assert.Equal(1, sut.ExecutedChildOperations.Count());
+            Assert.Equal(childOperation.ThrowOnExecute, sut.ExecutedChildOperations.ElementAt(0).Error);
+        }
+
+        [Fact]
+        public void Child_execution_info_contains_the_start_and_end_times_of_the_execution()
+        {
+            var childOperation = new FakeOperation { ExecuteAction = () => Time.Wait(TimeSpan.FromSeconds(1))};
+            var sut = new FakeOperation(childOperation);
+            Time.Stop();
+            var started = Time.OffsetUtcNow;
+
+            sut.Execute();
+
+            var executionInfo = sut.ExecutedChildOperations.ElementAt(0);
+            Assert.Equal(started, executionInfo.Started);
+            Assert.Equal(started.AddSeconds(1), executionInfo.Completed);
         }
 
         private class TestOperation : Operation {

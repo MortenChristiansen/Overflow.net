@@ -40,6 +40,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExecutionInfoTests.cs" />
+    <Compile Include="IOerationTests.cs" />
+    <Compile Include="RetryAttributeTests.cs" />
+    <Compile Include="RetryBehaviorTests.cs" />
     <Compile Include="TextWriterWorkflowLoggerTests.cs" />
     <Compile Include="ContinueOnFailureAttributeTests.cs" />
     <Compile Include="Fakes\FakeOperationBehaviorFactory.cs" />
@@ -59,6 +63,7 @@
     <Compile Include="OperationTests.cs" />
     <Compile Include="ContinueOnFailureBehaviorTests.cs" />
     <Compile Include="SimpleOperationResolverTests.cs" />
+    <Compile Include="Utilities\TimeTests.cs" />
     <Compile Include="WorkflowConfigurationTests.cs" />
     <Compile Include="WorkflowTests.cs" />
   </ItemGroup>
