@@ -1,3 +1,4 @@
+using System;
 using Overflow.Test.Fakes;
 using Xunit;
 
@@ -12,6 +13,15 @@ namespace Overflow.Test
 
             Assert.NotNull(sut.BehaviorFactories);
             Assert.Equal(0, sut.BehaviorFactories.Count);
+        }
+
+        [Fact]
+        public void There_are_no_retry_exception_types_by_default()
+        {
+            var sut = new FakeWorkflowConfiguration();
+
+            Assert.NotNull(sut.RetryExceptionTypes);
+            Assert.Equal(0, sut.RetryExceptionTypes.Count);
         }
 
         [Fact]
@@ -86,6 +96,37 @@ namespace Overflow.Test
             var result = sut.WithBehaviorFactory(new FakeOperationBehaviorFactory());
 
             Assert.Equal(sut, result);
+        }
+
+        [Fact]
+        public void You_can_fluently_assign_retry_behavior()
+        {
+            var sut = new FakeWorkflowConfiguration();
+
+            sut.WithGlobalRetryBehavior(3, TimeSpan.FromSeconds(5), typeof(Exception));
+
+            Assert.Equal(3, sut.TimesToRetry);
+            Assert.Equal(TimeSpan.FromSeconds(5), sut.RetryDelay);
+            Assert.Equal(1, sut.RetryExceptionTypes.Count);
+            Assert.Equal(typeof(Exception), sut.RetryExceptionTypes[0]);
+        }
+
+        [Fact]
+        public void Fluently_assigning_retry_exception_types_returns_configuration()
+        {
+            var sut = new FakeWorkflowConfiguration();
+
+            var result = sut.WithGlobalRetryBehavior(3, TimeSpan.FromSeconds(5), typeof(Exception));
+
+            Assert.Equal(sut, result);
+        }
+
+        [Fact]
+        public void You_cannot_assign_a_retry_exception_type_that_is_not_an_exception_type()
+        {
+            var sut = new FakeWorkflowConfiguration();
+
+            Assert.Throws<ArgumentException>(() => sut.WithGlobalRetryBehavior(3, TimeSpan.FromSeconds(5), typeof(object)));
         }
 
         private class TestOperation : Operation
