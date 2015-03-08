@@ -7,11 +7,11 @@ namespace Overflow.Test
     public class ContinueOnFailureBehaviorTests
     {
         [Fact]
-        public void The_behavior_maintains_operation_integrity()
+        public void The_behavior_maintains_workflow_integrity()
         {
             var sut = new ContinueOnFailureBehavior();
 
-            Assert.Equal(BehaviorIntegrityMode.MaintainsOperationIntegrity, sut.IntegrityMode);
+            Assert.Equal(BehaviorIntegrityMode.MaintainsWorkflowIntegrity, sut.IntegrityMode);
         }
 
         [Fact]

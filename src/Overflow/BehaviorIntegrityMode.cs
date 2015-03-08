@@ -8,7 +8,7 @@ namespace Overflow
         /// </summary>
         NoIntegrityContract = 0,
         /// <summary>
-        /// The behavior can interfere with the workflow, changing the sequence of operations. The 
+        /// The behavior can interfere with the workflow, changing the sequence and execution of operations. The 
         /// FullIntegrity, MaintainsDataIntegrity and MaintainsOperationIntegrity modes are allowed to 
         /// run before this behavior mode.
         /// </summary>

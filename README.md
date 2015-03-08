@@ -116,7 +116,7 @@ The behavior provides no promises regarding the integrity of the workflow after 
 
 **Maintains workflow integrity (100)**
 
-The behavior can interfere with the workflow, changing the sequence of operations. The FullIntegrity, MaintainsDataIntegrity and MaintainsOperationIntegrity modes are allowed to run before this behavior mode.
+The behavior can interfere with the workflow, changing the sequence and execution of operations. The FullIntegrity, MaintainsDataIntegrity and MaintainsOperationIntegrity modes are allowed to run before this behavior mode.
 
 **Maintains operation integrity (200)**
 
