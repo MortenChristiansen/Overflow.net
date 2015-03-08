@@ -65,6 +65,7 @@
     <Compile Include="SimpleOperationResolverTests.cs" />
     <Compile Include="Utilities\TimeTests.cs" />
     <Compile Include="WorkflowConfigurationTests.cs" />
+    <Compile Include="WorkflowRetryBehaviorFactoryTests.cs" />
     <Compile Include="WorkflowTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Overflow.Utilities;
 
@@ -6,10 +7,11 @@ namespace Overflow
 {
     class RetryBehavior : OperationBehavior
     {
+        public IEnumerable<Type> RetryExceptionTypes { get; private set; }
         public int TimesToRetry { get; private set; }
         public TimeSpan RetryDelay { get; private set; }
 
-        public RetryBehavior(int timesToRetry, TimeSpan retryDelay)
+        public RetryBehavior(int timesToRetry, TimeSpan retryDelay, params Type[] retryExceptionTypes)
         {
             if (timesToRetry <= 0)
                 throw new ArgumentOutOfRangeException("timesToRetry", "Must be larger than 0.");
@@ -17,6 +19,10 @@ namespace Overflow
             if (retryDelay.Ticks < 0)
                 throw new ArgumentOutOfRangeException("retryDelay", "Delay must be non-negative.");
 
+            if(retryExceptionTypes.Any(t => !typeof(Exception).IsAssignableFrom(t)))
+                throw new ArgumentException("Only exception types are valid.", "retryExceptionTypes");
+
+            RetryExceptionTypes = retryExceptionTypes;
             TimesToRetry = timesToRetry;
             RetryDelay = retryDelay;
         }
@@ -31,19 +37,24 @@ namespace Overflow
             if (TimesToRetry-- > 0)
             {
                 try { base.Execute(); }
-                catch
+                catch (Exception e)
                 {
+                    if (HasExecutedNonIndempotentChildOperations() || !IsConfiguredToRetryType(e.GetType()))
+                        throw;
+
                     Time.Wait(RetryDelay);
                     Execute();
-
-                    if (HasExecutedNonIndempotentChildOperations())
-                        throw;
                 }
             }
             else
             {
                 base.Execute();
             }
+        }
+
+        private bool IsConfiguredToRetryType(Type exceptionType)
+        {
+            return RetryExceptionTypes == null || !RetryExceptionTypes.Any() || RetryExceptionTypes.Any(t => t.IsAssignableFrom(exceptionType));
         }
 
         private bool HasExecutedNonIndempotentChildOperations()

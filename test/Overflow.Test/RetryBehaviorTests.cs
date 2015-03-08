@@ -23,10 +23,18 @@ namespace Overflow.Test
         [Fact]
         public void Retry_properties_are_populated_from_constructor_arguments()
         {
-            var sut = new RetryBehavior(3, TimeSpan.FromSeconds(5));
+            var retryErrorTypes = new[] { typeof (Exception) };
+            var sut = new RetryBehavior(3, TimeSpan.FromSeconds(5), retryErrorTypes);
 
             Assert.Equal(3, sut.TimesToRetry);
             Assert.Equal(TimeSpan.FromSeconds(5), sut.RetryDelay);
+            Assert.Equal(retryErrorTypes, sut.RetryExceptionTypes);
+        }
+
+        [Fact]
+        public void You_cannot_add_a_retry_exception_type_that_is_not_an_exception_type()
+        {
+            Assert.Throws<ArgumentException>(() => new RetryBehavior(1, TimeSpan.Zero, typeof (object)));
         }
 
         [Fact]
@@ -93,6 +101,36 @@ namespace Overflow.Test
             sut.Attach(operation);
 
             sut.Execute();
+        }
+
+        [Fact]
+        public void When_retry_exception_types_are_specified_errors_of_these_types_will_be_retried()
+        {
+            var operation = new FakeOperation { ThrowOnExecute = new NullReferenceException(), ErrorCount = 1 };
+            var sut = new RetryBehavior(1, TimeSpan.Zero, typeof(NullReferenceException));
+            sut.Attach(operation);
+
+            sut.Execute();
+        }
+
+        [Fact]
+        public void When_retry_exception_types_are_specified_errors_of_sub_types_will_be_retried()
+        {
+            var operation = new FakeOperation { ThrowOnExecute = new ArgumentNullException(), ErrorCount = 1 };
+            var sut = new RetryBehavior(1, TimeSpan.Zero, typeof(ArgumentException));
+            sut.Attach(operation);
+
+            sut.Execute();
+        }
+
+        [Fact]
+        public void When_retry_exception_types_are_specified_errors_of_different_types_will_not_be_retried()
+        {
+            var operation = new FakeOperation { ThrowOnExecute = new NullReferenceException(), ErrorCount = 1 };
+            var sut = new RetryBehavior(1, TimeSpan.Zero, typeof(InsufficientMemoryException));
+            sut.Attach(operation);
+
+            Assert.Throws<NullReferenceException>(() => sut.Execute());
         }
 
         [Indempotent]

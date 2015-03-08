@@ -4,7 +4,7 @@ namespace Overflow
     {
         public override BehaviorIntegrityMode IntegrityMode
         {
-            get { return BehaviorIntegrityMode.MaintainsOperationIntegrity; }
+            get { return BehaviorIntegrityMode.MaintainsWorkflowIntegrity; }
         }
 
         public override void Execute()

@@ -6,16 +6,18 @@ namespace Overflow
     {
         private readonly int _timesToRetry;
         private readonly int _retryDelayInMilliSeconds;
+        private readonly Type[] _retryExeptionTypes;
 
-        public RetryAttribute(int timesToRetry = 3, int retryDelayInMilliSeconds = 1000)
+        public RetryAttribute(int timesToRetry = 3, int retryDelayInMilliSeconds = 1000, params Type[] retryExeptionTypes)
         {
             _timesToRetry = timesToRetry;
             _retryDelayInMilliSeconds = retryDelayInMilliSeconds;
+            _retryExeptionTypes = retryExeptionTypes;
         }
 
         public override OperationBehavior CreateBehavior()
         {
-            return new RetryBehavior(_timesToRetry, TimeSpan.FromMilliseconds(_retryDelayInMilliSeconds));
+            return new RetryBehavior(_timesToRetry, TimeSpan.FromMilliseconds(_retryDelayInMilliSeconds), _retryExeptionTypes);
         }
     }
 }
