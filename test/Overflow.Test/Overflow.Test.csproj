@@ -44,6 +44,8 @@
     <Compile Include="IOerationTests.cs" />
     <Compile Include="RetryAttributeTests.cs" />
     <Compile Include="RetryBehaviorTests.cs" />
+    <Compile Include="Testing\AssertionExceptionTests.cs" />
+    <Compile Include="Testing\OperationExtensionsTests.cs" />
     <Compile Include="TextWriterWorkflowLoggerTests.cs" />
     <Compile Include="ContinueOnFailureAttributeTests.cs" />
     <Compile Include="Fakes\FakeOperationBehaviorFactory.cs" />
