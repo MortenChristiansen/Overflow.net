@@ -129,3 +129,31 @@ The behavior can make changes to to external/persisted data as a result of an er
 **Full integrity (400)**
 
 The behavior does not interfere with the execution of the operation, with the exception of catching and rethrowing exceptions. The workflow applies all behaviors with this integrity mode before behaviors with any other mode. If the integrity mode is respected in the behaviors, they will all have a chance to perform their logic, no matter what happens.
+
+##Testing
+
+For verifying that your workflows executed as expected, the library provides an assertion method which can be used like this:
+
+    [Fact]
+    public void GG()
+    {
+        var workflow = new SendPartyInvitesOperation();
+
+        workflow.Execute();
+
+        workflow.HasExecutedChildOperations(
+            typeof(FindGuestListOperation),
+            typeof(PrepareInviteTemplateOperation),
+            typeof(CreateInviteNotificationsOperation),
+            typeof(SendNotificationsOperation)
+        );
+    }
+
+When the expectations are not met, the AssertionException provides a descriptive error message:
+
+    Operations
+    ==========
+    FindGuestListOperation [match]
+    PrepareInviteTemplateOperation [match]
+    none [error: expected CreateInviteNotificationsOperation]
+    none [error: expected SendNotificationsOperation]
