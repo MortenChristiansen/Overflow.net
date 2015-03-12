@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Behaviors\ConditionalExecutionBehavior.cs" />
+    <Compile Include="Behaviors\ConditionalExecutionBehaviorFactory.cs" />
     <Compile Include="IConditionalOperation.cs" />
     <Compile Include="ExecutionInfo.cs" />
     <Compile Include="IndempotentAttribute.cs" />

@@ -10,7 +10,8 @@ namespace Overflow
                 new WorkflowConfiguration<TOperation> { Resolver = new SimpleOperationResolver() }.
                 WithBehaviorFactory(new OperationBehaviorAttributeFactory()).
                 WithBehaviorFactory(new OperationLoggingBehaviorFactory()).
-                WithBehaviorFactory(new WorkflowRetryBehaviorFactory())
+                WithBehaviorFactory(new WorkflowRetryBehaviorFactory()).
+                WithBehaviorFactory(new ConditionalExecutionBehaviorFactory())
                 as WorkflowConfiguration<TOperation>;
         }
     }
