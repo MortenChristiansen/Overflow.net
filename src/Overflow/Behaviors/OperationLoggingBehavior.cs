@@ -7,9 +7,9 @@ namespace Overflow.Behaviors
     {
         private readonly IWorkflowLogger _logger;
 
-        public override BehaviorIntegrityMode IntegrityMode
+        public override BehaviorPrecedence Precedence
         {
-            get { return BehaviorIntegrityMode.FullIntegrity; }
+            get { return BehaviorPrecedence.Logging; }
         }
 
         public OperationLoggingBehavior(IWorkflowLogger logger)

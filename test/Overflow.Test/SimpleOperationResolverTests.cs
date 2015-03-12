@@ -141,7 +141,7 @@ namespace Overflow.Test
         {
             var sut = new SimpleOperationResolver();
             var factory = new FakeOperationBehaviorFactory();
-            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetIntegrityMode = BehaviorIntegrityMode.MaintainsDataIntegrity });
+            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetPrecedence = BehaviorPrecedence.StateRecovery });
             var workflow = new FakeWorkflowConfiguration().WithBehaviorFactory(factory);
 
             var result = sut.Resolve<SimpleTestOperation>(workflow);
@@ -151,26 +151,26 @@ namespace Overflow.Test
         }
 
         [Fact]
-        public void Behaviors_are_applied_sorted_by_integrity_mode_with_the_higher_priority_modes_on_the_outside()
+        public void Behaviors_are_applied_sorted_by_precedence_with_the_higher_precedence_behaviors_on_the_outside()
         {
             var sut = new SimpleOperationResolver();
             var factory = new FakeOperationBehaviorFactory();
-            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetIntegrityMode = BehaviorIntegrityMode.MaintainsDataIntegrity });
-            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetIntegrityMode = BehaviorIntegrityMode.FullIntegrity });
-            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetIntegrityMode = BehaviorIntegrityMode.MaintainsWorkflowIntegrity });
+            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetPrecedence = BehaviorPrecedence.StateRecovery });
+            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetPrecedence = BehaviorPrecedence.Logging });
+            factory.OperationBehaviors.Add(new FakeOperationBehavior { SetPrecedence = BehaviorPrecedence.WorkCompensation });
             var workflow = new FakeWorkflowConfiguration().WithBehaviorFactory(factory);
 
             var result = sut.Resolve<SimpleTestOperation>(workflow);
 
             Assert.IsType<FakeOperationBehavior>(result);
             var behavior1 = (OperationBehavior)result;
-            Assert.Equal(BehaviorIntegrityMode.MaintainsWorkflowIntegrity, behavior1.IntegrityMode);
+            Assert.Equal(BehaviorPrecedence.StateRecovery, behavior1.Precedence);
             Assert.IsType<FakeOperationBehavior>(behavior1.InnerOperation);
             var behavior2 = (OperationBehavior)behavior1.InnerOperation;
-            Assert.Equal(BehaviorIntegrityMode.MaintainsDataIntegrity, behavior2.IntegrityMode);
+            Assert.Equal(BehaviorPrecedence.WorkCompensation, behavior2.Precedence);
             Assert.IsType<FakeOperationBehavior>(behavior2.InnerOperation);
             var behavior3 = (OperationBehavior)behavior2.InnerOperation;
-            Assert.Equal(BehaviorIntegrityMode.FullIntegrity, behavior3.IntegrityMode);
+            Assert.Equal(BehaviorPrecedence.Logging, behavior3.Precedence);
             Assert.IsType<SimpleTestOperation>(behavior3.InnerOperation);
         }
 

@@ -9,11 +9,11 @@ namespace Overflow.Test.Behaviors
     public class ContinueOnFailureBehaviorTests
     {
         [Fact]
-        public void The_behavior_maintains_workflow_integrity()
+        public void The_behavior_has_containment_level_precedence()
         {
             var sut = new ContinueOnFailureBehavior();
 
-            Assert.Equal(BehaviorIntegrityMode.MaintainsWorkflowIntegrity, sut.IntegrityMode);
+            Assert.Equal(BehaviorPrecedence.Containment, sut.Precedence);
         }
 
         [Fact]

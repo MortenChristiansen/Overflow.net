@@ -82,9 +82,9 @@ namespace Overflow.Test.Extensibility
 
         private class TestBehavior : OperationBehavior
         {
-            public override BehaviorIntegrityMode IntegrityMode
+            public override BehaviorPrecedence Precedence
             {
-                get { return BehaviorIntegrityMode.FullIntegrity; }
+                get { return BehaviorPrecedence.Logging; }
             }
         }
     }

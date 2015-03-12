@@ -15,11 +15,11 @@ namespace Overflow.Test.Behaviors
         }
 
         [Fact]
-        public void The_behavior_maintains_operation_integrity()
+        public void The_behavior_has_work_recovery_level_precedence()
         {
             var sut = new RetryBehavior(1, TimeSpan.Zero);
 
-            Assert.Equal(BehaviorIntegrityMode.MaintainsOperationIntegrity, sut.IntegrityMode);
+            Assert.Equal(BehaviorPrecedence.WorkRecovery, sut.Precedence);
         }
 
         [Fact]

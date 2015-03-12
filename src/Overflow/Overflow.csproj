@@ -46,7 +46,7 @@
     <Compile Include="IOperationResolver.cs" />
     <Compile Include="Behaviors\OperationLoggingBehaviorFactory.cs" />
     <Compile Include="Behaviors\OperationLoggingBehavior.cs" />
-    <Compile Include="Extensibility\BehaviorIntegrityMode.cs" />
+    <Compile Include="Extensibility\BehaviorPrecedence.cs" />
     <Compile Include="RetryAttribute.cs" />
     <Compile Include="Behaviors\RetryBehavior.cs" />
     <Compile Include="Testing\AssertionException.cs" />

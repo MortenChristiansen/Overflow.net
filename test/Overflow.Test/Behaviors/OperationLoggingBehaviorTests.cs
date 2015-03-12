@@ -9,11 +9,11 @@ namespace Overflow.Test.Behaviors
     public class OperationLoggingBehaviorTests
     {
         [Fact]
-        public void The_behavior_maintains_full_integrity()
+        public void The_behavior_has_logging_level_precedence()
         {
             var sut = new OperationLoggingBehavior(new FakeWorkflowLogger());
 
-            Assert.Equal(BehaviorIntegrityMode.FullIntegrity, sut.IntegrityMode);
+            Assert.Equal(BehaviorPrecedence.Logging, sut.Precedence);
         }
 
         [Fact]

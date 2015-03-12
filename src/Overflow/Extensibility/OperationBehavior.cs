@@ -7,7 +7,7 @@ namespace Overflow.Extensibility
     {
         internal IOperation InnerOperation { get; private set; }
 
-        public abstract BehaviorIntegrityMode IntegrityMode { get; }
+        public abstract BehaviorPrecedence Precedence { get; }
 
         public IOperation Attach(IOperation innerOperation)
         {

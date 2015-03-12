@@ -8,7 +8,7 @@ namespace Overflow
     {
         private OperationContext _context;
         private WorkflowConfiguration _configuration;
-        private IList<ExecutionInfo>  _executedChildOperations = new List<ExecutionInfo>();
+        private readonly IList<ExecutionInfo>  _executedChildOperations = new List<ExecutionInfo>();
 
         protected abstract void OnExecute();
 

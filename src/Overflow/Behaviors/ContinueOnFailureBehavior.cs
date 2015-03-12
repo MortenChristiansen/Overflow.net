@@ -4,9 +4,9 @@ namespace Overflow.Behaviors
 {
     class ContinueOnFailureBehavior : OperationBehavior
     {
-        public override BehaviorIntegrityMode IntegrityMode
+        public override BehaviorPrecedence Precedence
         {
-            get { return BehaviorIntegrityMode.MaintainsWorkflowIntegrity; }
+            get { return BehaviorPrecedence.Containment; }
         }
 
         public override void Execute()

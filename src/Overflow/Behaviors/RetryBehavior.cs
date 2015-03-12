@@ -28,9 +28,9 @@ namespace Overflow.Behaviors
             RetryDelay = retryDelay;
         }
 
-        public override BehaviorIntegrityMode IntegrityMode
+        public override BehaviorPrecedence Precedence
         {
-            get { return BehaviorIntegrityMode.MaintainsOperationIntegrity; }
+            get { return BehaviorPrecedence.WorkRecovery; }
         }
 
         public override void Execute()
