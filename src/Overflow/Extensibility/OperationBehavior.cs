@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Overflow
+namespace Overflow.Extensibility
 {
     public abstract class OperationBehavior : IOperation
     {

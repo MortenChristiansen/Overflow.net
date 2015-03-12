@@ -1,6 +1,7 @@
 using System;
+using Overflow.Extensibility;
 
-namespace Overflow
+namespace Overflow.Behaviors
 {
     class OperationLoggingBehavior : OperationBehavior
     {

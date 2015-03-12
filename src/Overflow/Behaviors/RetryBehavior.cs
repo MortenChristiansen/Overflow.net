@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Overflow.Extensibility;
 using Overflow.Utilities;
 
-namespace Overflow
+namespace Overflow.Behaviors
 {
     class RetryBehavior : OperationBehavior
     {

@@ -1,4 +1,4 @@
-namespace Overflow
+namespace Overflow.Extensibility
 {
     public enum BehaviorIntegrityMode
     {

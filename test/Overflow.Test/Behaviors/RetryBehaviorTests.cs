@@ -1,9 +1,11 @@
 using System;
+using Overflow.Behaviors;
+using Overflow.Extensibility;
 using Overflow.Test.Fakes;
 using Overflow.Utilities;
 using Xunit;
 
-namespace Overflow.Test
+namespace Overflow.Test.Behaviors
 {
     public class RetryBehaviorTests
     {

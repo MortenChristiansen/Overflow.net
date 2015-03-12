@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Overflow.Extensibility;
 
 namespace Overflow.Test.Fakes
 {

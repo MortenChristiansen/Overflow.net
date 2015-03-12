@@ -43,7 +43,7 @@
     <Compile Include="ExecutionInfoTests.cs" />
     <Compile Include="IOerationTests.cs" />
     <Compile Include="RetryAttributeTests.cs" />
-    <Compile Include="RetryBehaviorTests.cs" />
+    <Compile Include="Behaviors\RetryBehaviorTests.cs" />
     <Compile Include="Testing\AssertionExceptionTests.cs" />
     <Compile Include="Testing\OperationExtensionsTests.cs" />
     <Compile Include="TextWriterWorkflowLoggerTests.cs" />
@@ -56,18 +56,18 @@
     <Compile Include="Fakes\FakeOperationBehavior.cs" />
     <Compile Include="Fakes\FakeOutputOperation.cs" />
     <Compile Include="Fakes\FakeOperation.cs" />
-    <Compile Include="OperationBehaviorAttributeFactoryTests.cs" />
+    <Compile Include="Behaviors\OperationBehaviorAttributeFactoryTests.cs" />
     <Compile Include="OperationContextTests.cs" />
-    <Compile Include="OperationBehaviorTests.cs" />
-    <Compile Include="OperationLoggingBehaviorFactoryTests.cs" />
-    <Compile Include="OperationLoggingBehaviorTests.cs" />
+    <Compile Include="Extensibility\OperationBehaviorTests.cs" />
+    <Compile Include="Behaviors\OperationLoggingBehaviorFactoryTests.cs" />
+    <Compile Include="Behaviors\OperationLoggingBehaviorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OperationTests.cs" />
-    <Compile Include="ContinueOnFailureBehaviorTests.cs" />
+    <Compile Include="Behaviors\ContinueOnFailureBehaviorTests.cs" />
     <Compile Include="SimpleOperationResolverTests.cs" />
     <Compile Include="Utilities\TimeTests.cs" />
     <Compile Include="WorkflowConfigurationTests.cs" />
-    <Compile Include="WorkflowRetryBehaviorFactoryTests.cs" />
+    <Compile Include="Behaviors\WorkflowRetryBehaviorFactoryTests.cs" />
     <Compile Include="WorkflowTests.cs" />
   </ItemGroup>
   <ItemGroup>

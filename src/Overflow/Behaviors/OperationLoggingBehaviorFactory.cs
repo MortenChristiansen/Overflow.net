@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Overflow.Extensibility;
 
-namespace Overflow
+namespace Overflow.Behaviors
 {
     class OperationLoggingBehaviorFactory : IOperationBehaviorFactory
     {

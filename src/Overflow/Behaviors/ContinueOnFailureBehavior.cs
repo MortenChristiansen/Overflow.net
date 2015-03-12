@@ -1,4 +1,6 @@
-namespace Overflow
+using Overflow.Extensibility;
+
+namespace Overflow.Behaviors
 {
     class ContinueOnFailureBehavior : OperationBehavior
     {

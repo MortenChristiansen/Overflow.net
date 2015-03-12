@@ -1,3 +1,5 @@
+using Overflow.Extensibility;
+
 namespace Overflow.Test.Fakes
 {
     class FakeOperationBehavior : OperationBehavior
