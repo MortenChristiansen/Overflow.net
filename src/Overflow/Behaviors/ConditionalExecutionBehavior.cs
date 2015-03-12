@@ -11,7 +11,7 @@ namespace Overflow.Behaviors
 
         public override void Execute()
         {
-            var conditionalOperation = InnerOperation as IConditionalOperation;
+            var conditionalOperation = this.GetInnermostOperation() as IConditionalOperation;
             if (conditionalOperation == null || !conditionalOperation.SkipExecution)
                 base.Execute();
         }

@@ -19,8 +19,19 @@ namespace Overflow.Test.Behaviors
         public void The_inner_operation_is_skipped_when_it_states_that_it_should_be()
         {
             var operation = new SkippableOperation { SkipExecution = true };
-            var sut = new ConditionalExecutionBehavior();
-            sut.Attach(operation);
+            var sut = new ConditionalExecutionBehavior().Attach(operation);
+
+            sut.Execute();
+
+            Assert.False(operation.HasExecuted);
+        }
+
+        [Fact]
+        public void The_innermost_operation_is_considered_for_conditional_execution()
+        {
+            var operation = new SkippableOperation { SkipExecution = true };
+            var innerBehavior = new FakeOperationBehavior().Attach(operation);
+            var sut = new ConditionalExecutionBehavior().Attach(innerBehavior);
 
             sut.Execute();
 
@@ -31,8 +42,7 @@ namespace Overflow.Test.Behaviors
         public void The_inner_operation_is_not_skipped_when_it_states_that_it_should_not_be()
         {
             var operation = new SkippableOperation { SkipExecution = false };
-            var sut = new ConditionalExecutionBehavior();
-            sut.Attach(operation);
+            var sut = new ConditionalExecutionBehavior().Attach(operation);
 
             sut.Execute();
 
@@ -43,8 +53,7 @@ namespace Overflow.Test.Behaviors
         public void The_inner_operation_is_not_skipped_if_it_is_not_a_conditional_operation()
         {
             var operation = new FakeOperation();
-            var sut = new ConditionalExecutionBehavior();
-            sut.Attach(operation);
+            var sut = new ConditionalExecutionBehavior().Attach(operation);
 
             sut.Execute();
 

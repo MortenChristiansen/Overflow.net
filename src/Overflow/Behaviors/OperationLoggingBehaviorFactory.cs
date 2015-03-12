@@ -17,7 +17,7 @@ namespace Overflow.Behaviors
             if (configuration.Logger == null)
                 return new OperationBehavior[0];
 
-            return new [] { new OperationLoggingBehavior(configuration.Logger) };
+            return new OperationBehavior[] { new OperationLoggingBehavior(configuration.Logger) };
         }
     }
 }

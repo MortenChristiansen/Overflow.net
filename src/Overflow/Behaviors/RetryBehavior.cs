@@ -63,7 +63,7 @@ namespace Overflow.Behaviors
             return InnerOperation.GetExecutedChildOperationsForOperationHierarchy().Any(o => !IsIndempotent(o.Operation));
         }
 
-        private bool IsIndempotent(IOperation operation)
+        private static bool IsIndempotent(IOperation operation)
         {
             return operation.GetType().GetCustomAttributes(typeof(IndempotentAttribute), false).Any();
         }

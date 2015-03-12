@@ -19,7 +19,7 @@ namespace Overflow.Behaviors
 
         public override void Execute()
         {
-            var innermostOperation = GetInnerOperation(InnerOperation);
+            var innermostOperation = this.GetInnermostOperation();
 
             _logger.OperationStarted(innermostOperation);
             try { base.Execute(); }
@@ -32,15 +32,6 @@ namespace Overflow.Behaviors
             {
                 _logger.OperationFinished(innermostOperation);
             }
-        }
-
-        private IOperation GetInnerOperation(IOperation operation)
-        {
-            var behavior = operation as OperationBehavior;
-            if (behavior != null)
-                return GetInnerOperation(behavior.InnerOperation);
-
-            return operation;
         }
     }
 }
