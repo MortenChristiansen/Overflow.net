@@ -104,31 +104,35 @@ Both the behavior factories mentioned so far are registered by default but if yo
         WithBehaviorFactory(new MyCustomFactory()).
         CreateOperation();
 
-### Behavior integrity modes
+### Behavior precedence levels
 
-There are many different types of behaviors and to make sure that they are applied in an order that makes sense, they are grouped into a set of modes with specific semantic meaning. Each mode describes the impact that the behavior can have on the operation and workflow. This impact determines how the behavior interacts with other behaviors which is important for keeping your workflows functioning the way you would expect. For example, consider a behavior that retries an operation a number of times in case of an error. If this behavior runs before the logging behavior, the log would not catch all the attempts but would instead see it as a single operation execution which might not even fail. In this case, a potential problem is hidden from the logging behavior because of the ordering of the operations.
+There are many different types of behaviors and to make sure that they are applied in an order that makes sense, they are grouped into a set of precedence levels with specific semantic meaning. Each level describes the type of functionality that the behavior provides for the operation and workflow. This level indicates how the behavior interacts with other behaviors which is important for keeping your workflows functioning the way you would expect. For example, consider a behavior that retries an operation a number of times in case of an error. If this behavior runs before the logging behavior, the log would not catch all the attempts but would instead see it as a single operation execution which might not even fail. In this case, a potential problem is hidden from the logging behavior because of the ordering of the operations.
 
-The different integrity modes are defined by the `BehaviorIntegrityMode` enum and are described below with their integer values. The base operation is decorated with the behaviors sorted by their integrity modes, with the highest valued modes being executed closest to the base operation. If you do not find the existing modes detailed enough, you can define your own modes by casting a different integer to the enum, when assigning the mode in your behaviors.
+The different levels are defined by the `BehaviorPredence` enum and are described below with their integer values. The base operation is decorated with the behaviors sorted by their precedence levels, with the lowest valued levels being executed closest to the base operation. If you do not find the existing levels detailed enough, you can define your own levels by casting a different integer to the enum, when assigning the precedence in your behaviors.
 
-**No integrity mode (0)**
+**State recovery (100)**
 
-The behavior provides no promises regarding the integrity of the workflow after it has run. Behaviors with this mode are always executed last.
+If something goes wrong with the actual execution, this type of behavior can be used for bringing persistent state back into a proper condition, for example by rolling back transactions or deleting created files.
 
-**Maintains workflow integrity (100)**
+**Work recovery (200)**
 
-The behavior can interfere with the workflow, changing the sequence and execution of operations. The FullIntegrity, MaintainsDataIntegrity and MaintainsOperationIntegrity modes are allowed to run before this behavior mode.
+If something goes wrong with the actual execution, this type of behavior can be used for recovering from the bad state and completing the task.
 
-**Maintains operation integrity (200)**
+**Work compensation (300)**
 
-The behavior can interfere with the execution of the operation in an effort to correct errors or otherwise avoid problems from escalating out of the operation. The FullIntegrity and MaintainsDataIntegrity modes are allowed to run before this behavior mode.
+If something goes wrong with the actual execution that cannot be cleaned up, this type of behavior can be used to perform compensating work.
 
-**Maintains data integrity (300)**
+**Containment (400)**
 
-The behavior can make changes to to external/persisted data as a result of an error, but does not otherwise interfere with the execution of the operation. Only FullIntegrity mode behaviors are allowed to run before this behavior mode.
+The last behavior before types related to actual execution of work, it allows you to create a bulkhead, guarding the rest of the workflow against errors and problems caused by the operation.
 
-**Full integrity (400)**
+**Staging (500)**
 
-The behavior does not interfere with the execution of the operation, with the exception of catching and rethrowing exceptions. The workflow applies all behaviors with this integrity mode before behaviors with any other mode. If the integrity mode is respected in the behaviors, they will all have a chance to perform their logic, no matter what happens.
+Before behaviors related to the execution of the operation are run, staging behaviors can be used for things such as preparing for execution, determining whether or how to execute, and other reflective tasks.
+
+**Logging (600)**
+
+The first behavior type to run, logging behaviors can be used to document work, errors and other events.
 
 ##Testing
 

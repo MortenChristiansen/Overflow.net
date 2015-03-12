@@ -34,7 +34,6 @@ namespace Overflow.Extensibility
         /// <summary>
         /// The first behavior type to run, logging behaviors can be used to document 
         /// work, errors and other events.
-        /// about what happens.
         /// </summary>
         Logging = 600
     }
