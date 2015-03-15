@@ -1,9 +1,11 @@
 using System;
+using Overflow.Behaviors;
+using Overflow.Extensibility;
 using Overflow.Test.Fakes;
 using Overflow.Utilities;
 using Xunit;
 
-namespace Overflow.Test
+namespace Overflow.Test.Behaviors
 {
     public class RetryBehaviorTests
     {
@@ -13,11 +15,11 @@ namespace Overflow.Test
         }
 
         [Fact]
-        public void The_behavior_maintains_operation_integrity()
+        public void The_behavior_has_work_recovery_level_precedence()
         {
             var sut = new RetryBehavior(1, TimeSpan.Zero);
 
-            Assert.Equal(BehaviorIntegrityMode.MaintainsOperationIntegrity, sut.IntegrityMode);
+            Assert.Equal(BehaviorPrecedence.WorkRecovery, sut.Precedence);
         }
 
         [Fact]
@@ -131,6 +133,20 @@ namespace Overflow.Test
             sut.Attach(operation);
 
             Assert.Throws<NullReferenceException>(() => sut.Execute());
+        }
+
+        [Fact]
+        public void Retried_operations_are_logged()
+        {
+            var error = new Exception("MESSAGE");
+            var sut = new RetryBehavior(2, TimeSpan.Zero).Attach(new FakeOperation { ThrowOnExecute = error, ErrorCount = 2 });
+            var log = new FakeWorkflowLogger();
+            sut.Initialize(new FakeWorkflowConfiguration { Logger = log });
+
+            sut.Execute();
+
+            Assert.Equal(2, log.AppliedBehaviors.Count);
+            Assert.Equal("Operation retried", log.AppliedBehaviors[0].Description);
         }
 
         [Indempotent]

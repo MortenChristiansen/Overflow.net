@@ -1,12 +1,14 @@
+using Overflow.Extensibility;
+
 namespace Overflow.Test.Fakes
 {
     class FakeOperationBehavior : OperationBehavior
     {
-        public BehaviorIntegrityMode SetIntegrityMode { get; set; }
+        public BehaviorPrecedence SetPrecedence { get; set; }
 
-        public override BehaviorIntegrityMode IntegrityMode
+        public override BehaviorPrecedence Precedence
         {
-            get { return SetIntegrityMode; }
+            get { return SetPrecedence; }
         }
     }
 }

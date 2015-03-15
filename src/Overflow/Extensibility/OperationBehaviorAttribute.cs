@@ -1,6 +1,6 @@
 using System;
 
-namespace Overflow
+namespace Overflow.Extensibility
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public abstract class OperationBehaviorAttribute : Attribute

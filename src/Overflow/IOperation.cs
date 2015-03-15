@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Overflow.Extensibility;
 
 namespace Overflow
 {
@@ -24,6 +25,21 @@ namespace Overflow
             }
 
             return result;
+        }
+
+        public static IOperation GetInnermostOperation(this IOperation operation)
+        {
+            while (true)
+            {
+                var behavior = operation as OperationBehavior;
+                if (behavior != null)
+                {
+                    operation = behavior.InnerOperation;
+                    continue;
+                }
+
+                return operation;
+            }
         }
     }
 }

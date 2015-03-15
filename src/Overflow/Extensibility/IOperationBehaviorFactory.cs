@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Overflow
+namespace Overflow.Extensibility
 {
     public interface IOperationBehaviorFactory
     {

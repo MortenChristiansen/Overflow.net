@@ -36,35 +36,38 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\ConditionalExecutionBehavior.cs" />
+    <Compile Include="Behaviors\ConditionalExecutionBehaviorFactory.cs" />
+    <Compile Include="IConditionalOperation.cs" />
     <Compile Include="ExecutionInfo.cs" />
     <Compile Include="IndempotentAttribute.cs" />
-    <Compile Include="IOperationBehaviorFactory.cs" />
+    <Compile Include="Extensibility\IOperationBehaviorFactory.cs" />
     <Compile Include="IInputOperation.cs" />
     <Compile Include="IWorkflowLogger.cs" />
     <Compile Include="IOutputOperation.cs" />
     <Compile Include="IOperation.cs" />
     <Compile Include="IOperationResolver.cs" />
-    <Compile Include="OperationLoggingBehaviorFactory.cs" />
-    <Compile Include="OperationLoggingBehavior.cs" />
-    <Compile Include="BehaviorIntegrityMode.cs" />
+    <Compile Include="Behaviors\OperationLoggingBehaviorFactory.cs" />
+    <Compile Include="Behaviors\OperationLoggingBehavior.cs" />
+    <Compile Include="Extensibility\BehaviorPrecedence.cs" />
     <Compile Include="RetryAttribute.cs" />
-    <Compile Include="RetryBehavior.cs" />
+    <Compile Include="Behaviors\RetryBehavior.cs" />
     <Compile Include="Testing\AssertionException.cs" />
     <Compile Include="Testing\OperationExtensions.cs" />
     <Compile Include="TextWriterWorkflowLogger.cs" />
-    <Compile Include="OperationBehaviorAttribute.cs" />
-    <Compile Include="OperationBehaviorAttributeFactory.cs" />
+    <Compile Include="Extensibility\OperationBehaviorAttribute.cs" />
+    <Compile Include="Behaviors\OperationBehaviorAttributeFactory.cs" />
     <Compile Include="OperationContext.cs" />
-    <Compile Include="OperationBehavior.cs" />
+    <Compile Include="Extensibility\OperationBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Operation.cs" />
     <Compile Include="ContinueOnFailureAttribute.cs" />
-    <Compile Include="ContinueOnFailureBehavior.cs" />
+    <Compile Include="Behaviors\ContinueOnFailureBehavior.cs" />
     <Compile Include="SimpleOperationResolver.cs" />
     <Compile Include="Utilities\Time.cs" />
     <Compile Include="Workflow.cs" />
     <Compile Include="WorkflowConfiguration.cs" />
-    <Compile Include="WorkflowRetryBehaviorFactory.cs" />
+    <Compile Include="Behaviors\WorkflowRetryBehaviorFactory.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Overflow.Extensibility;
 
 namespace Overflow
 {
@@ -17,20 +18,11 @@ namespace Overflow
 
         public void RegisterOutputHandlers(IOperation operation)
         {
-            var innerOperation = GetInnerOperation(operation);
+            var innerOperation = operation.GetInnermostOperation();
 
             var outputOperationInterfaces = innerOperation.GetType().GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IOutputOperation<>));
             foreach (var outputOperationType in outputOperationInterfaces)
                 RegisterOutputHandler(innerOperation, outputOperationType);
-        }
-
-        private IOperation GetInnerOperation(IOperation operation)
-        {
-            var behavior = operation as OperationBehavior;
-            if (behavior == null)
-                return operation;
-
-            return GetInnerOperation(behavior.InnerOperation);
         }
 
         private void RegisterOutputHandler(IOperation operation, Type outputOperationType)
@@ -62,7 +54,7 @@ namespace Overflow
 
         public void ProvideInputs(IOperation operation)
         {
-            var innerOperation = GetInnerOperation(operation);
+            var innerOperation = operation.GetInnermostOperation();
 
             var inputOperationInterfaces = innerOperation.GetType().GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IInputOperation<>));
             foreach (var inputOperationType in inputOperationInterfaces)

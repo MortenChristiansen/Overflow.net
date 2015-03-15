@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Overflow.Extensibility;
 
 namespace Overflow
 {
@@ -69,6 +70,16 @@ namespace Overflow
             PrepareForChildItem();
 
             _writer.Write("Error [" + error.GetType().Name + "]: " + error.Message);
+        }
+
+        public void BehaviorWasApplied(IOperation operation, OperationBehavior behavior, string description)
+        {
+            if (_levelInfo.Count == 0)
+                throw new InvalidOperationException("No operation was logged as started so an operation behavior cannot be logged.");
+            
+            PrepareForChildItem();
+
+            _writer.Write(behavior.GetType().Name + ": " + description);
         }
 
         private class LevelInfo

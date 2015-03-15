@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Overflow.Extensibility;
 using Overflow.Utilities;
 
-namespace Overflow
+namespace Overflow.Behaviors
 {
     class RetryBehavior : OperationBehavior
     {
@@ -27,9 +28,9 @@ namespace Overflow
             RetryDelay = retryDelay;
         }
 
-        public override BehaviorIntegrityMode IntegrityMode
+        public override BehaviorPrecedence Precedence
         {
-            get { return BehaviorIntegrityMode.MaintainsOperationIntegrity; }
+            get { return BehaviorPrecedence.WorkRecovery; }
         }
 
         public override void Execute()
@@ -43,6 +44,7 @@ namespace Overflow
                         throw;
 
                     Time.Wait(RetryDelay);
+                    BehaviorWasApplied("Operation retried");
                     Execute();
                 }
             }
@@ -62,7 +64,7 @@ namespace Overflow
             return InnerOperation.GetExecutedChildOperationsForOperationHierarchy().Any(o => !IsIndempotent(o.Operation));
         }
 
-        private bool IsIndempotent(IOperation operation)
+        private static bool IsIndempotent(IOperation operation)
         {
             return operation.GetType().GetCustomAttributes(typeof(IndempotentAttribute), false).Any();
         }

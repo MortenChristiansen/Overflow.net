@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Overflow.Extensibility;
 
-namespace Overflow
+namespace Overflow.Behaviors
 {
     class OperationLoggingBehaviorFactory : IOperationBehaviorFactory
     {
@@ -16,7 +17,7 @@ namespace Overflow
             if (configuration.Logger == null)
                 return new OperationBehavior[0];
 
-            return new [] { new OperationLoggingBehavior(configuration.Logger) };
+            return new OperationBehavior[] { new OperationLoggingBehavior(configuration.Logger) };
         }
     }
 }

@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 
-namespace Overflow
+namespace Overflow.Extensibility
 {
     public abstract class OperationBehavior : IOperation
     {
+        private IWorkflowLogger _logger;
         internal IOperation InnerOperation { get; private set; }
 
-        public abstract BehaviorIntegrityMode IntegrityMode { get; }
+        public abstract BehaviorPrecedence Precedence { get; }
 
         public IOperation Attach(IOperation innerOperation)
         {
@@ -23,6 +24,8 @@ namespace Overflow
 
         public void Initialize(WorkflowConfiguration configuration)
         {
+            _logger = configuration.Logger;
+
             InnerOperation.Initialize(configuration);
         }
 
@@ -34,6 +37,12 @@ namespace Overflow
         public virtual IEnumerable<IOperation> GetChildOperations()
         {
             return InnerOperation.GetChildOperations();
+        }
+
+        protected void BehaviorWasApplied(string description)
+        {
+            if (_logger != null)
+                _logger.BehaviorWasApplied(InnerOperation.GetInnermostOperation(), this, description);
         }
     }
 }

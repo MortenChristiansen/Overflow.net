@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Overflow.Extensibility;
 
 namespace Overflow
 {
@@ -9,7 +10,7 @@ namespace Overflow
     {
         public override IOperation CreateOperation()
         {
-            return (TOperation)Operation.Create<TOperation>(this);
+            return Operation.Create<TOperation>(this);
         }
     }
 

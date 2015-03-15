@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Overflow.Extensibility;
 
-namespace Overflow
+namespace Overflow.Behaviors
 {
     class WorkflowRetryBehaviorFactory : IOperationBehaviorFactory
     {
