@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Behaviors\ConditionalExecutionBehaviorFactoryTests.cs" />
     <Compile Include="Behaviors\ConditionalExecutionBehaviorTests.cs" />
+    <Compile Include="Behaviors\OperationErrorLoggingBehaviorTests.cs" />
     <Compile Include="ExecutionInfoTests.cs" />
     <Compile Include="IOerationTests.cs" />
     <Compile Include="RetryAttributeTests.cs" />
@@ -62,7 +63,7 @@
     <Compile Include="OperationContextTests.cs" />
     <Compile Include="Extensibility\OperationBehaviorTests.cs" />
     <Compile Include="Behaviors\OperationLoggingBehaviorFactoryTests.cs" />
-    <Compile Include="Behaviors\OperationLoggingBehaviorTests.cs" />
+    <Compile Include="Behaviors\OperationExecutionLoggingBehaviorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OperationTests.cs" />
     <Compile Include="Behaviors\ContinueOnFailureBehaviorTests.cs" />

@@ -110,6 +110,10 @@ There are many different types of behaviors and to make sure that they are appli
 
 The different levels are defined by the `BehaviorPredence` enum and are described below with their integer values. The base operation is decorated with the behaviors sorted by their precedence levels, with the lowest valued levels being executed closest to the base operation. If you do not find the existing levels detailed enough, you can define your own levels by casting a different integer to the enum, when assigning the precedence in your behaviors.
 
+**Pre recovery (0)**
+
+If something goes wrong with the actual execution, this type of behavior can be used for logging the error.
+
 **State recovery (100)**
 
 If something goes wrong with the actual execution, this type of behavior can be used for bringing persistent state back into a proper condition, for example by rolling back transactions or deleting created files.
@@ -132,7 +136,7 @@ Before behaviors related to the execution of the operation are run, staging beha
 
 **Logging (600)**
 
-The first behavior type to run, logging behaviors can be used to document work, errors and other events.
+The first behavior type to run, logging behaviors can be used to document the work that takes place.
 
 ##Testing
 

@@ -6,12 +6,12 @@ using Xunit;
 
 namespace Overflow.Test.Behaviors
 {
-    public class OperationLoggingBehaviorTests
+    public class OperationExecutionLoggingBehaviorTests
     {
         [Fact]
         public void The_behavior_has_logging_level_precedence()
         {
-            var sut = new OperationLoggingBehavior(new FakeWorkflowLogger());
+            var sut = new OperationExecutionLoggingBehavior(new FakeWorkflowLogger());
 
             Assert.Equal(BehaviorPrecedence.Logging, sut.Precedence);
         }
@@ -21,7 +21,7 @@ namespace Overflow.Test.Behaviors
         {
             var innerOperation = new FakeOperation();
             var logger = new FakeWorkflowLogger();
-            var sut = new OperationLoggingBehavior(logger).Attach(innerOperation);
+            var sut = new OperationExecutionLoggingBehavior(logger).Attach(innerOperation);
 
             sut.Execute();
 
@@ -36,7 +36,7 @@ namespace Overflow.Test.Behaviors
         {
             var innerOperation = new FakeOperation();
             var logger = new FakeWorkflowLogger();
-            var sut = new OperationLoggingBehavior(logger).Attach(new FakeOperationBehavior().Attach(innerOperation));
+            var sut = new OperationExecutionLoggingBehavior(logger).Attach(new FakeOperationBehavior().Attach(innerOperation));
 
             sut.Execute();
 
@@ -45,35 +45,11 @@ namespace Overflow.Test.Behaviors
         }
 
         [Fact]
-        public void Exceptions_thrown_during_the_execution_are_logged()
-        {
-            var innerOperation = new FakeOperation { ThrowOnExecute = new Exception() };
-            var logger = new FakeWorkflowLogger();
-            var sut = new OperationLoggingBehavior(logger).Attach(innerOperation);
-
-            try { sut.Execute(); }
-            catch { }
-
-            Assert.Equal(1, logger.OperationFailures.Count);
-            Assert.Equal(1, logger.OperationFailures[innerOperation].Count);
-            Assert.Equal(innerOperation.ThrowOnExecute, logger.OperationFailures[innerOperation][0]);
-        }
-
-        [Fact]
-        public void Logged_exceptions_are_rethrown()
-        {
-            var innerOperation = new FakeOperation { ThrowOnExecute = new Exception() };
-            var sut = new OperationLoggingBehavior(new FakeWorkflowLogger()).Attach(innerOperation);
-
-            Assert.Throws<Exception>(() => sut.Execute());
-        }
-
-        [Fact]
         public void Start_and_finish_are_logged_in_case_of_failure()
         {
             var innerOperation = new FakeOperation { ThrowOnExecute = new Exception() };
             var logger = new FakeWorkflowLogger();
-            var sut = new OperationLoggingBehavior(logger).Attach(innerOperation);
+            var sut = new OperationExecutionLoggingBehavior(logger).Attach(innerOperation);
 
             try { sut.Execute(); }
             catch { }

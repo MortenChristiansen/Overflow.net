@@ -3,7 +3,7 @@ using Overflow.Extensibility;
 
 namespace Overflow.Behaviors
 {
-    class OperationLoggingBehavior : OperationBehavior
+    class OperationExecutionLoggingBehavior : OperationBehavior
     {
         private readonly IWorkflowLogger _logger;
 
@@ -12,7 +12,7 @@ namespace Overflow.Behaviors
             get { return BehaviorPrecedence.Logging; }
         }
 
-        public OperationLoggingBehavior(IWorkflowLogger logger)
+        public OperationExecutionLoggingBehavior(IWorkflowLogger logger)
         {
             _logger = logger;
         }
@@ -23,11 +23,6 @@ namespace Overflow.Behaviors
 
             _logger.OperationStarted(innermostOperation);
             try { base.Execute(); }
-            catch (Exception e)
-            {
-                _logger.OperationFailed(innermostOperation, e);
-                throw;
-            }
             finally
             {
                 _logger.OperationFinished(innermostOperation);

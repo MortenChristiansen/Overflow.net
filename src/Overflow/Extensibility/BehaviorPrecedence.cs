@@ -5,6 +5,11 @@ namespace Overflow.Extensibility
     {
         /// <summary>
         /// If something goes wrong with the actual execution, this type of behavior
+        /// can be used for logging the error.
+        /// </summary>
+        PreRecovery = 0,
+        /// <summary>
+        /// If something goes wrong with the actual execution, this type of behavior
         /// can be used for bringing persistent state back into a proper condition,
         /// for example by rolling back transactions or deleting created files.
         /// </summary>
@@ -33,7 +38,7 @@ namespace Overflow.Extensibility
         Staging = 500,
         /// <summary>
         /// The first behavior type to run, logging behaviors can be used to document 
-        /// work, errors and other events.
+        /// the work that takes place.
         /// </summary>
         Logging = 600
     }

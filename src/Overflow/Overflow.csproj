@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="Behaviors\ConditionalExecutionBehavior.cs" />
     <Compile Include="Behaviors\ConditionalExecutionBehaviorFactory.cs" />
+    <Compile Include="Behaviors\OperationErrorLoggingBehavior.cs" />
     <Compile Include="IConditionalOperation.cs" />
     <Compile Include="ExecutionInfo.cs" />
     <Compile Include="IndempotentAttribute.cs" />
@@ -48,7 +49,7 @@
     <Compile Include="IOperation.cs" />
     <Compile Include="IOperationResolver.cs" />
     <Compile Include="Behaviors\OperationLoggingBehaviorFactory.cs" />
-    <Compile Include="Behaviors\OperationLoggingBehavior.cs" />
+    <Compile Include="Behaviors\OperationExecutionLoggingBehavior.cs" />
     <Compile Include="Extensibility\BehaviorPrecedence.cs" />
     <Compile Include="RetryAttribute.cs" />
     <Compile Include="Behaviors\RetryBehavior.cs" />

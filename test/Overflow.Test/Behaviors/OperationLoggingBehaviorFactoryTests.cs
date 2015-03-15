@@ -8,7 +8,7 @@ namespace Overflow.Test.Behaviors
     public class OperationLoggingBehaviorFactoryTests
     {
         [Fact]
-        public void The_logging_behavior_is_created_when_the_log_is_defined_on_the_configuration()
+        public void The_logging_behaviors_are_created_when_the_log_is_defined_on_the_configuration()
         {
             var sut = new OperationLoggingBehaviorFactory();
             var configuration = new FakeWorkflowConfiguration { Logger = new FakeWorkflowLogger() };
@@ -16,8 +16,9 @@ namespace Overflow.Test.Behaviors
 
             var result = sut.CreateBehaviors(operation, configuration);
 
-            Assert.Equal(1, result.Count);
-            Assert.IsType<OperationLoggingBehavior>(result[0]);
+            Assert.Equal(2, result.Count);
+            Assert.IsType<OperationExecutionLoggingBehavior>(result[0]);
+            Assert.IsType<OperationErrorLoggingBehavior>(result[1]);
         }
 
         [Fact]
