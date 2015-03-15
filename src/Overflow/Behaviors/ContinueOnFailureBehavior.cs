@@ -12,7 +12,10 @@ namespace Overflow.Behaviors
         public override void Execute()
         {
             try { base.Execute(); }
-            catch { }
+            catch
+            {
+                BehaviorWasApplied("Error swallowed");
+            }
         }
     }
 }

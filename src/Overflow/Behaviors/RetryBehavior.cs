@@ -44,6 +44,7 @@ namespace Overflow.Behaviors
                         throw;
 
                     Time.Wait(RetryDelay);
+                    BehaviorWasApplied("Operation retried");
                     Execute();
                 }
             }

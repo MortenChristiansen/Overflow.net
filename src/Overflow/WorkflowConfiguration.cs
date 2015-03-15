@@ -10,7 +10,7 @@ namespace Overflow
     {
         public override IOperation CreateOperation()
         {
-            return (TOperation)Operation.Create<TOperation>(this);
+            return Operation.Create<TOperation>(this);
         }
     }
 

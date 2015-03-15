@@ -14,6 +14,8 @@ namespace Overflow.Behaviors
             var conditionalOperation = this.GetInnermostOperation() as IConditionalOperation;
             if (conditionalOperation == null || !conditionalOperation.SkipExecution)
                 base.Execute();
+            else
+                BehaviorWasApplied("Operation was skipped");
         }
     }
 }

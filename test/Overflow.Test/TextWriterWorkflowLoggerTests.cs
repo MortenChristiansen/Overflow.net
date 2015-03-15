@@ -184,5 +184,61 @@ namespace Overflow.Test
                 Assert.Throws<InvalidOperationException>(() => sut.OperationFinished(new FakeOperation()));
             }
         }
+
+        [Fact]
+        public void Behaviors_are_logged_nested_between_braces()
+        {
+            using (var sw = new StringWriter())
+            {
+                var sut = new TextWriterWorkflowLogger(sw);
+
+                sut.OperationStarted(new FakeOperation());
+                sut.BehaviorWasApplied(new FakeOperation(), new FakeOperationBehavior(), "DESCRIPTION");
+                sut.OperationFinished(new FakeOperation());
+
+                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperationBehavior: DESCRIPTION{0}}}", NL), sw.ToString());
+            }
+        }
+
+        [Fact]
+        public void Behaviors_are_correctly_indented_after_a_sibling_operation()
+        {
+            using (var sw = new StringWriter())
+            {
+                var sut = new TextWriterWorkflowLogger(sw);
+
+                sut.OperationStarted(new FakeOperation());
+                sut.OperationStarted(new FakeOperation());
+                sut.OperationFinished(new FakeOperation());
+                sut.BehaviorWasApplied(new FakeOperation(), new FakeOperationBehavior(), "DESCRIPTION");
+                sut.OperationFinished(new FakeOperation());
+
+                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation{0}{0}  FakeOperationBehavior: DESCRIPTION{0}}}", NL), sw.ToString());
+            }
+        }
+
+        [Fact]
+        public void You_cannot_log_a_behavior_without_a_started_operation()
+        {
+            using (var sw = new StringWriter())
+            {
+                var sut = new TextWriterWorkflowLogger(sw);
+
+                Assert.Throws<InvalidOperationException>(() => sut.BehaviorWasApplied(new FakeOperation(), new FakeOperationBehavior(), "DESCRIPTION"));
+            }
+        }
+
+        [Fact]
+        public void You_cannot_log_a_behavior_when_the_last_operation_has_been_logged_as_finished()
+        {
+            using (var sw = new StringWriter())
+            {
+                var sut = new TextWriterWorkflowLogger(sw);
+                sut.OperationStarted(new FakeOperation());
+                sut.OperationFinished(new FakeOperation());
+
+                Assert.Throws<InvalidOperationException>(() => sut.BehaviorWasApplied(new FakeOperation(), new FakeOperationBehavior(), "DESCRIPTION"));
+            }
+        }
     }
 }

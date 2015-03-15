@@ -25,5 +25,19 @@ namespace Overflow.Test.Behaviors
 
             sut.Execute();
         }
+
+        [Fact]
+        public void Contained_errors_are_logged()
+        {
+            var error = new Exception("MESSAGE");
+            var sut = new ContinueOnFailureBehavior().Attach(new FakeOperation { ThrowOnExecute = error });
+            var log = new FakeWorkflowLogger();
+            sut.Initialize(new FakeWorkflowConfiguration { Logger = log });
+
+            sut.Execute();
+
+            Assert.Equal(1, log.AppliedBehaviors.Count);
+            Assert.Equal("Error swallowed", log.AppliedBehaviors[0].Description);
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Overflow.Extensibility;
 
 namespace Overflow.Test.Fakes
 {
@@ -8,12 +9,14 @@ namespace Overflow.Test.Fakes
         public IList<IOperation> StartedOperations { get; private set; }
         public IList<IOperation> FinishedOperations { get; private set; }
         public IDictionary<IOperation, IList<Exception>> OperationFailures { get; private set; }
+        public IList<BehaviorApplication> AppliedBehaviors { get; private set; }
 
         public FakeWorkflowLogger()
         {
             StartedOperations = new List<IOperation>();
             FinishedOperations = new List<IOperation>();
             OperationFailures = new Dictionary<IOperation, IList<Exception>>();
+            AppliedBehaviors = new List<BehaviorApplication>();
         }
 
         public void OperationStarted(IOperation operation)
@@ -32,6 +35,18 @@ namespace Overflow.Test.Fakes
                 OperationFailures.Add(operation, new List<Exception>());
 
             OperationFailures[operation].Add(error);
+        }
+
+        public void BehaviorWasApplied(IOperation operation, OperationBehavior behavior, string description)
+        {
+            AppliedBehaviors.Add(new BehaviorApplication{ Behavior = behavior, Operation = operation, Description = description });
+        }
+
+        public class BehaviorApplication
+        {
+            public IOperation Operation { get; set; }
+            public OperationBehavior Behavior { get; set; }
+            public string Description { get; set; }
         }
     }
 }

@@ -60,6 +60,20 @@ namespace Overflow.Test.Behaviors
             Assert.True(operation.HasExecuted);
         }
 
+        [Fact]
+        public void Skipped_operations_are_logged()
+        {
+            var operation = new SkippableOperation { SkipExecution = true };
+            var sut = new ConditionalExecutionBehavior().Attach(operation);
+            var log = new FakeWorkflowLogger();
+            sut.Initialize(new FakeWorkflowConfiguration { Logger = log });
+
+            sut.Execute();
+
+            Assert.Equal(1, log.AppliedBehaviors.Count);
+            Assert.Equal("Operation was skipped", log.AppliedBehaviors[0].Description);
+        }
+
         private class SkippableOperation : Operation, IConditionalOperation
         {
             public bool HasExecuted { get; private set; }

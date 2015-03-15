@@ -135,6 +135,20 @@ namespace Overflow.Test.Behaviors
             Assert.Throws<NullReferenceException>(() => sut.Execute());
         }
 
+        [Fact]
+        public void Retried_operations_are_logged()
+        {
+            var error = new Exception("MESSAGE");
+            var sut = new RetryBehavior(2, TimeSpan.Zero).Attach(new FakeOperation { ThrowOnExecute = error, ErrorCount = 2 });
+            var log = new FakeWorkflowLogger();
+            sut.Initialize(new FakeWorkflowConfiguration { Logger = log });
+
+            sut.Execute();
+
+            Assert.Equal(2, log.AppliedBehaviors.Count);
+            Assert.Equal("Operation retried", log.AppliedBehaviors[0].Description);
+        }
+
         [Indempotent]
         private class IndempotentOperation : FakeOperation { }
     }

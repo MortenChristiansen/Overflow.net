@@ -5,6 +5,7 @@ namespace Overflow.Extensibility
 {
     public abstract class OperationBehavior : IOperation
     {
+        private IWorkflowLogger _logger;
         internal IOperation InnerOperation { get; private set; }
 
         public abstract BehaviorPrecedence Precedence { get; }
@@ -23,6 +24,8 @@ namespace Overflow.Extensibility
 
         public void Initialize(WorkflowConfiguration configuration)
         {
+            _logger = configuration.Logger;
+
             InnerOperation.Initialize(configuration);
         }
 
@@ -34,6 +37,12 @@ namespace Overflow.Extensibility
         public virtual IEnumerable<IOperation> GetChildOperations()
         {
             return InnerOperation.GetChildOperations();
+        }
+
+        protected void BehaviorWasApplied(string description)
+        {
+            if (_logger != null)
+                _logger.BehaviorWasApplied(InnerOperation.GetInnermostOperation(), this, description);
         }
     }
 }
