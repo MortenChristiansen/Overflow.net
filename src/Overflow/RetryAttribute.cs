@@ -4,12 +4,22 @@ using Overflow.Extensibility;
 
 namespace Overflow
 {
+    /// <summary>
+    /// Applies the Retry behavior. Failures are retried a number of times.
+    /// </summary>
     public class RetryAttribute : OperationBehaviorAttribute
     {
         private readonly int _timesToRetry;
         private readonly int _retryDelayInMilliSeconds;
         private readonly Type[] _retryExeptionTypes;
 
+        /// <summary>
+        /// Creates a Retry attribute.
+        /// </summary>
+        /// <param name="timesToRetry">The number of times to retry before giving up and rethrowing the exception</param>
+        /// <param name="retryDelayInMilliSeconds">The delay in milliseconds before each retry.</param>
+        /// <param name="retryExeptionTypes">The types of exceptions to retry. If no types are specified, all exceptions
+        /// are retried. Exceptions inheriting from the specified types are retried as well.</param>
         public RetryAttribute(int timesToRetry = 3, int retryDelayInMilliSeconds = 1000, params Type[] retryExeptionTypes)
         {
             _timesToRetry = timesToRetry;
@@ -17,6 +27,10 @@ namespace Overflow
             _retryExeptionTypes = retryExeptionTypes;
         }
 
+        /// <summary>
+        /// Create the retry behavior.
+        /// </summary>
+        /// <returns>The created beahvior</returns>
         public override OperationBehavior CreateBehavior()
         {
             return new RetryBehavior(_timesToRetry, TimeSpan.FromMilliseconds(_retryDelayInMilliSeconds), _retryExeptionTypes);

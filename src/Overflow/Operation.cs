@@ -4,6 +4,10 @@ using Overflow.Utilities;
 
 namespace Overflow
 {
+    /// <summary>
+    /// A base class for custom operations. Inherit from the type to implement
+    /// the business operations of your workflows.
+    /// </summary>
     public abstract class Operation : IOperation
     {
         private OperationContext _context;

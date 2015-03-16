@@ -6,10 +6,19 @@ using Overflow.Utilities;
 
 namespace Overflow
 {
+    /// <summary>
+    /// A simple text logger. Writes an indented hierarchical representation
+    /// of the executed operations and the behaviors that have been applied.
+    /// </summary>
     public class TextWriterWorkflowLogger : IWorkflowLogger
     {
         private readonly TextWriter _writer;
 
+        /// <summary>
+        /// Create new logger.
+        /// </summary>
+        /// <param name="writer">The text writer to send the output to. Use Console.Out
+        /// to log to the console.</param>
         public TextWriterWorkflowLogger(TextWriter writer)
         {
             Verify.NotNull(writer, "writer");
@@ -17,8 +26,12 @@ namespace Overflow
             _writer = writer;
         }
 
-        private readonly Stack<LevelInfo> _levelInfo = new Stack<LevelInfo>(); 
+        private readonly Stack<LevelInfo> _levelInfo = new Stack<LevelInfo>();
 
+        /// <summary>
+        /// Log that an operation has started executing.
+        /// </summary>
+        /// <param name="operation">The executing operation</param>
         public void OperationStarted(IOperation operation)
         {
             Verify.NotNull(operation, "operation");
@@ -53,6 +66,10 @@ namespace Overflow
             _writer.Write(new string(' ', 2 * _levelInfo.Count));
         }
 
+        /// <summary>
+        /// Log an operation has finished executing.
+        /// </summary>
+        /// <param name="operation">The executing operation</param>
         public void OperationFinished(IOperation operation)
         {
             Verify.NotNull(operation, "operation");
@@ -64,6 +81,11 @@ namespace Overflow
                 _writer.Write(Environment.NewLine + "}");
         }
 
+        /// <summary>
+        /// Log an exception while executing an operation.
+        /// </summary>
+        /// <param name="operation">The executing operation</param>
+        /// <param name="error">The exception being thrown</param>
         public void OperationFailed(IOperation operation, Exception error)
         {
             Verify.NotNull(operation, "operation");
@@ -75,6 +97,14 @@ namespace Overflow
             _writer.Write("Error [" + error.GetType().Name + "]: " + error.Message);
         }
 
+        /// <summary>
+        /// Log that a behavior was applied, modifying the normal
+        /// execution flow.
+        /// </summary>
+        /// <param name="operation">The executing operation</param>
+        /// <param name="behavior">The beahvior being applied</param>
+        /// <param name="description">A description of how the behavior modified the exectuion
+        /// flow</param>
         public void BehaviorWasApplied(IOperation operation, OperationBehavior behavior, string description)
         {
             Verify.NotNull(operation, "operation");

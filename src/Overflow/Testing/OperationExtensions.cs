@@ -7,6 +7,13 @@ namespace Overflow.Testing
 {
     public static class OperationExtensions
     {
+        /// <summary>
+        /// Assert that the operation has executed child operations of the specified
+        /// types, in the specified order. The entire hierarchy of child operations is
+        /// included.
+        /// </summary>
+        /// <param name="operation">The operation to verify child operations for</param>
+        /// <param name="expectedOperationTypes">The types of child operations expected</param>
         public static void HasExecutedChildOperations(this IOperation operation, params Type[] expectedOperationTypes)
         {
             Verify.NotNull(operation, "operation");

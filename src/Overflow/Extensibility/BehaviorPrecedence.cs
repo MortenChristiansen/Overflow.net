@@ -1,6 +1,13 @@
 namespace Overflow.Extensibility
 {
-
+    /// <summary>
+    /// Defines a number of concrete operation behavior precedence levels, representing
+    /// the order in which behaviors with different responsibilities should be applied.
+    /// The lower the value, the closer to the original operation the behavior is applied.
+    /// For example, the PreRecovery precedence level is applied immediately before and
+    /// after the original operation. The values are only used for the execution order,
+    /// so custom values in between can be defined no fine tune ordering.
+    /// </summary>
     public enum BehaviorPrecedence
     {
         /// <summary>
