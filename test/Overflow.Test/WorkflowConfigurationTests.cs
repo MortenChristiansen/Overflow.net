@@ -1,6 +1,9 @@
 using System;
+using Overflow.Extensibility;
 using Overflow.Test.Fakes;
+using Overflow.Test.TestingInfrastructure;
 using Xunit;
+using Xunit.Extensions;
 
 namespace Overflow.Test
 {
@@ -24,42 +27,40 @@ namespace Overflow.Test
             Assert.Equal(0, sut.RetryExceptionTypes.Count);
         }
 
-        [Fact]
-        public void You_can_create_an_operation_from_the_configuration()
+        [Theory, AutoMoqData]
+        public void You_can_create_an_operation_from_the_configuration(IOperationResolver resolver)
         {
-            var sut = new WorkflowConfiguration<TestOperation>() { Resolver = new SimpleOperationResolver() };
+            var sut = new WorkflowConfiguration<TestOperation>() { Resolver = resolver };
 
             var result = sut.CreateOperation();
 
             Assert.NotNull(result);
         }
 
-        [Fact]
-        public void You_can_fluently_assign_the_operation_resolver()
+        [Theory, AutoMoqData]
+        public void You_can_fluently_assign_the_operation_resolver(IOperationResolver resolver)
         {
             var sut = new FakeWorkflowConfiguration();
-            var resolver = new SimpleOperationResolver();
 
             sut.WithResolver(resolver);
 
             Assert.Equal(resolver, sut.Resolver);
         }
 
-        [Fact]
-        public void Fluently_assigning_operation_resolver_returns_configuration()
+        [Theory, AutoMoqData]
+        public void Fluently_assigning_operation_resolver_returns_configuration(IOperationResolver resolver)
         {
             var sut = new FakeWorkflowConfiguration();
 
-            var result = sut.WithResolver(new SimpleOperationResolver());
+            var result = sut.WithResolver(resolver);
 
             Assert.Equal(sut, result);
         }
 
-        [Fact]
-        public void You_can_fluently_assign_the_workflow_logger()
+        [Theory, AutoMoqData]
+        public void You_can_fluently_assign_the_workflow_logger(IWorkflowLogger logger)
         {
             var sut = new FakeWorkflowConfiguration();
-            var logger = new FakeWorkflowLogger();
 
             sut.WithLogger(logger);
 
@@ -76,11 +77,10 @@ namespace Overflow.Test
             Assert.Equal(sut, result);
         }
 
-        [Fact]
-        public void You_can_fluently_assign_behavior_factories()
+        [Theory, AutoMoqData]
+        public void You_can_fluently_assign_behavior_factories(IOperationBehaviorFactory factory)
         {
             var sut = new FakeWorkflowConfiguration();
-            var factory = new FakeOperationBehaviorFactory();
 
             sut.WithBehaviorFactory(factory);
 

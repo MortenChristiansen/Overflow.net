@@ -2,8 +2,10 @@ using System;
 using Overflow.Behaviors;
 using Overflow.Extensibility;
 using Overflow.Test.Fakes;
+using Overflow.Test.TestingInfrastructure;
 using Overflow.Utilities;
 using Xunit;
+using Xunit.Extensions;
 
 namespace Overflow.Test.Behaviors
 {
@@ -135,12 +137,10 @@ namespace Overflow.Test.Behaviors
             Assert.Throws<NullReferenceException>(() => sut.Execute());
         }
 
-        [Fact]
-        public void Retried_operations_are_logged()
+        [Theory, AutoMoqData]
+        public void Retried_operations_are_logged(Exception error, FakeWorkflowLogger log)
         {
-            var error = new Exception("MESSAGE");
             var sut = new RetryBehavior(2, TimeSpan.Zero).Attach(new FakeOperation { ThrowOnExecute = error, ErrorCount = 2 });
-            var log = new FakeWorkflowLogger();
             sut.Initialize(new FakeWorkflowConfiguration { Logger = log });
 
             sut.Execute();

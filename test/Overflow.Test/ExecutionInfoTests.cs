@@ -1,19 +1,15 @@
 using System;
-using Overflow.Test.Fakes;
+using Overflow.Test.TestingInfrastructure;
 using Xunit;
+using Xunit.Extensions;
 
 namespace Overflow.Test
 {
     public class ExecutionInfoTests
     {
-        [Fact]
-        public void Creating_an_execution_info_populated_properties()
+        [Theory, AutoMoqData]
+        public void Creating_an_execution_info_populated_properties(IOperation operation, Exception error, DateTimeOffset started, DateTimeOffset completed)
         {
-            var operation = new FakeOperation();
-            var error = new Exception();
-            var started = new DateTimeOffset();
-            var completed = new DateTimeOffset();
-
             var sut = new ExecutionInfo(operation, error, started, completed);
 
             Assert.Equal(operation, sut.Operation);
@@ -22,10 +18,10 @@ namespace Overflow.Test
             Assert.Equal(completed, sut.Completed);
         }
 
-        [Fact]
-        public void You_cannot_create_an_execution_info_without_an_operation()
+        [Theory, AutoMoqData]
+        public void You_cannot_create_an_execution_info_without_an_operation(Exception error, DateTimeOffset started, DateTimeOffset completed)
         {
-            Assert.Throws<ArgumentNullException>(() => new ExecutionInfo(null, new Exception(), new DateTimeOffset(), new DateTimeOffset()));
+            Assert.Throws<ArgumentNullException>(() => new ExecutionInfo(null, error, started, completed));
         }
     }
 }

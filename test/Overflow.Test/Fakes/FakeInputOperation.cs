@@ -1,6 +1,6 @@
 namespace Overflow.Test.Fakes
 {
-    class FakeInputOperation<TInput> : FakeOperation, IInputOperation<TInput> where TInput : class
+    public class FakeInputOperation<TInput> : FakeOperation, IInputOperation<TInput> where TInput : class
     {
         public TInput ProvidedInput { get; private set; }
 

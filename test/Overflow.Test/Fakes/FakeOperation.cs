@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Overflow.Test.Fakes
 {
-    class FakeOperation : Operation
+    public class FakeOperation : Operation
     {
         private readonly IOperation[] _childOperations;
 
