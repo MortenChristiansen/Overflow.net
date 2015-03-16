@@ -66,6 +66,7 @@
     <Compile Include="Behaviors\ContinueOnFailureBehavior.cs" />
     <Compile Include="SimpleOperationResolver.cs" />
     <Compile Include="Utilities\Time.cs" />
+    <Compile Include="Utilities\Verify.cs" />
     <Compile Include="Workflow.cs" />
     <Compile Include="WorkflowConfiguration.cs" />
     <Compile Include="Behaviors\WorkflowRetryBehaviorFactory.cs" />

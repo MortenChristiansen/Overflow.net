@@ -14,14 +14,9 @@ namespace Overflow.Behaviors
 
         public RetryBehavior(int timesToRetry, TimeSpan retryDelay, params Type[] retryExceptionTypes)
         {
-            if (timesToRetry <= 0)
-                throw new ArgumentOutOfRangeException("timesToRetry", "Must be larger than 0.");
-
-            if (retryDelay.Ticks < 0)
-                throw new ArgumentOutOfRangeException("retryDelay", "Delay must be non-negative.");
-
-            if(retryExceptionTypes.Any(t => !typeof(Exception).IsAssignableFrom(t)))
-                throw new ArgumentException("Only exception types are valid.", "retryExceptionTypes");
+            Verify.LargerThanZero(timesToRetry, "Must be larger than 0.");
+            Verify.LargeThanOrEqualToZero(retryDelay.Ticks, "Delay must be non-negative.");
+            Verify.Argument(retryExceptionTypes.All(t => typeof (Exception).IsAssignableFrom(t)), "Only exception types are valid.");
 
             RetryExceptionTypes = retryExceptionTypes;
             TimesToRetry = timesToRetry;

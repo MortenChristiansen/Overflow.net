@@ -69,6 +69,7 @@
     <Compile Include="Behaviors\ContinueOnFailureBehaviorTests.cs" />
     <Compile Include="SimpleOperationResolverTests.cs" />
     <Compile Include="Utilities\TimeTests.cs" />
+    <Compile Include="Utilities\VerifyTests.cs" />
     <Compile Include="WorkflowConfigurationTests.cs" />
     <Compile Include="Behaviors\WorkflowRetryBehaviorFactoryTests.cs" />
     <Compile Include="WorkflowTests.cs" />

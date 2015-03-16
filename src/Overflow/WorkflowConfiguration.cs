@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Overflow.Extensibility;
+using Overflow.Utilities;
 
 namespace Overflow
 {
@@ -54,8 +55,7 @@ namespace Overflow
 
         public WorkflowConfiguration WithGlobalRetryBehavior(int timesToRetry, TimeSpan retryDelay, params Type[] retryExceptionTypes)
         {
-            if (retryExceptionTypes.Any(t => !typeof(Exception).IsAssignableFrom(t)))
-                throw new ArgumentException("Only exception types are valid.", "retryExceptionTypes");
+            Verify.Argument(retryExceptionTypes.All(t => typeof (Exception).IsAssignableFrom(t)), "Only exception types are valid.");
 
             TimesToRetry = timesToRetry;
             RetryDelay = retryDelay;

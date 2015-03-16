@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Overflow.Utilities;
 
 namespace Overflow
 {
@@ -48,15 +49,14 @@ namespace Overflow
         private object[] ResolveConstructorParameters(Type type)
         {
             var constructors = type.GetConstructors();
-            if (constructors.Length != 1)
-                throw new InvalidOperationException("Type " + type.Name + " has more than one constructor. This is not supported.");
+            Verify.Operation(constructors.Length == 1, "Type " + type.Name + " has more than one constructor. This is not supported.");
+
             return constructors[0].GetParameters().Select(p => ResolveConstructorParameter(p.ParameterType)).ToArray();
         }
 
         private object ResolveConstructorParameter(Type parameterType)
         {
-            if (!_mappings.ContainsKey(parameterType))
-                throw new InvalidOperationException("Type " + parameterType.Name + " could not be resolved.");
+            Verify.Operation(_mappings.ContainsKey(parameterType), "Type " + parameterType.Name + " could not be resolved.");
 
             var implementationType = _mappings[parameterType];
             var parameters = ResolveConstructorParameters(implementationType);

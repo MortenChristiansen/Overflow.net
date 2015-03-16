@@ -56,11 +56,8 @@ namespace Overflow
         public static IOperation Create<TOperation>(WorkflowConfiguration configuration)
             where TOperation : IOperation
         {
-            if (configuration == null)
-                throw new InvalidOperationException("Operation.Configuration was not set.");
-
-            if (configuration.Resolver == null)
-                throw new InvalidOperationException("Operation.Configuration.Resolver was not set. You can set it to a SimpleOperationResolver instance or add a more full featured, external implementation.");
+            Verify.Operation(configuration != null, "Operation.Configuration was not set.");
+            Verify.Operation(configuration.Resolver != null, "Operation.Configuration.Resolver was not set. You can set it to a SimpleOperationResolver instance or add a more full featured, external implementation.");
 
             var operation = configuration.Resolver.Resolve<TOperation>(configuration);
             operation.Initialize(configuration);
