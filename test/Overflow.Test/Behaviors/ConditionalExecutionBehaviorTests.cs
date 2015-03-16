@@ -1,7 +1,9 @@
 using Overflow.Behaviors;
 using Overflow.Extensibility;
 using Overflow.Test.Fakes;
+using Overflow.Test.TestingInfrastructure;
 using Xunit;
+using Xunit.Extensions;
 
 namespace Overflow.Test.Behaviors
 {
@@ -60,12 +62,11 @@ namespace Overflow.Test.Behaviors
             Assert.True(operation.HasExecuted);
         }
 
-        [Fact]
-        public void Skipped_operations_are_logged()
+        [Theory, AutoMoqData]
+        public void Skipped_operations_are_logged(FakeWorkflowLogger log)
         {
             var operation = new SkippableOperation { SkipExecution = true };
             var sut = new ConditionalExecutionBehavior().Attach(operation);
-            var log = new FakeWorkflowLogger();
             sut.Initialize(new FakeWorkflowConfiguration { Logger = log });
 
             sut.Execute();

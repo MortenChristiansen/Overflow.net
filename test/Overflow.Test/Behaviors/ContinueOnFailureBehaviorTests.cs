@@ -2,7 +2,9 @@ using System;
 using Overflow.Behaviors;
 using Overflow.Extensibility;
 using Overflow.Test.Fakes;
+using Overflow.Test.TestingInfrastructure;
 using Xunit;
+using Xunit.Extensions;
 
 namespace Overflow.Test.Behaviors
 {
@@ -26,12 +28,10 @@ namespace Overflow.Test.Behaviors
             sut.Execute();
         }
 
-        [Fact]
-        public void Contained_errors_are_logged()
+        [Theory, AutoMoqData]
+        public void Contained_errors_are_logged(Exception error, FakeWorkflowLogger log)
         {
-            var error = new Exception("MESSAGE");
             var sut = new ContinueOnFailureBehavior().Attach(new FakeOperation { ThrowOnExecute = error });
-            var log = new FakeWorkflowLogger();
             sut.Initialize(new FakeWorkflowConfiguration { Logger = log });
 
             sut.Execute();

@@ -1,15 +1,16 @@
 using Overflow.Behaviors;
 using Overflow.Test.Fakes;
+using Overflow.Test.TestingInfrastructure;
 using Xunit;
+using Xunit.Extensions;
 
 namespace Overflow.Test.Behaviors
 {
     public class ConditionalExecutionBehaviorFactoryTests
     {
-        [Fact]
-        public void A_conditional_execution_behavior_is_created_for_conditional_operations()
+        [Theory, AutoMoqData]
+        public void A_conditional_execution_behavior_is_created_for_conditional_operations(SkippableOperation operation)
         {
-            var operation = new SkippableOperation();
             var sut = new ConditionalExecutionBehaviorFactory();
 
             var result = sut.CreateBehaviors(operation, new FakeWorkflowConfiguration());
@@ -19,10 +20,9 @@ namespace Overflow.Test.Behaviors
             Assert.NotNull(result[0]);
         }
 
-        [Fact]
-        public void A_conditional_execution_behavior_is_not_created_for_unconditional_operations()
+        [Theory, AutoMoqData]
+        public void A_conditional_execution_behavior_is_not_created_for_unconditional_operations(FakeOperation operation)
         {
-            var operation = new FakeOperation();
             var sut = new ConditionalExecutionBehaviorFactory();
 
             var result = sut.CreateBehaviors(operation, new FakeWorkflowConfiguration());
@@ -30,7 +30,7 @@ namespace Overflow.Test.Behaviors
             Assert.Equal(0, result.Count);
         }
 
-        private class SkippableOperation : Operation, IConditionalOperation
+        public class SkippableOperation : Operation, IConditionalOperation
         {
             protected override void OnExecute() { }
 

@@ -1,14 +1,14 @@
 using System;
 using System.IO;
 using Overflow.Test.Fakes;
+using Overflow.Test.TestingInfrastructure;
+using Ploeh.AutoFixture;
 using Xunit;
 
 namespace Overflow.Test
 {
-    public class TextWriterWorkflowLoggerTests
+    public class TextWriterWorkflowLoggerTests : TestBase
     {
-        private static readonly string NL = Environment.NewLine;
-
         [Fact]
         public void Logging_an_operation_start_writes_the_operation_type_to_the_output()
         {
@@ -23,9 +23,11 @@ namespace Overflow.Test
         }
 
         [Fact]
-        public void You_cannot_create_a_logger_without_a_text_writer()
+        public void Guards_are_verified()
         {
-            Assert.Throws<ArgumentNullException>(() => new TextWriterWorkflowLogger(null));
+            Fixture.Register(() => Console.Out);
+
+            VerifyGuards<TextWriterWorkflowLogger>();
         }
 
         [Fact]

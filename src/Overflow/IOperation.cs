@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Overflow.Extensibility;
+using Overflow.Utilities;
 
 namespace Overflow
 {
@@ -16,6 +17,8 @@ namespace Overflow
     {
         public static IList<ExecutionInfo> GetExecutedChildOperationsForOperationHierarchy(this IOperation parentOperation)
         {
+            Verify.NotNull(parentOperation, "parentOperation");
+
             var result = new List<ExecutionInfo>();
 
             foreach (var execution in parentOperation.ExecutedChildOperations)
@@ -29,6 +32,8 @@ namespace Overflow
 
         public static IOperation GetInnermostOperation(this IOperation operation)
         {
+            Verify.NotNull(operation, "operation");
+
             while (true)
             {
                 var behavior = operation as OperationBehavior;

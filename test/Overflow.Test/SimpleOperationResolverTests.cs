@@ -1,148 +1,150 @@
 using System;
 using Overflow.Extensibility;
 using Overflow.Test.Fakes;
+using Overflow.Test.TestingInfrastructure;
 using Xunit;
+using Xunit.Extensions;
 
 namespace Overflow.Test
 {
     public class SimpleOperationResolverTests
     {
-        [Fact]
-        public void The_simple_resolver_can_resolve_operations_without_any_dependencies()
+        [Theory, AutoMoqData]
+        public void The_simple_resolver_can_resolve_operations_without_any_dependencies(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
 
-            var result = sut.Resolve<SimpleTestOperation>(new FakeWorkflowConfiguration());
+            var result = sut.Resolve<SimpleTestOperation>(configuration);
 
             Assert.NotNull(result);
         }
 
-        [Fact]
-        public void The_simple_resolver_can_resolve_operations_with_registered_dependencies()
+        [Theory, AutoMoqData]
+        public void The_simple_resolver_can_resolve_operations_with_registered_dependencies(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            var result = sut.Resolve<OperationWithDependencies>(new FakeWorkflowConfiguration());
+            var result = sut.Resolve<OperationWithDependencies>(configuration);
 
             Assert.NotNull(result);
         }
 
-        [Fact]
-        public void You_can_Register_the_same_dependency_more_than_once()
+        [Theory, AutoMoqData]
+        public void You_can_Register_the_same_dependency_more_than_once(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            var result = sut.Resolve<OperationWithDependencies>(new FakeWorkflowConfiguration());
+            var result = sut.Resolve<OperationWithDependencies>(configuration);
 
             Assert.NotNull(result);
         }
 
-        [Fact]
-        public void The_simple_resolver_can_resolve_operations_with_nested_dependencies()
+        [Theory, AutoMoqData]
+        public void The_simple_resolver_can_resolve_operations_with_nested_dependencies(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
             sut.RegisterOperationDependency<ComplexDependency, ComplexDependency>();
 
-            var result = sut.Resolve<OperationWithComplexDependencies>(new FakeWorkflowConfiguration());
+            var result = sut.Resolve<OperationWithComplexDependencies>(configuration);
 
             Assert.NotNull(result);
         }
 
-        [Fact]
-        public void The_simple_resolver_cannot_resolve_operations_with_unregistered_dependencies()
+        [Theory, AutoMoqData]
+        public void The_simple_resolver_cannot_resolve_operations_with_unregistered_dependencies(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
 
-            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithDependencies>(new FakeWorkflowConfiguration()));
+            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithDependencies>(configuration));
         }
 
-        [Fact]
-        public void The_simple_resolver_cannot_resolve_operations_with_unregistered_sub_dependencies()
+        [Theory, AutoMoqData]
+        public void The_simple_resolver_cannot_resolve_operations_with_unregistered_sub_dependencies(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<ComplexDependency, ComplexDependency>();
 
-            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithComplexDependencies>(new FakeWorkflowConfiguration()));
+            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithComplexDependencies>(configuration));
         }
 
-        [Fact]
-        public void Resolving_the_same_operation_twice_returns_two_different_instances()
+        [Theory, AutoMoqData]
+        public void Resolving_the_same_operation_twice_returns_two_different_instances(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            var result1 = sut.Resolve<SimpleTestOperation>(new FakeWorkflowConfiguration());
-            var result2 = sut.Resolve<SimpleTestOperation>(new FakeWorkflowConfiguration());
+            var result1 = sut.Resolve<SimpleTestOperation>(configuration);
+            var result2 = sut.Resolve<SimpleTestOperation>(configuration);
 
             Assert.NotSame(result1, result2);
         }
 
-        [Fact]
-        public void Dependencies_are_resolved_as_new_instances_every_time()
+        [Theory, AutoMoqData]
+        public void Dependencies_are_resolved_as_new_instances_every_time(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            var result1 = sut.Resolve<OperationWithDependencies>(new FakeWorkflowConfiguration()) as OperationWithDependencies;
-            var result2 = sut.Resolve<OperationWithDependencies>(new FakeWorkflowConfiguration()) as OperationWithDependencies;
+            var result1 = sut.Resolve<OperationWithDependencies>(configuration) as OperationWithDependencies;
+            var result2 = sut.Resolve<OperationWithDependencies>(configuration) as OperationWithDependencies;
 
             Assert.NotSame(result1.Dependency, result2.Dependency);
         }
 
-        [Fact]
-        public void Operations_having_more_than_one_constructor_cannot_be_resolved()
+        [Theory, AutoMoqData]
+        public void Operations_having_more_than_one_constructor_cannot_be_resolved(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
 
-            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithTwoConstructors>(new FakeWorkflowConfiguration()));
+            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithTwoConstructors>(configuration));
         }
 
-        [Fact]
-        public void Operations_with_dependencies_having_more_than_one_constructor_cannot_be_resolved()
+        [Theory, AutoMoqData]
+        public void Operations_with_dependencies_having_more_than_one_constructor_cannot_be_resolved(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
             sut.RegisterOperationDependency<DependencyWithTwoConstructors, DependencyWithTwoConstructors>();
 
-            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithDualConstructorDependency>(new FakeWorkflowConfiguration()));
+            Assert.Throws<InvalidOperationException>(() => sut.Resolve<OperationWithDualConstructorDependency>(configuration));
         }
 
-        [Fact]
-        public void Dependencies_can_be_registered_as_implementations()
+        [Theory, AutoMoqData]
+        public void Dependencies_can_be_registered_as_implementations(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<IDependency, SimpleDependency>();
 
-            var result = sut.Resolve<OperationWithInterfaceDependency>(new FakeWorkflowConfiguration());
+            var result = sut.Resolve<OperationWithInterfaceDependency>(configuration);
 
             Assert.NotNull(result);
         }
 
-        [Fact]
-        public void The_last_registered_dependency_of_a_given_type_wins()
+        [Theory, AutoMoqData]
+        public void The_last_registered_dependency_of_a_given_type_wins(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
             sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
             sut.RegisterOperationDependency<IDependency, SimpleDependency>();
             sut.RegisterOperationDependency<IDependency, ComplexDependency>();
 
-            var result = sut.Resolve<OperationWithInterfaceDependency>(new FakeWorkflowConfiguration()) as OperationWithInterfaceDependency;
+            var result = sut.Resolve<OperationWithInterfaceDependency>(configuration) as OperationWithInterfaceDependency;
 
             Assert.IsType<ComplexDependency>(result.Dependency);
         }
 
-        [Fact]
-        public void Resolving_operations_creates_and_applies_all_behaviors_to_the_created_operations()
+        [Theory, AutoMoqData]
+        public void Resolving_operations_creates_and_applies_all_behaviors_to_the_created_operations(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
             var factory = new FakeOperationBehaviorFactory();
             factory.OperationBehaviors.Add(new FakeOperationBehavior { SetPrecedence = BehaviorPrecedence.StateRecovery });
-            var workflow = new FakeWorkflowConfiguration().WithBehaviorFactory(factory);
+            var workflow = configuration.WithBehaviorFactory(factory);
 
             var result = sut.Resolve<SimpleTestOperation>(workflow);
 
@@ -150,15 +152,15 @@ namespace Overflow.Test
             Assert.IsType<SimpleTestOperation>((result as OperationBehavior).InnerOperation);
         }
 
-        [Fact]
-        public void Behaviors_are_applied_sorted_by_precedence_with_the_higher_precedence_behaviors_on_the_outside()
+        [Theory, AutoMoqData]
+        public void Behaviors_are_applied_sorted_by_precedence_with_the_higher_precedence_behaviors_on_the_outside(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
             var factory = new FakeOperationBehaviorFactory();
             factory.OperationBehaviors.Add(new FakeOperationBehavior { SetPrecedence = BehaviorPrecedence.StateRecovery });
             factory.OperationBehaviors.Add(new FakeOperationBehavior { SetPrecedence = BehaviorPrecedence.Logging });
             factory.OperationBehaviors.Add(new FakeOperationBehavior { SetPrecedence = BehaviorPrecedence.WorkCompensation });
-            var workflow = new FakeWorkflowConfiguration().WithBehaviorFactory(factory);
+            var workflow = configuration.WithBehaviorFactory(factory);
 
             var result = sut.Resolve<SimpleTestOperation>(workflow);
 

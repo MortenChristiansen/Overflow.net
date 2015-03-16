@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using Overflow.Extensibility;
+using Overflow.Utilities;
 
 namespace Overflow.Behaviors
 {
@@ -8,11 +8,8 @@ namespace Overflow.Behaviors
     {
         public IList<OperationBehavior> CreateBehaviors(IOperation operation, WorkflowConfiguration configuration)
         {
-            if (operation == null)
-                throw new ArgumentNullException("operation");
-
-            if (configuration == null)
-                throw new ArgumentNullException("configuration");
+            Verify.NotNull(operation, "operation");
+            Verify.NotNull(configuration, "configuration");
 
             if (configuration.Logger == null)
                 return new OperationBehavior[0];

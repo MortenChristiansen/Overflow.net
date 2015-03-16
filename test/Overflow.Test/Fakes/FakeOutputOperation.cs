@@ -2,7 +2,7 @@ using System;
 
 namespace Overflow.Test.Fakes
 {
-    class FakeOutputOperation<TOutput> : Operation, IOutputOperation<TOutput> where TOutput : class
+    public class FakeOutputOperation<TOutput> : Operation, IOutputOperation<TOutput> where TOutput : class
     {
         public Action<TOutput> OnReceiveOutput { get; private set; }
         public TOutput OutputValue { get; set; }

@@ -1,4 +1,5 @@
 using System;
+using Overflow.Utilities;
 
 namespace Overflow
 {
@@ -11,8 +12,7 @@ namespace Overflow
 
         public ExecutionInfo(IOperation operation, Exception error, DateTimeOffset started, DateTimeOffset completed)
         {
-            if (operation == null)
-                throw new ArgumentNullException("operation");
+            Verify.NotNull(operation, "operation");
 
             Operation = operation;
             Error = error;

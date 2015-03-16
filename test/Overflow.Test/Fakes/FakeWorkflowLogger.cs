@@ -4,7 +4,7 @@ using Overflow.Extensibility;
 
 namespace Overflow.Test.Fakes
 {
-    class FakeWorkflowLogger : IWorkflowLogger
+    public class FakeWorkflowLogger : IWorkflowLogger
     {
         public IList<IOperation> StartedOperations { get; private set; }
         public IList<IOperation> FinishedOperations { get; private set; }

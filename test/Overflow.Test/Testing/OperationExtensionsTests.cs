@@ -1,11 +1,11 @@
-using System;
 using Overflow.Test.Fakes;
+using Overflow.Test.TestingInfrastructure;
 using Xunit;
 using Overflow.Testing;
 
 namespace Overflow.Test.Testing
 {
-    public class OperationExtensionsTests
+    public class OperationExtensionsTests : TestBase
     {
         [Fact]
         public void You_can_verify_that_executing_an_operation_has_executed_a_specific_sequence_of_child_operations()
@@ -35,7 +35,7 @@ namespace Overflow.Test.Testing
             try { operation.HasExecutedChildOperations(typeof(Operation1), typeof(FakeOperation), typeof(Operation2)); }
             catch (AssertionException e) { exception = e; }
 
-            var formattedErrorMessage = string.Format("Operations{0}=========={0}Operation1 [match]{0}FakeOperation [match]{0}Operation1 [error: expected Operation2]", Environment.NewLine);
+            var formattedErrorMessage = string.Format("Operations{0}=========={0}Operation1 [match]{0}FakeOperation [match]{0}Operation1 [error: expected Operation2]", NL);
             Assert.Equal(formattedErrorMessage, exception.Message);
         }
 
@@ -49,7 +49,7 @@ namespace Overflow.Test.Testing
             try { operation.HasExecutedChildOperations(typeof(Operation1), typeof(FakeOperation)); }
             catch (AssertionException e) { exception = e; }
 
-            var formattedErrorMessage = string.Format("Operations{0}=========={0}Operation1 [match]{0}FakeOperation [match]{0}Operation1 [error: expected none]", Environment.NewLine);
+            var formattedErrorMessage = string.Format("Operations{0}=========={0}Operation1 [match]{0}FakeOperation [match]{0}Operation1 [error: expected none]", NL);
             Assert.Equal(formattedErrorMessage, exception.Message);
         }
 
@@ -63,7 +63,7 @@ namespace Overflow.Test.Testing
             try { operation.HasExecutedChildOperations(typeof(Operation1), typeof(FakeOperation), typeof(Operation2)); }
             catch (AssertionException e) { exception = e; }
 
-            var formattedErrorMessage = string.Format("Operations{0}=========={0}Operation1 [match]{0}FakeOperation [match]{0}none [error: expected Operation2]", Environment.NewLine);
+            var formattedErrorMessage = string.Format("Operations{0}=========={0}Operation1 [match]{0}FakeOperation [match]{0}none [error: expected Operation2]", NL);
             Assert.Equal(formattedErrorMessage, exception.Message);
         }
 
@@ -77,7 +77,7 @@ namespace Overflow.Test.Testing
             try { operation.HasExecutedChildOperations(typeof(Operation1), typeof(FakeOperation), typeof(Operation2), typeof(Operation1)); }
             catch (AssertionException e) { exception = e; }
 
-            var formattedErrorMessage = string.Format("Operations{0}=========={0}Operation1 [match]{0}FakeOperation [match]{0}Operation1 [error: expected Operation2]{0}Operation1 [match]", Environment.NewLine);
+            var formattedErrorMessage = string.Format("Operations{0}=========={0}Operation1 [match]{0}FakeOperation [match]{0}Operation1 [error: expected Operation2]{0}Operation1 [match]", NL);
             Assert.Equal(formattedErrorMessage, exception.Message);
         }
 

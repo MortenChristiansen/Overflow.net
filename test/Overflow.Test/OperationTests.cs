@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Overflow.Test.Fakes;
+using Overflow.Test.TestingInfrastructure;
 using Overflow.Utilities;
 using Xunit;
+using Xunit.Extensions;
 
 namespace Overflow.Test
 {
@@ -44,10 +46,10 @@ namespace Overflow.Test
             Assert.Equal(op2, FakeOperation.ExecutedOperations[2]);
         }
 
-        [Fact]
-        public void You_can_create_operation_with_a_configuration_containing_a_resolver()
+        [Theory, AutoMoqData]
+        public void You_can_create_operation_with_a_configuration_containing_a_resolver(IOperationResolver resolver)
         {
-            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = new SimpleOperationResolver() };
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = resolver };
 
             var result = Operation.Create<TestOperation>(correctConfiguration);
 
@@ -70,29 +72,29 @@ namespace Overflow.Test
             Assert.Throws<InvalidOperationException>(() => Operation.Create<TestOperation>(null));
         }
 
-        [Fact]
-        public void You_cannot_create_operations_when_the_operation_resolver_is_not_set()
+        [Theory, AutoMoqData]
+        public void You_cannot_create_operations_when_the_operation_resolver_is_not_set(WorkflowConfiguration configuration)
         {
-            Assert.Throws<InvalidOperationException>(() => Operation.Create<TestOperation>(new FakeWorkflowConfiguration()));
+            Assert.Throws<InvalidOperationException>(() => Operation.Create<TestOperation>(configuration));
         }
 
-        [Fact]
-        public void You_can_create_a_new_operation_from_an_initialized_operation_instance()
+        [Theory, AutoMoqData]
+        public void You_can_create_a_new_operation_from_an_initialized_operation_instance(IOperationResolver resolver)
         {
-            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = new SimpleOperationResolver() };
-            var operation = new FakeOperation();
-            operation.Initialize(correctConfiguration);
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = resolver };
+            var sut = new FakeOperation();
+            sut.Initialize(correctConfiguration);
 
-            var result = operation.PublicCreate<TestOperation>();
+            var result = sut.PublicCreate<TestOperation>();
 
             Assert.NotNull(result);
         }
 
-        [Fact]
-        public void Data_flows_between_child_operations()
+        [Theory, AutoMoqData]
+        public void Data_flows_between_child_operations(object output)
         {
             var inputOperation = new FakeInputOperation<object>();
-            var outpuOperation = new FakeOutputOperation<object> { OutputValue = new object() };
+            var outpuOperation = new FakeOutputOperation<object> { OutputValue = output };
             var sut = new FakeOperation(outpuOperation, inputOperation);
 
             sut.Execute();
@@ -100,20 +102,20 @@ namespace Overflow.Test
             Assert.Equal(outpuOperation.OutputValue, inputOperation.ProvidedInput);
         }
 
-        [Fact]
-        public void You_can_get_outputted_values_from_within_the_operation()
+        [Theory, AutoMoqData]
+        public void You_can_get_outputted_values_from_within_the_operation(object output)
         {
-            var sut = new OutputtingOperation { ExpectedOutput = new object() };
+            var sut = new OutputtingOperation { ExpectedOutput = output };
 
             sut.Execute();
 
             Assert.Equal(sut.ExpectedOutput, sut.ActualOutput);
         }
 
-        [Fact]
-        public void Input_data_automatically_flows_to_child_operations_when_consumed_in_parent_operation()
+        [Theory, AutoMoqData]
+        public void Input_data_automatically_flows_to_child_operations_when_consumed_in_parent_operation(object output)
         {
-            var outputOperation = new FakeOutputOperation<object> { OutputValue = new object() };
+            var outputOperation = new FakeOutputOperation<object> { OutputValue = output };
             var childInputOperation = new FakeInputOperation<object>();
             var parentInputOperation = new FakeInputOperation<object>(childInputOperation);
             var sut = new FakeOperation(outputOperation, parentInputOperation);
@@ -123,10 +125,10 @@ namespace Overflow.Test
             Assert.Equal(outputOperation.OutputValue, childInputOperation.ProvidedInput);
         }
 
-        [Fact]
-        public void Input_data_flow_is_cut_off_from_child_operations_if_not_consumed_by_parent_operation()
+        [Theory, AutoMoqData]
+        public void Input_data_flow_is_cut_off_from_child_operations_if_not_consumed_by_parent_operation(object output)
         {
-            var outputOperation = new FakeOutputOperation<object> { OutputValue = new object() };
+            var outputOperation = new FakeOutputOperation<object> { OutputValue = output };
             var childInputOperation = new FakeInputOperation<object>();
             var parentInputOperation = new FakeOperation(childInputOperation);
             var sut = new FakeOperation(outputOperation, parentInputOperation);
@@ -136,10 +138,9 @@ namespace Overflow.Test
             Assert.Null(childInputOperation.ProvidedInput);
         }
 
-        [Fact]
-        public void Executed_child_operations_are_added_to_the_execution_info_list()
+        [Theory, AutoMoqData]
+        public void Executed_child_operations_are_added_to_the_execution_info_list(IOperation childOperation)
         {
-            var childOperation = new FakeOperation();
             var sut = new FakeOperation(childOperation);
 
             sut.Execute();
@@ -148,10 +149,10 @@ namespace Overflow.Test
             Assert.Equal(childOperation, sut.ExecutedChildOperations.ElementAt(0).Operation);
         }
 
-        [Fact]
-        public void Child_operation_execution_info_contains_error_info()
+        [Theory, AutoMoqData]
+        public void Child_operation_execution_info_contains_error_info(Exception error)
         {
-            var childOperation = new FakeOperation { ThrowOnExecute = new Exception() };
+            var childOperation = new FakeOperation { ThrowOnExecute = error };
             var sut = new FakeOperation(childOperation);
 
             try { sut.Execute(); }
