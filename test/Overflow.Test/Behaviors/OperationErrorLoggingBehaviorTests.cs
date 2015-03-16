@@ -8,7 +8,7 @@ using Xunit.Extensions;
 
 namespace Overflow.Test.Behaviors
 {
-    public class OperationErrorLoggingBehaviorTests
+    public class OperationErrorLoggingBehaviorTests : TestBase
     {
         [Theory, AutoMoqData]
         public void The_behavior_has_logging_level_precedence(IWorkflowLogger logger)

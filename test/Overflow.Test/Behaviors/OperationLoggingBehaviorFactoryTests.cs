@@ -7,7 +7,7 @@ using Xunit.Extensions;
 
 namespace Overflow.Test.Behaviors
 {
-    public class OperationLoggingBehaviorFactoryTests
+    public class OperationLoggingBehaviorFactoryTests : TestBase
     {
         [Theory, AutoMoqData]
         public void The_logging_behaviors_are_created_when_the_log_is_defined_on_the_configuration(IWorkflowLogger logger, IOperation operation)
@@ -32,20 +32,10 @@ namespace Overflow.Test.Behaviors
             Assert.Equal(0, result.Count);
         }
 
-        [Theory, AutoMoqData]
-        public void You_cannot_create_the_behavior_without_an_operation(WorkflowConfiguration configuration)
+        [Fact]
+        public void Guards_are_verified()
         {
-            var sut = new OperationLoggingBehaviorFactory();
-
-            Assert.Throws<ArgumentNullException>(() => sut.CreateBehaviors(null, configuration));
-        }
-
-        [Theory, AutoMoqData]
-        public void You_cannot_create_the_behavior_without_a_configuration(IOperation operation)
-        {
-            var sut = new OperationLoggingBehaviorFactory();
-
-            Assert.Throws<ArgumentNullException>(() => sut.CreateBehaviors(operation, null));
+            VerifyGuards<OperationLoggingBehaviorFactory>();
         }
     }
 }

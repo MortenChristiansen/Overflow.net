@@ -48,6 +48,8 @@ namespace Overflow
 
         public WorkflowConfiguration WithBehaviorFactory(IOperationBehaviorFactory factory)
         {
+            Verify.NotNull(factory, "factory");
+
             BehaviorFactories.Add(factory);
 
             return this;

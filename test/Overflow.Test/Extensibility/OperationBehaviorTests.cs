@@ -7,7 +7,7 @@ using Xunit.Extensions;
 
 namespace Overflow.Test.Extensibility
 {
-    public class OperationBehaviorTests
+    public class OperationBehaviorTests : TestBase
     {
         private const string Description = "Description";
 
@@ -19,6 +19,12 @@ namespace Overflow.Test.Extensibility
             sut.Attach(operation);
 
             Assert.Equal(operation, sut.InnerOperation);
+        }
+
+        [Fact]
+        public void Guards_are_verified()
+        {
+            VerifyGuards<TestBehavior>();
         }
 
         [Theory, AutoMoqData]

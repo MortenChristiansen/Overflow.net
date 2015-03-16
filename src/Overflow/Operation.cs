@@ -16,6 +16,8 @@ namespace Overflow
 
         public virtual void Initialize(WorkflowConfiguration configuration)
         {
+            Verify.NotNull(configuration, "configuration");
+
             _configuration = configuration;
         }
 

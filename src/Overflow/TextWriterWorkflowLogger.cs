@@ -21,6 +21,8 @@ namespace Overflow
 
         public void OperationStarted(IOperation operation)
         {
+            Verify.NotNull(operation, "operation");
+
             PrepareForChildItem();
 
             _writer.Write(operation.GetType().Name);
@@ -53,6 +55,7 @@ namespace Overflow
 
         public void OperationFinished(IOperation operation)
         {
+            Verify.NotNull(operation, "operation");
             Verify.Operation(_levelInfo.Count > 0, "No operation was logged as started so a finished operation cannot be logged.");
 
             var levelInfo = _levelInfo.Pop();
@@ -63,6 +66,8 @@ namespace Overflow
 
         public void OperationFailed(IOperation operation, Exception error)
         {
+            Verify.NotNull(operation, "operation");
+            Verify.NotNull(error, "error");
             Verify.Operation(_levelInfo.Count > 0, "No operation was logged as started so an operation failure cannot be logged.");
 
             PrepareForChildItem();
@@ -72,6 +77,9 @@ namespace Overflow
 
         public void BehaviorWasApplied(IOperation operation, OperationBehavior behavior, string description)
         {
+            Verify.NotNull(operation, "operation");
+            Verify.NotNull(behavior, "behavior");
+            Verify.NotNull(description, "description");
             Verify.Operation(_levelInfo.Count > 0, "No operation was logged as started so an operation behavior cannot be logged.");
             
             PrepareForChildItem();

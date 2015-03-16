@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Overflow.Utilities;
 
 namespace Overflow.Testing
 {
@@ -8,6 +9,9 @@ namespace Overflow.Testing
     {
         public static void HasExecutedChildOperations(this IOperation operation, params Type[] expectedOperationTypes)
         {
+            Verify.NotNull(operation, "operation");
+            Verify.NotNull(expectedOperationTypes, "expectedOperationTypes");
+
             var messageParts = new List<string>(expectedOperationTypes.Length + 2) { "Operations", "==========" };
             var executedOperations = operation.GetExecutedChildOperationsForOperationHierarchy().ToList();
             var items = Math.Max(expectedOperationTypes.Length, executedOperations.Count);

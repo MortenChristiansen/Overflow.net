@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Overflow.Utilities;
 
 namespace Overflow.Extensibility
 {
@@ -12,8 +13,7 @@ namespace Overflow.Extensibility
 
         public IOperation Attach(IOperation innerOperation)
         {
-            if (innerOperation == null)
-                throw new ArgumentNullException("innerOperation");
+            Verify.NotNull(innerOperation, "innerOperation");
 
             InnerOperation = innerOperation;
 
@@ -24,6 +24,8 @@ namespace Overflow.Extensibility
 
         public void Initialize(WorkflowConfiguration configuration)
         {
+            Verify.NotNull(configuration, "configuration");
+
             _logger = configuration.Logger;
 
             InnerOperation.Initialize(configuration);
@@ -41,6 +43,8 @@ namespace Overflow.Extensibility
 
         protected void BehaviorWasApplied(string description)
         {
+            Verify.NotNull(description, "description");
+
             if (_logger != null)
                 _logger.BehaviorWasApplied(InnerOperation.GetInnermostOperation(), this, description);
         }

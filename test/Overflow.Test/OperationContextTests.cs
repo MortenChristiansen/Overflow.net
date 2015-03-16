@@ -5,8 +5,14 @@ using Xunit.Extensions;
 
 namespace Overflow.Test
 {
-    public class OperationContextTests
+    public class OperationContextTests : TestBase
     {
+        [Fact]
+        public void Guards_are_verified()
+        {
+            VerifyGuards<OperationContext>();
+        }
+
         [Theory, AutoMoqData]
         public void Registering_output_handlers_calls_registration_methods_on_output_operation(IOperation op)
         {

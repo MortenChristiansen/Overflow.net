@@ -20,6 +20,8 @@ namespace Overflow
 
         public IOperation Resolve<TOperation>(WorkflowConfiguration configuration) where TOperation : IOperation
         {
+            Verify.NotNull(configuration, "configuration");
+
             var actualOperation = GetActualOperation<TOperation>();
             return GetDecoratedOperation(actualOperation, configuration) ?? actualOperation;
         }
