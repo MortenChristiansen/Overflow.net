@@ -6,6 +6,9 @@ namespace Overflow
     /// </summary>
     public interface IConditionalOperation
     {
+        /// <summary>
+        /// Get whether the operation should skip execution.
+        /// </summary>
         bool SkipExecution { get; }
     }
 }

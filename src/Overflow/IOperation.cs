@@ -22,7 +22,8 @@ namespace Overflow
         /// <param name="configuration">The global configuration of the workflow</param>
         void Initialize(WorkflowConfiguration configuration);
         /// <summary>
-        /// Run the logic of the operation.
+        /// Run the logic of the operation followed by all the
+        /// child operations.
         /// </summary>
         void Execute();
         /// <summary>
@@ -35,6 +36,9 @@ namespace Overflow
         IEnumerable<IOperation> GetChildOperations();
     }
 
+    /// <summary>
+    /// Extension methods for the IOperation interface.
+    /// </summary>
     public static class IOperationExtensions
     {
         /// <summary>

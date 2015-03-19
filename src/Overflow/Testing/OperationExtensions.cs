@@ -5,6 +5,9 @@ using Overflow.Utilities;
 
 namespace Overflow.Testing
 {
+    /// <summary>
+    /// Extension methods for the IOperation interface.
+    /// </summary>
     public static class OperationExtensions
     {
         /// <summary>
