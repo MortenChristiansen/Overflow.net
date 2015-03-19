@@ -8,7 +8,7 @@ namespace Overflow
     public static class Workflow
     {
         /// <summary>
-        /// Create a cofniguration with the standard behavior factories.
+        /// Create a configuration with the standard behavior factories.
         /// </summary>
         /// <typeparam name="TOperation">The root operation type of the workflow</typeparam>
         /// <returns>The created configuration</returns>
