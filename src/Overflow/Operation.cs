@@ -110,6 +110,21 @@ namespace Overflow
         }
 
         /// <summary>
+        /// Create a new initialized instance of an input operation type.
+        /// The operation is supplied with the specified input value.
+        /// </summary>
+        /// <typeparam name="TOperation">The type of operation to create</typeparam>
+        /// <typeparam name="TInput">The type of input to provide it</typeparam>
+        /// <param name="input">The input data</param>
+        /// <returns>A new operation instance</returns>
+        protected IOperation Create<TOperation, TInput>(TInput input)
+            where TInput : class
+            where TOperation : IOperation, IInputOperation<TInput>
+        {
+            return Create<TOperation>(_configuration);
+        }
+
+        /// <summary>
         /// Find a value of a given type which has been produced as 
         /// output by a child operation implementing the IOutputOperation
         /// interface.

@@ -51,5 +51,16 @@ namespace Overflow.Test.Fakes
         {
             return Create<T>();
         }
+
+        public IOperation PublicCreate<TOperation, TInput>(TInput input)
+            where TInput : class
+            where TOperation : IOperation, IInputOperation<TInput>
+        {
+            var operation = Create<TOperation, TInput>(input);
+
+            ((IInputOperation<TInput>)operation).Input(input);
+
+            return operation;
+        }
     }
 }
