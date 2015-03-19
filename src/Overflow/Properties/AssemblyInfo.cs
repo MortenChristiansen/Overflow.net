@@ -3,9 +3,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Overflow.net")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A portable class library for executing object workflows.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Morten Christiansen")]
 [assembly: AssemblyProduct("Overflow.net")]
 [assembly: AssemblyCopyright("Copyright © 2015")]
 [assembly: AssemblyTrademark("")]
