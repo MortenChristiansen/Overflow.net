@@ -141,6 +141,16 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
+        public void You_can_get_outputted_collection_values_from_within_the_operation(IEnumerable<object> output)
+        {
+            var sut = new OutputtingCollectionOperation { ExpectedOutput = output };
+
+            sut.Execute();
+
+            Assert.Equal(sut.ExpectedOutput, sut.ActualOutput);
+        }
+
+        [Theory, AutoMoqData]
         public void Input_data_automatically_flows_to_child_operations_when_consumed_in_parent_operation(object output)
         {
             var outputOperation = new FakeOutputOperation<object> { OutputValue = output };
@@ -227,6 +237,20 @@ namespace Overflow.Test
             {
                 yield return new FakeOutputOperation<object> { OutputValue = ExpectedOutput };
                 ActualOutput = GetChildOutputValue<object>();
+            }
+        }
+
+        private class OutputtingCollectionOperation : Operation
+        {
+            public IEnumerable<object> ExpectedOutput { get; set; }
+            public IEnumerable<object> ActualOutput { get; private set; }
+
+            protected override void OnExecute() { }
+
+            public override IEnumerable<IOperation> GetChildOperations()
+            {
+                yield return new FakeOutputOperation<IEnumerable<object>> { OutputValue = ExpectedOutput };
+                ActualOutput = GetChildOutputValues<object>();
             }
         }
 

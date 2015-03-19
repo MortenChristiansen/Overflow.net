@@ -136,5 +136,20 @@ namespace Overflow
         {
             return _context.GetOutput<TOutput>();
         }
+
+        /// <summary>
+        /// Find a collection of a given type which has been produced as 
+        /// output by a child operation implementing the IOutputOperation
+        /// interface. This method is a shorthand for 
+        /// GetChildOutputValue&lt;IEnumerable&lt;TOutput&gt;&gt;.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of the value</typeparam>
+        /// <returns>The a collection of values if it has been produced and 
+        /// null otherwise.</returns>
+        protected IEnumerable<TOutput> GetChildOutputValues<TOutput>()
+            where TOutput : class
+        {
+            return GetChildOutputValue<IEnumerable<TOutput>>();
+        }
     }
 }
