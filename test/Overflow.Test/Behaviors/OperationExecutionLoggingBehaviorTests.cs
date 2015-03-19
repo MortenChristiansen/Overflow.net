@@ -3,6 +3,7 @@ using Overflow.Behaviors;
 using Overflow.Extensibility;
 using Overflow.Test.Fakes;
 using Overflow.Test.TestingInfrastructure;
+using Overflow.Utilities;
 using Xunit;
 using Xunit.Extensions;
 
@@ -53,6 +54,18 @@ namespace Overflow.Test.Behaviors
 
             Assert.Equal(1, logger.StartedOperations.Count);
             Assert.Equal(1, logger.FinishedOperations.Count);
+        }
+
+        [Theory, AutoMoqData]
+        public void Executing_an_operation_logs_the_duration(FakeWorkflowLogger logger)
+        {
+            Time.Stop();
+            var innerOperation = new FakeOperation { ExecuteAction = () => Time.Wait(TimeSpan.FromMilliseconds(10)) };
+            var sut = new OperationExecutionLoggingBehavior(logger).Attach(innerOperation);
+
+            sut.Execute();
+
+            Assert.Equal(TimeSpan.FromMilliseconds(10).TotalMilliseconds, logger.FinishedOperationDurations[0].TotalMilliseconds);
         }
     }
 }

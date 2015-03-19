@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Overflow.Utilities
@@ -30,6 +31,35 @@ namespace Overflow.Utilities
                 new AutoResetEvent(false).WaitOne(timeSpan);
             else
                 _stoppedAt += timeSpan;
+        }
+
+        public static Measurement Measure()
+        {
+            return new Measurement();
+        }
+
+        public class Measurement
+        {
+            private readonly Stopwatch _stopwatch;
+            private readonly DateTimeOffset? _startedAt;
+
+            internal Measurement()
+            {
+                if (_stoppedAt.HasValue)
+                    _startedAt = OffsetUtcNow;
+
+                _stopwatch = Stopwatch.StartNew();
+            }
+
+            public long GetElapsedMilliseconds()
+            {
+                var elapsed = _stopwatch.ElapsedMilliseconds;
+
+                if (_startedAt.HasValue)
+                    return (long)(OffsetUtcNow - _startedAt.Value).TotalMilliseconds;
+
+                return elapsed;
+            }
         }
     }
 }

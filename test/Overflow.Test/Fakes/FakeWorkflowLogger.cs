@@ -8,6 +8,7 @@ namespace Overflow.Test.Fakes
     {
         public IList<IOperation> StartedOperations { get; private set; }
         public IList<IOperation> FinishedOperations { get; private set; }
+        public IList<TimeSpan> FinishedOperationDurations { get; private set; }
         public IDictionary<IOperation, IList<Exception>> OperationFailures { get; private set; }
         public IList<BehaviorApplication> AppliedBehaviors { get; private set; }
 
@@ -15,6 +16,7 @@ namespace Overflow.Test.Fakes
         {
             StartedOperations = new List<IOperation>();
             FinishedOperations = new List<IOperation>();
+            FinishedOperationDurations = new List<TimeSpan>();
             OperationFailures = new Dictionary<IOperation, IList<Exception>>();
             AppliedBehaviors = new List<BehaviorApplication>();
         }
@@ -24,9 +26,10 @@ namespace Overflow.Test.Fakes
             StartedOperations.Add(operation);
         }
 
-        public void OperationFinished(IOperation operation)
+        public void OperationFinished(IOperation operation, TimeSpan duration)
         {
             FinishedOperations.Add(operation);
+            FinishedOperationDurations.Add(duration);
         }
 
         public void OperationFailed(IOperation operation, Exception error)

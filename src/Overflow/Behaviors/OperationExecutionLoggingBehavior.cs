@@ -1,5 +1,6 @@
 using System;
 using Overflow.Extensibility;
+using Overflow.Utilities;
 
 namespace Overflow.Behaviors
 {
@@ -22,10 +23,11 @@ namespace Overflow.Behaviors
             var innermostOperation = this.GetInnermostOperation();
 
             _logger.OperationStarted(innermostOperation);
+            var measurement = Time.Measure();
             try { base.Execute(); }
             finally
             {
-                _logger.OperationFinished(innermostOperation);
+                _logger.OperationFinished(innermostOperation, TimeSpan.FromMilliseconds(measurement.GetElapsedMilliseconds()));
             }
         }
     }

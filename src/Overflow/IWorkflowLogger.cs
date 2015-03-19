@@ -17,7 +17,10 @@ namespace Overflow
         /// Log an operation has finished executing.
         /// </summary>
         /// <param name="operation">The executing operation</param>
-        void OperationFinished(IOperation operation);
+        /// <param name="duration">The duration of the operation execution, including
+        /// child operations and any behaviors running after the operation start
+        /// was logged.</param>
+        void OperationFinished(IOperation operation, TimeSpan duration);
         /// <summary>
         /// Log an exception while executing an operation.
         /// </summary>

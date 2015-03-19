@@ -1,5 +1,7 @@
 using System;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using Overflow.Test.Fakes;
 using Overflow.Test.TestingInfrastructure;
 using Ploeh.AutoFixture;
@@ -38,8 +40,53 @@ namespace Overflow.Test
                 var sut = new TextWriterWorkflowLogger(sw);
 
                 sut.OperationStarted(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Equal("FakeOperation", sw.ToString());
+                Assert.Equal("FakeOperation [duration: 0ms]", sw.ToString());
+            }
+        }
+
+        [Fact]
+        public void The_execution_duration_is_added_in_milliseconds()
+        {
+            using (var sw = new StringWriter())
+            {
+                var sut = new TextWriterWorkflowLogger(sw);
+
+                sut.OperationStarted(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.FromMilliseconds(15));
+
+                Assert.Equal("FakeOperation [duration: 15ms]", sw.ToString());
+            }
+        }
+
+        [Fact]
+        public void Log_durations_are_properly_formatted_according_to_cultures_using_period_as_thousands_seperator()
+        {
+            using (var sw = new StringWriter())
+            {
+                var sut = new TextWriterWorkflowLogger(sw);
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("da-DK");
+
+                sut.OperationStarted(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.FromMilliseconds(1500000));
+
+                Assert.Equal("FakeOperation [duration: 1.500.000ms]", sw.ToString());
+            }
+        }
+
+        [Fact]
+        public void Log_durations_are_properly_formatted_according_to_cultures_using_comma_as_thousands_seperator()
+        {
+            using (var sw = new StringWriter())
+            {
+                var sut = new TextWriterWorkflowLogger(sw);
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
+                sut.OperationStarted(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.FromMilliseconds(1500000));
+
+                Assert.Equal("FakeOperation [duration: 1,500,000ms]", sw.ToString());
             }
         }
 
@@ -66,10 +113,10 @@ namespace Overflow.Test
 
                 sut.OperationStarted(new FakeOperation());
                 sut.OperationStarted(new FakeOperation());
-                sut.OperationFinished(new FakeOperation());
-                sut.OperationFinished(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation{0}}}", NL), sw.ToString());
+                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation [duration: 0ms]{0}}} [duration: 0ms]", NL), sw.ToString());
             }
         }
 
@@ -82,12 +129,12 @@ namespace Overflow.Test
 
                 sut.OperationStarted(new FakeOperation());
                 sut.OperationStarted(new FakeOperation());
-                sut.OperationFinished(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
                 sut.OperationStarted(new FakeOperation());
-                sut.OperationFinished(new FakeOperation());
-                sut.OperationFinished(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation{0}{0}  FakeOperation{0}}}", NL), sw.ToString());
+                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation [duration: 0ms]{0}{0}  FakeOperation [duration: 0ms]{0}}} [duration: 0ms]", NL), sw.ToString());
             }
         }
 
@@ -116,9 +163,9 @@ namespace Overflow.Test
 
                 sut.OperationStarted(new FakeOperation());
                 sut.OperationFailed(new FakeOperation(), new InvalidOperationException("MESSAGE"));
-                sut.OperationFinished(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  Error [InvalidOperationException]: MESSAGE{0}}}", NL), sw.ToString());
+                Assert.Equal(string.Format("FakeOperation {{{0}  Error [InvalidOperationException]: MESSAGE{0}}} [duration: 0ms]", NL), sw.ToString());
             }
         }
 
@@ -131,11 +178,11 @@ namespace Overflow.Test
 
                 sut.OperationStarted(new FakeOperation());
                 sut.OperationStarted(new FakeOperation());
-                sut.OperationFinished(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
                 sut.OperationFailed(new FakeOperation(), new InvalidOperationException("MESSAGE"));
-                sut.OperationFinished(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation{0}{0}  Error [InvalidOperationException]: MESSAGE{0}}}", NL), sw.ToString());
+                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation [duration: 0ms]{0}{0}  Error [InvalidOperationException]: MESSAGE{0}}} [duration: 0ms]", NL), sw.ToString());
             }
         }
 
@@ -157,7 +204,7 @@ namespace Overflow.Test
             {
                 var sut = new TextWriterWorkflowLogger(sw);
                 sut.OperationStarted(new FakeOperation());
-                sut.OperationFinished(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
                 Assert.Throws<InvalidOperationException>(() => sut.OperationFailed(new FakeOperation(), new Exception()));
             }
@@ -170,7 +217,7 @@ namespace Overflow.Test
             {
                 var sut = new TextWriterWorkflowLogger(sw);
 
-                Assert.Throws<InvalidOperationException>(() => sut.OperationFinished(new FakeOperation()));
+                Assert.Throws<InvalidOperationException>(() => sut.OperationFinished(new FakeOperation(), TimeSpan.Zero));
             }
         }
 
@@ -181,9 +228,9 @@ namespace Overflow.Test
             {
                 var sut = new TextWriterWorkflowLogger(sw);
                 sut.OperationStarted(new FakeOperation());
-                sut.OperationFinished(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Throws<InvalidOperationException>(() => sut.OperationFinished(new FakeOperation()));
+                Assert.Throws<InvalidOperationException>(() => sut.OperationFinished(new FakeOperation(), TimeSpan.Zero));
             }
         }
 
@@ -196,9 +243,9 @@ namespace Overflow.Test
 
                 sut.OperationStarted(new FakeOperation());
                 sut.BehaviorWasApplied(new FakeOperation(), new FakeOperationBehavior(), "DESCRIPTION");
-                sut.OperationFinished(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperationBehavior: DESCRIPTION{0}}}", NL), sw.ToString());
+                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperationBehavior: DESCRIPTION{0}}} [duration: 0ms]", NL), sw.ToString());
             }
         }
 
@@ -211,11 +258,11 @@ namespace Overflow.Test
 
                 sut.OperationStarted(new FakeOperation());
                 sut.OperationStarted(new FakeOperation());
-                sut.OperationFinished(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
                 sut.BehaviorWasApplied(new FakeOperation(), new FakeOperationBehavior(), "DESCRIPTION");
-                sut.OperationFinished(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation{0}{0}  FakeOperationBehavior: DESCRIPTION{0}}}", NL), sw.ToString());
+                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation [duration: 0ms]{0}{0}  FakeOperationBehavior: DESCRIPTION{0}}} [duration: 0ms]", NL), sw.ToString());
             }
         }
 
@@ -237,7 +284,7 @@ namespace Overflow.Test
             {
                 var sut = new TextWriterWorkflowLogger(sw);
                 sut.OperationStarted(new FakeOperation());
-                sut.OperationFinished(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
                 Assert.Throws<InvalidOperationException>(() => sut.BehaviorWasApplied(new FakeOperation(), new FakeOperationBehavior(), "DESCRIPTION"));
             }

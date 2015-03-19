@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.Threading;
 using Overflow.Utilities;
 using Xunit;
 
@@ -81,6 +83,34 @@ namespace Overflow.Test.Utilities
 
             var duration = Time.OffsetUtcNow - before;
             Assert.Equal(TimeSpan.FromMinutes(5), duration);
+        }
+
+        [Fact]
+        public void Measuring_time_returns_the_duration_in_milliseconds()
+        {
+            var measurement = Time.Measure();
+            Wait30Milliseconds();
+            var elapsed = measurement.GetElapsedMilliseconds();
+
+            Assert.True(elapsed >= 30, elapsed + "ms");
+        }
+
+        private static void Wait30Milliseconds()
+        {
+            var sw = Stopwatch.StartNew();
+            while (sw.ElapsedMilliseconds < 30)
+                Thread.Sleep(1);
+        }
+
+        [Fact]
+        public void Measuring_stopped_time_returns_the_duration_in_milliseconds()
+        {
+            Time.Stop();
+            var measurement = Time.Measure();
+            Time.Stop(Time.OffsetUtcNow.AddMilliseconds(20));
+            var elapsed = measurement.GetElapsedMilliseconds();
+
+            Assert.Equal(20, elapsed);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using Overflow.Extensibility;
 using Overflow.Utilities;
 
@@ -70,7 +71,10 @@ namespace Overflow
         /// Log an operation has finished executing.
         /// </summary>
         /// <param name="operation">The executing operation</param>
-        public void OperationFinished(IOperation operation)
+        /// <param name="duration">The duration of the operation execution, including
+        /// child operations and any behaviors running after the operation start
+        /// was logged.</param>
+        public void OperationFinished(IOperation operation, TimeSpan duration)
         {
             Verify.NotNull(operation, "operation");
             Verify.Operation(_levelInfo.Count > 0, "No operation was logged as started so a finished operation cannot be logged.");
@@ -79,6 +83,7 @@ namespace Overflow
 
             if (levelInfo.Children > 0)
                 _writer.Write(Environment.NewLine + "}");
+            _writer.Write(string.Format(Thread.CurrentThread.CurrentCulture, " [duration: {0:#,###,###,##0}ms]", duration.TotalMilliseconds));
         }
 
         /// <summary>
