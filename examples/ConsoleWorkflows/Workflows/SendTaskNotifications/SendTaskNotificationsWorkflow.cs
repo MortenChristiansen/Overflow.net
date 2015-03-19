@@ -20,11 +20,9 @@ namespace ConsoleWorkflows.Workflows.SendTaskNotifications
 
         public override IEnumerable<IOperation> GetChildOperations()
         {
-            //yield return Create<CreateTaskNotifications>();
-            //foreach (var notification in GetChildOutput<IEnumerable<Notification>>());
-            //    yield return Create<SendNotificationOperation>(notification);
-
-            yield break;
+            yield return Create<CreateTaskNotificationsOperation>();
+            foreach (var notification in GetChildOutputValue<IEnumerable<Notification>>())
+                yield return Create<SendNotificationOperation, Notification>(notification);
         }
     }
 }
