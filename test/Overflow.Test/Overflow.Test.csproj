@@ -53,6 +53,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Transactions" />
     <Reference Include="xunit">
       <HintPath>..\..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
     </Reference>
@@ -61,6 +62,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AtomicAttributeTests.cs" />
+    <Compile Include="Behaviors\AtomicBehaviorTests.cs" />
     <Compile Include="Behaviors\ConditionalExecutionBehaviorFactoryTests.cs" />
     <Compile Include="Behaviors\ConditionalExecutionBehaviorTests.cs" />
     <Compile Include="Behaviors\OperationErrorLoggingBehaviorTests.cs" />
