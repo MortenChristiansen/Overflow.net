@@ -78,16 +78,44 @@ namespace Overflow.Test
             Assert.Throws<InvalidOperationException>(() => Operation.Create<TestOperation>(configuration));
         }
 
-        [Theory, AutoMoqData]
-        public void You_can_create_a_new_operation_from_an_initialized_operation_instance(IOperationResolver resolver)
+        [Fact]
+        public void You_can_create_a_new_operation_from_an_initialized_operation_instance()
         {
+            var resolver = new SimpleOperationResolver();
             var correctConfiguration = new FakeWorkflowConfiguration { Resolver = resolver };
             var sut = new FakeOperation();
             sut.Initialize(correctConfiguration);
 
-            var result = sut.PublicCreate<TestOperation>();
+            var result = sut.PublicCreate<TestOperation>() as TestOperation;
 
             Assert.NotNull(result);
+        }
+
+        [Theory, AutoMoqData]
+        public void You_can_create_a_new_input_operation_from_an_initialized_operation_instance(object input)
+        {
+            var resolver = new SimpleOperationResolver();
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = resolver };
+            var sut = new FakeOperation();
+            sut.Initialize(correctConfiguration);
+
+            var result = sut.PublicCreate<TestInputOperation, object>(input) as TestInputOperation;
+
+            Assert.NotNull(result);
+        }
+
+        [Theory, AutoMoqData]
+        public void Created_input_operations_are_provided_with_input_values(object input)
+        {
+            var resolver = new SimpleOperationResolver();
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = resolver };
+            var sut = new FakeOperation();
+            sut.Initialize(correctConfiguration);
+
+            var result = sut.PublicCreate<TestInputOperation, object>(input) as TestInputOperation;
+
+            Assert.NotNull(result.InputValue);
+            Assert.Equal(input, result.InputValue);
         }
 
         [Theory, AutoMoqData]
@@ -200,6 +228,18 @@ namespace Overflow.Test
                 yield return new FakeOutputOperation<object> { OutputValue = ExpectedOutput };
                 ActualOutput = GetChildOutputValue<object>();
             }
+        }
+
+        private class TestInputOperation : Operation, IInputOperation<object>
+        {
+            public object InputValue { get; private set; }
+
+            public void Input(object input)
+            {
+                InputValue = input;
+            }
+
+            protected override void OnExecute() { }
         }
     }
 }
