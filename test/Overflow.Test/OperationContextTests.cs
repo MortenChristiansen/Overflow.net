@@ -56,13 +56,13 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
-        public void Input_data_is_null_when_no_output_is_available(IOperation op, FakeInputOperation<object> inputOperation)
+        public void Input_data_is_not_provided_when_no_output_is_available(IOperation op, FakeInputOperation<object> inputOperation)
         {
             var sut = OperationContext.Create(op);
 
             sut.ProvideInputs(inputOperation);
 
-            Assert.Null(inputOperation.ProvidedInput);
+            Assert.False(inputOperation.InputWasProvided);
         }
 
         [Theory, AutoMoqData]

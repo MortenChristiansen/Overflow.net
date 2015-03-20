@@ -121,7 +121,11 @@ namespace Overflow
             where TInput : class
             where TOperation : IOperation, IInputOperation<TInput>
         {
-            return Create<TOperation>(_configuration);
+            var operation = Create<TOperation>(_configuration);
+
+            ((IInputOperation<TInput>)operation.GetInnermostOperation()).Input(input);
+
+            return operation;
         }
 
         /// <summary>

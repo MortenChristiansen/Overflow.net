@@ -5,12 +5,29 @@ using Overflow.Utilities;
 
 namespace Overflow
 {
-    class SimpleOperationResolver : IOperationResolver
+    /// <summary>
+    /// A simple IOperationResolver implementation which allows you
+    /// to register dependencies which can be supplied through the
+    /// constructor when resolving operations.
+    /// 
+    /// This implementation does not perform any lifecycle management
+    /// and only supports operations with a single constructor defined.
+    /// 
+    /// To support more complex dependency management, an implementation
+    /// should be built based on an IoC container.
+    /// </summary>
+    public class SimpleOperationResolver : IOperationResolver
     {
         private readonly IDictionary<Type, Type> _mappings = new Dictionary<Type, Type>(); 
 
+        /// <summary>
+        /// Register a dependency type as being available to the resolved operations as a
+        /// constructor argument.
+        /// </summary>
+        /// <typeparam name="TDependency">The type of dependency to supply</typeparam>
+        /// <typeparam name="TDependencyImplementation">The implementing type</typeparam>
         public void RegisterOperationDependency<TDependency, TDependencyImplementation>()
-             where TDependencyImplementation : TDependency
+            where TDependencyImplementation : class, TDependency
         {
             var dependencyType = typeof (TDependency);
             if (_mappings.ContainsKey(dependencyType))
@@ -18,6 +35,13 @@ namespace Overflow
             _mappings.Add(dependencyType, typeof(TDependencyImplementation));
         }
 
+        /// <summary>
+        /// Resolve an operation instance. It can take any of the registered dependency
+        /// types as constructor arguments.
+        /// </summary>
+        /// <typeparam name="TOperation">The type of operation to create</typeparam>
+        /// <param name="configuration">The current workflow configuration</param>
+        /// <returns>The new, uninitialized operation</returns>
         public IOperation Resolve<TOperation>(WorkflowConfiguration configuration) where TOperation : IOperation
         {
             Verify.NotNull(configuration, "configuration");
@@ -30,13 +54,11 @@ namespace Overflow
         {
             if (configuration.BehaviorFactories.Count == 0) return null;
 
-            foreach (var behaviorFactory in configuration.BehaviorFactories)
-            {
-                var behaviors = behaviorFactory.CreateBehaviors(innerOperation, configuration);
-                foreach (var behavior in behaviors.OrderByDescending(b => b.Precedence))
-                    innerOperation = behavior.Attach(innerOperation);
-            }
-
+            var behaviors = configuration.BehaviorFactories.SelectMany(f => f.CreateBehaviors(innerOperation, configuration));//  behaviorFactory.CreateBehaviors(innerOperation, configuration);
+            var bbs = behaviors.OrderBy(b => b.Precedence).ToList();
+            foreach (var behavior in bbs)
+                innerOperation = behavior.Attach(innerOperation);
+            
             return innerOperation;
         }
 

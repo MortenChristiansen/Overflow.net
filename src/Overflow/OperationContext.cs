@@ -66,9 +66,11 @@ namespace Overflow
             var provideInputMethod = inputOperationType.GetMethod("Input");
 
             var output = GetOutput(inputType);
-            provideInputMethod.Invoke(operation, new []{ output });
-            
-            SaveValueForFutureChildOperationContexts(operation, inputType, output);
+            if (output != null)
+            {
+                provideInputMethod.Invoke(operation, new[] { output });
+                SaveValueForFutureChildOperationContexts(operation, inputType, output);
+            }
         }
 
         private object GetOutput(Type inputType)
