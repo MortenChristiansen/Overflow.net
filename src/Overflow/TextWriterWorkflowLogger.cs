@@ -82,7 +82,12 @@ namespace Overflow
             var levelInfo = _levelInfo.Pop();
 
             if (levelInfo.Children > 0)
-                _writer.Write(Environment.NewLine + "}");
+            {
+                _writer.WriteLine();
+                AddNesting();
+                _writer.Write("}");
+            }
+            
             _writer.Write(string.Format(Thread.CurrentThread.CurrentCulture, " [duration: {0:#,###,###,##0}ms]", duration.TotalMilliseconds));
         }
 

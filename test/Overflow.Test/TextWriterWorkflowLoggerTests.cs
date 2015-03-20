@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Overflow.Test.Fakes;
 using Overflow.Test.TestingInfrastructure;
@@ -287,6 +288,24 @@ namespace Overflow.Test
                 sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
                 Assert.Throws<InvalidOperationException>(() => sut.BehaviorWasApplied(new FakeOperation(), new FakeOperationBehavior(), "DESCRIPTION"));
+            }
+        }
+
+        [Fact]
+        public void Nested_operations_are_correctly_indented()
+        {
+            using (var sw = new StringWriter())
+            {
+                var sut = new TextWriterWorkflowLogger(sw);
+
+                sut.OperationStarted(new FakeOperation());
+                sut.OperationStarted(new FakeOperation());
+                sut.OperationStarted(new FakeOperation());
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
+                sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
+
+                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation {{{0}    FakeOperation [duration: 0ms]{0}  }} [duration: 0ms]{0}}} [duration: 0ms]", NL), sw.ToString());
             }
         }
     }
