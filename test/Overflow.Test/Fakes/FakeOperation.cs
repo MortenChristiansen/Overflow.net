@@ -56,11 +56,7 @@ namespace Overflow.Test.Fakes
             where TInput : class
             where TOperation : IOperation, IInputOperation<TInput>
         {
-            var operation = Create<TOperation, TInput>(input);
-
-            ((IInputOperation<TInput>)operation).Input(input);
-
-            return operation;
+            return Create<TOperation, TInput>(input);
         }
     }
 }
