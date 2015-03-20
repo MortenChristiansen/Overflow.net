@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Overflow.Behaviors;
 using Overflow.Extensibility;
 using Overflow.Utilities;
 
@@ -15,12 +16,13 @@ namespace Overflow
         where TOperation : IOperation
     {
         /// <summary>
-        /// Create a new operation instance with this configuration.
+        /// Create a new operation instance with this configuration with
+        /// the Continue On Failure behavior.
         /// </summary>
         /// <returns>The configurad operation</returns>
         public override IOperation CreateOperation()
         {
-            return Operation.Create<TOperation>(this);
+            return new ContinueOnFailureBehavior().Attach(Operation.Create<TOperation>(this));
         }
     }
 

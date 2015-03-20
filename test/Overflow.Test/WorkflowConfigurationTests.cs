@@ -1,4 +1,5 @@
 using System;
+using Overflow.Behaviors;
 using Overflow.Extensibility;
 using Overflow.Test.Fakes;
 using Overflow.Test.TestingInfrastructure;
@@ -35,6 +36,16 @@ namespace Overflow.Test
             var result = sut.CreateOperation();
 
             Assert.NotNull(result);
+        }
+
+        [Theory, AutoMoqData]
+        public void Created_operations_are_wrapped_in_ContinueOnFailure_behavior(IOperationResolver resolver)
+        {
+            var sut = new WorkflowConfiguration<TestOperation>() { Resolver = resolver };
+
+            var result = sut.CreateOperation();
+
+            Assert.IsType<ContinueOnFailureBehavior>(result);
         }
 
         [Theory, AutoMoqData]
