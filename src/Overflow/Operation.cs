@@ -123,7 +123,7 @@ namespace Overflow
         {
             var operation = Create<TOperation>(_configuration);
 
-            ((IInputOperation<TInput>)operation).Input(input);
+            ((IInputOperation<TInput>)operation.GetInnermostOperation()).Input(input);
 
             return operation;
         }

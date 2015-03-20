@@ -119,6 +119,22 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
+        public void Created_input_operations_are_provided_with_input_values_when_having_behaviors(object input)
+        {
+            var resolver = new SimpleOperationResolver();
+            var factory = new FakeOperationBehaviorFactory();
+            factory.OperationBehaviors.Add(new FakeOperationBehavior());
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = resolver }.WithBehaviorFactory(factory);
+            var sut = new FakeOperation();
+            sut.Initialize(correctConfiguration);
+
+            var result = sut.PublicCreate<TestInputOperation, object>(input).GetInnermostOperation() as TestInputOperation;
+
+            Assert.NotNull(result.InputValue);
+            Assert.Equal(input, result.InputValue);
+        }
+
+        [Theory, AutoMoqData]
         public void Data_flows_between_child_operations(object output)
         {
             var inputOperation = new FakeInputOperation<object>();
