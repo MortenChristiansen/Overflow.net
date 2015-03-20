@@ -6,7 +6,12 @@ namespace ConsoleWorkflows.DomainClasses
     {
         public IEnumerable<Task> GetUnfinishedAndUnnotifiedTasks()
         {
-            return new Task[0];
+            return new []{ new Task(), new Task(), new Task() };
+        }
+
+        public void MarkTaskAsNotified(Task task)
+        {
+            
         }
     }
 }

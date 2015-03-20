@@ -36,6 +36,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomainClasses\EmailService.cs" />
     <Compile Include="DomainClasses\Notification.cs" />
     <Compile Include="DomainClasses\Task.cs" />
     <Compile Include="DomainClasses\TaskRepository.cs" />
