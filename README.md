@@ -42,6 +42,12 @@ Overflow is an open source C# portable class library for modeling workflows usin
 
 The library is in the very early stages of development and is still very much in a state of flux while the central APIs get defined.
 
+## Installation
+
+To install Overflow.net, run the following command in the Package Manager Console:
+
+`Install-Package Overflow.net -Pre`
+
 ##Extensibility - Custom Behaviors
 
 Internally, the library uses its own extensibility model for attaching behaviors to operations. This is done by registering custom `IOperationBehaviorFactory` instances when configuring the workflow or by leveraging the built in factory `OperationBehaviorAttributeFactory`, which uses attributes to apply behaviors in a standard way.
