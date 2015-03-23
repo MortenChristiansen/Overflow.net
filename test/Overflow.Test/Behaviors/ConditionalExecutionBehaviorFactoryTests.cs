@@ -32,8 +32,6 @@ namespace Overflow.Test.Behaviors
 
         public class SkippableOperation : Operation, IConditionalOperation
         {
-            protected override void OnExecute() { }
-
             public bool SkipExecution { get; private set; }
         }
     }

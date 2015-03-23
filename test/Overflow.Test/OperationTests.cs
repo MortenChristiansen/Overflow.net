@@ -22,6 +22,14 @@ namespace Overflow.Test
         }
 
         [Fact]
+        public void Executing_an_that_does_not_override_the_OnExecute_method_does_nothing()
+        {
+            var sut = new TestOperation();
+
+            sut.Execute();
+        }
+
+        [Fact]
         public void Operations_do_not_have_any_child_operations_by_default()
         {
             var sut = new TestOperation();
@@ -238,16 +246,12 @@ namespace Overflow.Test
             {
                 Configuration = configuration;
             }
-
-            protected override void OnExecute() { }
         }
 
         private class OutputtingOperation : Operation
         {
             public object ExpectedOutput { get; set; }
             public object ActualOutput { get; private set; }
-
-            protected override void OnExecute() { }
 
             public override IEnumerable<IOperation> GetChildOperations()
             {
@@ -278,8 +282,6 @@ namespace Overflow.Test
             {
                 InputValue = input;
             }
-
-            protected override void OnExecute() { }
         }
     }
 }

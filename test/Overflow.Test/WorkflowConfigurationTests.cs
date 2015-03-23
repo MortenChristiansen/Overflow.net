@@ -140,9 +140,6 @@ namespace Overflow.Test
             Assert.Throws<ArgumentException>(() => sut.WithGlobalRetryBehavior(3, TimeSpan.FromSeconds(5), typeof(object)));
         }
 
-        private class TestOperation : Operation
-        {
-            protected override void OnExecute() { }
-        }
+        private class TestOperation : Operation { }
     }
 }

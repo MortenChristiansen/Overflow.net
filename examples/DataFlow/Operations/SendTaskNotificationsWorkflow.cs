@@ -22,8 +22,6 @@ namespace ConsoleWorkflows.Operations
     /// </summary>
     class SendTaskNotificationsWorkflow : Operation
     {
-        protected override void OnExecute() { }
-
         public override IEnumerable<IOperation> GetChildOperations()
         {
             yield return Create<CreateTaskNotificationsOperation>();

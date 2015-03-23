@@ -154,10 +154,7 @@ namespace Overflow.Test
 
         #region Dependencies
 
-        private class SimpleTestOperation : Operation
-        {
-            protected override void OnExecute() { }
-        }
+        private class SimpleTestOperation : Operation { }
 
         private class OperationWithDependencies : Operation
         {
@@ -168,8 +165,6 @@ namespace Overflow.Test
                 if (dependency == null) throw new ArgumentException();
                 Dependency = dependency;
             }
-
-            protected override void OnExecute() { }
         }
 
         private interface IDependency { }
@@ -185,8 +180,6 @@ namespace Overflow.Test
                 if (dependency == null) throw new ArgumentException();
                 Dependency = dependency;
             }
-
-            protected override void OnExecute() { }
         }
 
         private class ComplexDependency : IDependency
@@ -206,8 +199,6 @@ namespace Overflow.Test
             {
                 if (dependency == null) throw new ArgumentException();
             }
-
-            protected override void OnExecute() { }
         }
 
         private class DependencyWithTwoConstructors : IDependency
@@ -220,8 +211,6 @@ namespace Overflow.Test
         {
             public OperationWithTwoConstructors() { }
             public OperationWithTwoConstructors(SimpleDependency dependency) { }
-
-            protected override void OnExecute() { }
         }
 
         private class OperationWithInterfaceDependency : Operation
@@ -233,8 +222,6 @@ namespace Overflow.Test
                 if (dependency == null) throw new ArgumentException();
                 Dependency = dependency;
             }
-
-            protected override void OnExecute() { }
         }
 
         #endregion

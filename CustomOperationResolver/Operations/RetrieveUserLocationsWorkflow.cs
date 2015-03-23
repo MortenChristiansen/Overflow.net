@@ -15,8 +15,6 @@ namespace CustomOperationResolver.Operations
     /// </summary>
     class RetrieveUserLocationsWorkflow : Operation
     {
-        protected override void OnExecute() { }
-
         public override IEnumerable<IOperation> GetChildOperations()
         {
             yield return Create<GetUsersWithoutLocationOperation>();
