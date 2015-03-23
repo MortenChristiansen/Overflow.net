@@ -17,7 +17,7 @@ namespace Overflow
         /// <summary>
         /// Execute the business logic of the operation.
         /// </summary>
-        protected abstract void OnExecute();
+        protected virtual void OnExecute() { }
 
         /// <summary>
         /// Get the child operations which have been executed during the execution of this

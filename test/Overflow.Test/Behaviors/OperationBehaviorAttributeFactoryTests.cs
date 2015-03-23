@@ -39,9 +39,6 @@ namespace Overflow.Test.Behaviors
         }
 
         [FakeOperationBehavior]
-        public class BehaviorOperation : Operation
-        {
-            protected override void OnExecute() { }
-        }
+        public class BehaviorOperation : Operation { }
     }
 }

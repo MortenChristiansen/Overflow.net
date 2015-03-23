@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using ConsoleWorkflows.DomainClasses;
 using Overflow;
 
-namespace ConsoleWorkflows.Workflows.SendTaskNotifications
+namespace ConsoleWorkflows.Operations
 {
     /// <summary>
     /// A workflow that checks if there have been defined any tasks
@@ -22,8 +22,6 @@ namespace ConsoleWorkflows.Workflows.SendTaskNotifications
     /// </summary>
     class SendTaskNotificationsWorkflow : Operation
     {
-        protected override void OnExecute() { }
-
         public override IEnumerable<IOperation> GetChildOperations()
         {
             yield return Create<CreateTaskNotificationsOperation>();
