@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Overflow.Extensibility;
 using Overflow.Utilities;
 
 namespace Overflow
@@ -47,19 +48,7 @@ namespace Overflow
             Verify.NotNull(configuration, "configuration");
 
             var actualOperation = GetActualOperation<TOperation>();
-            return GetDecoratedOperation(actualOperation, configuration) ?? actualOperation;
-        }
-
-        private IOperation GetDecoratedOperation(IOperation innerOperation, WorkflowConfiguration configuration)
-        {
-            if (configuration.BehaviorFactories.Count == 0) return null;
-
-            var behaviors = configuration.BehaviorFactories.SelectMany(f => f.CreateBehaviors(innerOperation, configuration));//  behaviorFactory.CreateBehaviors(innerOperation, configuration);
-            var bbs = behaviors.OrderBy(b => b.Precedence).ToList();
-            foreach (var behavior in bbs)
-                innerOperation = behavior.Attach(innerOperation);
-            
-            return innerOperation;
+            return OperationResolverHelper.ApplyBehaviors(actualOperation, configuration);
         }
 
         private IOperation GetActualOperation<TOperation>() where TOperation : IOperation
