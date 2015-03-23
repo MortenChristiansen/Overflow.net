@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Overflow.net")]
-[assembly: AssemblyDescription("A portable class library for executing object workflows.")]
+[assembly: AssemblyDescription("A library for executing object workflows.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Morten Christiansen")]
 [assembly: AssemblyProduct("Overflow.net")]
