@@ -1,6 +1,6 @@
 ﻿using System;
 using ConsoleWorkflows.DomainClasses;
-using ConsoleWorkflows.Workflows.SendTaskNotifications;
+using ConsoleWorkflows.Operations;
 using Overflow;
 
 namespace ConsoleWorkflows

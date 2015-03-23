@@ -4,7 +4,7 @@ using System.Linq;
 using ConsoleWorkflows.DomainClasses;
 using Overflow;
 
-namespace ConsoleWorkflows.Workflows.SendTaskNotifications
+namespace ConsoleWorkflows.Operations
 {
     class CreateTaskNotificationsOperation : Operation, IOutputOperation<IEnumerable<Notification>>
     {

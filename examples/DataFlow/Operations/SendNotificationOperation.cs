@@ -1,7 +1,7 @@
 using ConsoleWorkflows.DomainClasses;
 using Overflow;
 
-namespace ConsoleWorkflows.Workflows.SendTaskNotifications
+namespace ConsoleWorkflows.Operations
 {
     [ContinueOnFailure]
     class SendNotificationOperation : Operation, IInputOperation<Notification>

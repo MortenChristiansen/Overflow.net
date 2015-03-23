@@ -54,9 +54,16 @@
     <Reference Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomainClasses\User.cs" />
+    <Compile Include="DomainClasses\UserLocationLookupService.cs" />
+    <Compile Include="DomainClasses\UserRepository.cs" />
     <Compile Include="Extensions\AutofacOperationResolver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Operations\GetUsersWithoutLocationOperation.cs" />
+    <Compile Include="Operations\RetrieveUserLocationsWorkflow.cs" />
+    <Compile Include="Operations\SaveUserLocationOperation.cs" />
+    <Compile Include="Operations\UpdateUserLocationOperation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
