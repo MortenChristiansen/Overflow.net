@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleWorkflows", "examples\ConsoleWorkflows\ConsoleWorkflows.csproj", "{22BA955C-085E-4822-B11B-CEA798EDEE14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataFlow", "examples\DataFlow\DataFlow.csproj", "{22BA955C-085E-4822-B11B-CEA798EDEE14}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{0ECC90F5-F1D3-49E1-BD3F-B4A4697CF29F}"
 EndProject
