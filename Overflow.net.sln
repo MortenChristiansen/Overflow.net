@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataFlow", "examples\DataFl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{0ECC90F5-F1D3-49E1-BD3F-B4A4697CF29F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomOperationResolver", "CustomOperationResolver\CustomOperationResolver.csproj", "{0B6B156E-034C-4D08-8F0A-F9008035383D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{22BA955C-085E-4822-B11B-CEA798EDEE14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22BA955C-085E-4822-B11B-CEA798EDEE14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22BA955C-085E-4822-B11B-CEA798EDEE14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B6B156E-034C-4D08-8F0A-F9008035383D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B6B156E-034C-4D08-8F0A-F9008035383D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B6B156E-034C-4D08-8F0A-F9008035383D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B6B156E-034C-4D08-8F0A-F9008035383D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,5 +57,6 @@ Global
 		{8DF25299-1F2F-4A84-828F-51A098450ED5} = {870DCD51-5195-450E-B6FD-CCFAC60D0477}
 		{047FF64E-A72B-4569-BD96-970556D6F723} = {83A803C8-9CF2-491C-8448-E74DE4ACA21D}
 		{22BA955C-085E-4822-B11B-CEA798EDEE14} = {0ECC90F5-F1D3-49E1-BD3F-B4A4697CF29F}
+		{0B6B156E-034C-4D08-8F0A-F9008035383D} = {0ECC90F5-F1D3-49E1-BD3F-B4A4697CF29F}
 	EndGlobalSection
 EndGlobal
