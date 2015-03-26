@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="AtomicAttributeTests.cs" />
     <Compile Include="Behaviors\AtomicBehaviorTests.cs" />
+    <Compile Include="Behaviors\CompensatingOperationBehaviorTests.cs" />
     <Compile Include="Behaviors\ConditionalExecutionBehaviorFactoryTests.cs" />
     <Compile Include="Behaviors\ConditionalExecutionBehaviorTests.cs" />
     <Compile Include="Behaviors\OperationErrorLoggingBehaviorTests.cs" />
