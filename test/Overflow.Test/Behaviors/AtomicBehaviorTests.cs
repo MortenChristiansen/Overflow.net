@@ -20,7 +20,7 @@ namespace Overflow.Test.Behaviors
         public void Operations_are_executed_in_a_transaction()
         {
             var operation = new TransactionOperation();
-            var sut = new AtomicBehavior().Attach(operation);
+            var sut = new AtomicBehavior().AttachTo(operation);
 
             sut.Execute();
 
@@ -31,7 +31,7 @@ namespace Overflow.Test.Behaviors
         public void Transactions_are_committed_for_successful_operations()
         {
             var operation = new TransactionOperation();
-            var sut = new AtomicBehavior().Attach(operation);
+            var sut = new AtomicBehavior().AttachTo(operation);
 
             sut.Execute();
 
@@ -42,7 +42,7 @@ namespace Overflow.Test.Behaviors
         public void Transactions_are_not_committed_for_failed_operations()
         {
             var operation = new TransactionOperation { ThrowOnExecute = new Exception() };
-            var sut = new AtomicBehavior().Attach(operation);
+            var sut = new AtomicBehavior().AttachTo(operation);
 
             try { sut.Execute(); }
             catch {}

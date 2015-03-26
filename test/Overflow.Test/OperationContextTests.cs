@@ -137,7 +137,7 @@ namespace Overflow.Test
         public void Registering_output_handlers_calls_registration_methods_on_decorated_output_operation(IOperation op, FakeOutputOperation<object> decoratedOperation)
         {
             var sut = OperationContext.Create(op);
-            var operation = new FakeOperationBehavior().Attach(decoratedOperation);
+            var operation = new FakeOperationBehavior().AttachTo(decoratedOperation);
 
             sut.RegisterOutputHandlers(operation);
 
@@ -149,7 +149,7 @@ namespace Overflow.Test
         {
             var sut = OperationContext.Create(op);
             var outputOperation = new FakeOutputOperation<object> { OutputValue = output };
-            var decoratedInputOperation = new FakeOperationBehavior().Attach(inputOperation);
+            var decoratedInputOperation = new FakeOperationBehavior().AttachTo(inputOperation);
             sut.RegisterOutputHandlers(outputOperation);
 
             outputOperation.Execute();
@@ -162,7 +162,7 @@ namespace Overflow.Test
         public void Registering_output_handlers_calls_registration_methods_on_nested_decorated_output_operation(FakeOutputOperation<object> decoratedOperation)
         {
             var sut = OperationContext.Create(new FakeOperation());
-            var operation = new FakeOperationBehavior().Attach(new FakeOperationBehavior().Attach(decoratedOperation));
+            var operation = new FakeOperationBehavior().AttachTo(new FakeOperationBehavior().AttachTo(decoratedOperation));
 
             sut.RegisterOutputHandlers(operation);
 
@@ -174,7 +174,7 @@ namespace Overflow.Test
         {
             var sut = OperationContext.Create(op);
             var outputOperation = new FakeOutputOperation<object> { OutputValue = output };
-            var decoratedInputOperation = new FakeOperationBehavior().Attach(new FakeOperationBehavior().Attach(inputOperation));
+            var decoratedInputOperation = new FakeOperationBehavior().AttachTo(new FakeOperationBehavior().AttachTo(inputOperation));
             sut.RegisterOutputHandlers(outputOperation);
 
             outputOperation.Execute();

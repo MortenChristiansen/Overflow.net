@@ -22,7 +22,7 @@ namespace Overflow.Test.Behaviors
         [Theory, AutoMoqData]
         public void Executing_the_behavior_logs_the_start_and_end_of_the_operation(FakeWorkflowLogger logger, IOperation innerOperation)
         {
-            var sut = new OperationExecutionLoggingBehavior(logger).Attach(innerOperation);
+            var sut = new OperationExecutionLoggingBehavior(logger).AttachTo(innerOperation);
 
             sut.Execute();
 
@@ -35,7 +35,7 @@ namespace Overflow.Test.Behaviors
         [Theory, AutoMoqData]
         public void The_innermost_operation_is_logged(FakeWorkflowLogger logger, IOperation innerOperation)
         {
-            var sut = new OperationExecutionLoggingBehavior(logger).Attach(new FakeOperationBehavior().Attach(innerOperation));
+            var sut = new OperationExecutionLoggingBehavior(logger).AttachTo(new FakeOperationBehavior().AttachTo(innerOperation));
 
             sut.Execute();
 
@@ -47,7 +47,7 @@ namespace Overflow.Test.Behaviors
         public void Start_and_finish_are_logged_in_case_of_failure(FakeWorkflowLogger logger)
         {
             var innerOperation = new FakeOperation { ThrowOnExecute = new Exception() };
-            var sut = new OperationExecutionLoggingBehavior(logger).Attach(innerOperation);
+            var sut = new OperationExecutionLoggingBehavior(logger).AttachTo(innerOperation);
 
             try { sut.Execute(); }
             catch { }
@@ -61,7 +61,7 @@ namespace Overflow.Test.Behaviors
         {
             Time.Stop();
             var innerOperation = new FakeOperation { ExecuteAction = () => Time.Wait(TimeSpan.FromMilliseconds(10)) };
-            var sut = new OperationExecutionLoggingBehavior(logger).Attach(innerOperation);
+            var sut = new OperationExecutionLoggingBehavior(logger).AttachTo(innerOperation);
 
             sut.Execute();
 

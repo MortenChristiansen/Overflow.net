@@ -35,7 +35,7 @@ namespace Overflow.Test
         [Theory, AutoMoqData]
         public void The_inner_operation_of_a_behavior_is_identified_as_the_innermost_operation(IOperation operation)
         {
-            var sut = new FakeOperationBehavior().Attach(operation);
+            var sut = new FakeOperationBehavior().AttachTo(operation);
 
             var result = sut.GetInnermostOperation();
 
@@ -45,8 +45,8 @@ namespace Overflow.Test
         [Theory, AutoMoqData]
         public void The_inner_operation_of_nested_behaviors_is_identified_as_the_innermost_operation(IOperation operation)
         {
-            var behavior = new FakeOperationBehavior().Attach(operation);
-            var sut = new FakeOperationBehavior().Attach(behavior);
+            var behavior = new FakeOperationBehavior().AttachTo(operation);
+            var sut = new FakeOperationBehavior().AttachTo(behavior);
 
             var result = sut.GetInnermostOperation();
 

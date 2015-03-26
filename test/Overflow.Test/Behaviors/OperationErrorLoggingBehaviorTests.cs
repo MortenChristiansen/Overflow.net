@@ -22,7 +22,7 @@ namespace Overflow.Test.Behaviors
         public void Exceptions_thrown_during_the_execution_are_logged(FakeWorkflowLogger logger, Exception error)
         {
             var innerOperation = new FakeOperation { ThrowOnExecute = error };
-            var sut = new OperationErrorLoggingBehavior(logger).Attach(innerOperation);
+            var sut = new OperationErrorLoggingBehavior(logger).AttachTo(innerOperation);
 
             try { sut.Execute(); }
             catch { }
@@ -36,8 +36,8 @@ namespace Overflow.Test.Behaviors
         public void The_innermost_operation_is_logged_as_the_source(FakeWorkflowLogger logger, Exception error)
         {
             var innerOperation = new FakeOperation { ThrowOnExecute = error };
-            var behavior = new FakeOperationBehavior().Attach(innerOperation);
-            var sut = new OperationErrorLoggingBehavior(logger).Attach(behavior);
+            var behavior = new FakeOperationBehavior().AttachTo(innerOperation);
+            var sut = new OperationErrorLoggingBehavior(logger).AttachTo(behavior);
 
             try { sut.Execute(); }
             catch { }
@@ -49,7 +49,7 @@ namespace Overflow.Test.Behaviors
         public void Logged_exceptions_are_rethrown(IWorkflowLogger logger, Exception error)
         {
             var innerOperation = new FakeOperation { ThrowOnExecute = error };
-            var sut = new OperationErrorLoggingBehavior(logger).Attach(innerOperation);
+            var sut = new OperationErrorLoggingBehavior(logger).AttachTo(innerOperation);
 
             Assert.Throws<Exception>(() => sut.Execute());
         }

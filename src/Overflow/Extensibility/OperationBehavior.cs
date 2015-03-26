@@ -29,7 +29,7 @@ namespace Overflow.Extensibility
         /// <param name="innerOperation">The operation which is to be
         /// decorated with additional behavior</param>
         /// <returns>Returns the behavior.</returns>
-        public IOperation Attach(IOperation innerOperation)
+        public IOperation AttachTo(IOperation innerOperation)
         {
             Verify.NotNull(innerOperation, "innerOperation");
 

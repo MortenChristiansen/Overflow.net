@@ -23,7 +23,7 @@ namespace Overflow.Test.Behaviors
         {
             var operation = new FakeOperation { ThrowOnExecute = new Exception() };
             var sut = new ContinueOnFailureBehavior();
-            sut.Attach(operation);
+            sut.AttachTo(operation);
 
             sut.Execute();
         }
@@ -31,7 +31,7 @@ namespace Overflow.Test.Behaviors
         [Theory, AutoMoqData]
         public void Contained_errors_are_logged(Exception error, FakeWorkflowLogger log)
         {
-            var sut = new ContinueOnFailureBehavior().Attach(new FakeOperation { ThrowOnExecute = error });
+            var sut = new ContinueOnFailureBehavior().AttachTo(new FakeOperation { ThrowOnExecute = error });
             sut.Initialize(new FakeWorkflowConfiguration { Logger = log });
 
             sut.Execute();

@@ -46,7 +46,7 @@ namespace Overflow.Test.Behaviors
         {
             var operation = new FakeOperation { ThrowOnExecute = new Exception(), ErrorCount = 1 };
             var sut = new RetryBehavior(1, TimeSpan.Zero);
-            sut.Attach(operation);
+            sut.AttachTo(operation);
 
             sut.Execute();
         }
@@ -56,7 +56,7 @@ namespace Overflow.Test.Behaviors
         {
             var operation = new FakeOperation { ThrowOnExecute = new Exception(), ErrorCount = 2 };
             var sut = new RetryBehavior(1, TimeSpan.Zero);
-            sut.Attach(operation);
+            sut.AttachTo(operation);
 
             Assert.Throws<Exception>(() => sut.Execute());
         }
@@ -78,7 +78,7 @@ namespace Overflow.Test.Behaviors
         {
             var operation = new FakeOperation { ThrowOnExecute = new Exception(), ErrorCount = 1 };
             var sut = new RetryBehavior(1, TimeSpan.FromSeconds(5));
-            sut.Attach(operation);
+            sut.AttachTo(operation);
             var before = Time.OffsetUtcNow;
 
             sut.Execute();
@@ -92,7 +92,7 @@ namespace Overflow.Test.Behaviors
         {
             var operation = new FakeOperation(new IndempotentOperation(), new FakeOperation { ThrowOnExecute = new Exception(), ErrorCount = 1 });
             var sut = new RetryBehavior(1, TimeSpan.Zero);
-            sut.Attach(operation);
+            sut.AttachTo(operation);
 
             Assert.Throws<Exception>(() => sut.Execute());
         }
@@ -102,7 +102,7 @@ namespace Overflow.Test.Behaviors
         {
             var operation = new FakeOperation(new IndempotentOperation { ThrowOnExecute = new Exception(), ErrorCount = 1 });
             var sut = new RetryBehavior(1, TimeSpan.Zero);
-            sut.Attach(operation);
+            sut.AttachTo(operation);
 
             sut.Execute();
         }
@@ -112,7 +112,7 @@ namespace Overflow.Test.Behaviors
         {
             var operation = new FakeOperation { ThrowOnExecute = new NullReferenceException(), ErrorCount = 1 };
             var sut = new RetryBehavior(1, TimeSpan.Zero, typeof(NullReferenceException));
-            sut.Attach(operation);
+            sut.AttachTo(operation);
 
             sut.Execute();
         }
@@ -122,7 +122,7 @@ namespace Overflow.Test.Behaviors
         {
             var operation = new FakeOperation { ThrowOnExecute = new ArgumentNullException(), ErrorCount = 1 };
             var sut = new RetryBehavior(1, TimeSpan.Zero, typeof(ArgumentException));
-            sut.Attach(operation);
+            sut.AttachTo(operation);
 
             sut.Execute();
         }
@@ -132,7 +132,7 @@ namespace Overflow.Test.Behaviors
         {
             var operation = new FakeOperation { ThrowOnExecute = new NullReferenceException(), ErrorCount = 1 };
             var sut = new RetryBehavior(1, TimeSpan.Zero, typeof(InsufficientMemoryException));
-            sut.Attach(operation);
+            sut.AttachTo(operation);
 
             Assert.Throws<NullReferenceException>(() => sut.Execute());
         }
@@ -140,7 +140,7 @@ namespace Overflow.Test.Behaviors
         [Theory, AutoMoqData]
         public void Retried_operations_are_logged(Exception error, FakeWorkflowLogger log)
         {
-            var sut = new RetryBehavior(2, TimeSpan.Zero).Attach(new FakeOperation { ThrowOnExecute = error, ErrorCount = 2 });
+            var sut = new RetryBehavior(2, TimeSpan.Zero).AttachTo(new FakeOperation { ThrowOnExecute = error, ErrorCount = 2 });
             sut.Initialize(new FakeWorkflowConfiguration { Logger = log });
 
             sut.Execute();

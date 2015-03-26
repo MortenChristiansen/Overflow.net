@@ -22,7 +22,7 @@ namespace Overflow
         /// <returns>The configurad operation</returns>
         public override IOperation CreateOperation()
         {
-            return new ContinueOnFailureBehavior().Attach(Operation.Create<TOperation>(this));
+            return new ContinueOnFailureBehavior().AttachTo(Operation.Create<TOperation>(this));
         }
     }
 

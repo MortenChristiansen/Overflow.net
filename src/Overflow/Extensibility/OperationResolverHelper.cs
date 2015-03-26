@@ -23,7 +23,7 @@ namespace Overflow.Extensibility
             var behaviors = configuration.BehaviorFactories.SelectMany(f => f.CreateBehaviors(operation, configuration));
             var sortedBehaviors = behaviors.OrderBy(b => b.Precedence).ToList();
             foreach (var behavior in sortedBehaviors)
-                operation = behavior.Attach(operation);
+                operation = behavior.AttachTo(operation);
 
             return operation;
         }
