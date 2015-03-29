@@ -1,5 +1,7 @@
 #Overflow.net
 
+![Project logo](https://raw.githubusercontent.com/MortenChristiansen/Overflow.net/master/files/logo-128.png)
+
 ####[![Build status](https://ci.appveyor.com/api/projects/status/m8qkwl9p91jwncjo/branch/master?svg=true)](https://ci.appveyor.com/project/MortenChristiansen/overflow-net/branch/master) // windows / .net
 
 ####[![Build Status](https://travis-ci.org/MortenChristiansen/Overflow.net.svg?branch=creating-operations-and-resolving-dependencies)](https://travis-ci.org/MortenChristiansen/Overflow.net) // linux / mono
