@@ -25,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataFlow", "examples\DataFl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{0ECC90F5-F1D3-49E1-BD3F-B4A4697CF29F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomOperationResolver", "CustomOperationResolver\CustomOperationResolver.csproj", "{0B6B156E-034C-4D08-8F0A-F9008035383D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomOperationResolver", "examples\CustomOperationResolver\CustomOperationResolver.csproj", "{0B6B156E-034C-4D08-8F0A-F9008035383D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

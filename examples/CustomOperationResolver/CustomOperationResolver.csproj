@@ -70,7 +70,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\Overflow\Overflow.csproj">
+    <ProjectReference Include="..\..\src\Overflow\Overflow.csproj">
       <Project>{8df25299-1f2f-4a84-828f-51a098450ed5}</Project>
       <Name>Overflow</Name>
     </ProjectReference>
