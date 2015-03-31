@@ -17,13 +17,13 @@ namespace Overflow.Test.Behaviors
         }
 
         [Fact]
-        public void Errors_compensated_for_are_not_rethrown()
+        public void Errors_compensated_for_are_rethrown()
         {
             var operation = new FakeOperation { ThrowOnExecute = new Exception() };
             var sut = new CompensatingOperationBehavior(new FakeOperation());
             sut.Attach(operation);
 
-            sut.Execute();
+            Assert.Throws<Exception>(() => sut.Execute());
         }
 
         [Fact]
@@ -34,7 +34,8 @@ namespace Overflow.Test.Behaviors
             var sut = new CompensatingOperationBehavior(compensatingOperation);
             sut.Attach(operation);
 
-            sut.Execute();
+            try { sut.Execute(); }
+            catch { }
 
             Assert.True(compensatingOperation.HasExecuted);
         }

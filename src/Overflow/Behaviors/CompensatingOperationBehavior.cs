@@ -23,6 +23,7 @@ namespace Overflow.Behaviors
             catch
             {
                 _operation.Execute();
+                throw;
             }
         }
     }

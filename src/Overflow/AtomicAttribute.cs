@@ -12,8 +12,9 @@ namespace Overflow
         /// <summary>
         /// Create a new atomic behavior instance.
         /// </summary>
+        /// <param name="configuration">The configuration of the executing workflow</param>
         /// <returns>The behavior</returns>
-        public override OperationBehavior CreateBehavior()
+        public override OperationBehavior CreateBehavior(WorkflowConfiguration configuration)
         {
             return new AtomicBehavior();
         }
