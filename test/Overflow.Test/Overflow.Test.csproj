@@ -68,6 +68,7 @@
     <Compile Include="Behaviors\ConditionalExecutionBehaviorFactoryTests.cs" />
     <Compile Include="Behaviors\ConditionalExecutionBehaviorTests.cs" />
     <Compile Include="Behaviors\OperationErrorLoggingBehaviorTests.cs" />
+    <Compile Include="CompensatingOperationAttributeTests.cs" />
     <Compile Include="ExecutionInfoTests.cs" />
     <Compile Include="Extensibility\OperationResolverHelperTests.cs" />
     <Compile Include="IOerationTests.cs" />

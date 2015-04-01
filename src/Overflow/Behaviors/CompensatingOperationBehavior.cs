@@ -1,5 +1,6 @@
 using System;
 using Overflow.Extensibility;
+using Overflow.Utilities;
 
 namespace Overflow.Behaviors
 {
@@ -14,6 +15,8 @@ namespace Overflow.Behaviors
 
         public CompensatingOperationBehavior(IOperation operation)
         {
+            Verify.NotNull(operation, "operation");
+
             _operation = operation;
         }
 

@@ -40,6 +40,12 @@ namespace Overflow.Test.Behaviors
             Assert.True(compensatingOperation.HasExecuted);
         }
 
+        [Fact]
+        public void You_cannot_create_a_compensating_operation_behavior_without_an_operation_to_compensate_with()
+        {
+            Assert.Throws<ArgumentNullException>(() => new CompensatingOperationBehavior(null));
+        }
+
         // What about the execution context of the compensating operation? And input data? And what about the
         // impact of retry behaviors?
 
