@@ -23,7 +23,7 @@ namespace Overflow.Test.Behaviors
         {
             var operation = new FakeOperation { ThrowOnExecute = new Exception() };
             var sut = new CompensatingOperationBehavior(new FakeOperation());
-            sut.Attach(operation);
+            sut.AttachTo(operation);
 
             Assert.Throws<Exception>(() => sut.Execute());
         }
@@ -34,7 +34,7 @@ namespace Overflow.Test.Behaviors
             var operation = new FakeOperation { ThrowOnExecute = new Exception() };
             var compensatingOperation = new FakeOperation();
             var sut = new CompensatingOperationBehavior(compensatingOperation);
-            sut.Attach(operation);
+            sut.AttachTo(operation);
 
             try { sut.Execute(); }
             catch { }
@@ -55,7 +55,7 @@ namespace Overflow.Test.Behaviors
             var compensatingOperation = new FakeInputOperation<object>();
             var sut = new CompensatingOperationBehavior(compensatingOperation);
             operation.Input(input);
-            var parentOperation = new FakeOperation(new FakeOutputOperation<object> { OutputValue = input }, sut.Attach( new FakeOperationBehavior().Attach(operation)));
+            var parentOperation = new FakeOperation(new FakeOutputOperation<object> { OutputValue = input }, sut.AttachTo(new FakeOperationBehavior().AttachTo(operation)));
 
             try { parentOperation.Execute(); }
             catch { }
@@ -82,7 +82,7 @@ namespace Overflow.Test.Behaviors
             var operation = new FakeOperation { ThrowOnExecute = new Exception() };
             var compensatingOperation = new FakeOperation();
             var sut = new CompensatingOperationBehavior(compensatingOperation, typeof(ArgumentException));
-            sut.Attach(operation);
+            sut.AttachTo(operation);
 
             try { sut.Execute(); }
             catch { }
@@ -96,7 +96,7 @@ namespace Overflow.Test.Behaviors
             var operation = new FakeOperation { ThrowOnExecute = new ArgumentException() };
             var compensatingOperation = new FakeOperation();
             var sut = new CompensatingOperationBehavior(compensatingOperation, typeof(ArgumentException));
-            sut.Attach(operation);
+            sut.AttachTo(operation);
 
             try { sut.Execute(); }
             catch { }
@@ -110,7 +110,7 @@ namespace Overflow.Test.Behaviors
             var operation = new FakeOperation { ThrowOnExecute = new ArgumentException() };
             var compensatingOperation = new FakeOperation();
             var sut = new CompensatingOperationBehavior(compensatingOperation, typeof(Exception));
-            sut.Attach(operation);
+            sut.AttachTo(operation);
 
             try { sut.Execute(); }
             catch { }
@@ -124,7 +124,7 @@ namespace Overflow.Test.Behaviors
             var operation = new FakeOperation { ThrowOnExecute = new ArgumentException() };
             var compensatingOperation = new FakeOperation();
             var sut = new CompensatingOperationBehavior(compensatingOperation, typeof(Exception));
-            sut.Attach(operation);
+            sut.AttachTo(operation);
             sut.Initialize(new FakeWorkflowConfiguration { Logger = log });
 
             try { sut.Execute(); }
@@ -140,7 +140,7 @@ namespace Overflow.Test.Behaviors
             var operation = new FakeOperation { ThrowOnExecute = new Exception() };
             var compensatingOperation = new FakeOperation();
             var sut = new CompensatingOperationBehavior(compensatingOperation, typeof(ArgumentException));
-            sut.Attach(operation);
+            sut.AttachTo(operation);
             sut.Initialize(new FakeWorkflowConfiguration { Logger = log });
 
             try { sut.Execute(); }
