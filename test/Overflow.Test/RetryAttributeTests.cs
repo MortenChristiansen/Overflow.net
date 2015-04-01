@@ -11,7 +11,7 @@ namespace Overflow.Test
         {
             var sut = new RetryAttribute();
 
-            var result = sut.CreateBehavior();
+            var result = sut.CreateBehavior(null);
 
             Assert.NotNull(result);
             Assert.IsType<RetryBehavior>(result);
@@ -23,7 +23,7 @@ namespace Overflow.Test
             var retryErrorTypes = new[] { typeof (Exception) };
             var sut = new RetryAttribute(5, 500, retryErrorTypes);
 
-            var result = (RetryBehavior)sut.CreateBehavior();
+            var result = (RetryBehavior)sut.CreateBehavior(null);
 
             Assert.Equal(5, result.TimesToRetry);
             Assert.Equal(TimeSpan.FromMilliseconds(500), result.RetryDelay);

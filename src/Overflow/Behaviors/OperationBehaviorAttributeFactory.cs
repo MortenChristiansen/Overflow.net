@@ -12,7 +12,7 @@ namespace Overflow.Behaviors
             Verify.NotNull(operation, "operation");
 
             var decoratorAttributes = operation.GetType().GetCustomAttributes(typeof(OperationBehaviorAttribute), inherit: false);
-            return decoratorAttributes.OfType<OperationBehaviorAttribute>().Select(b => b.CreateBehavior()).ToList();
+            return decoratorAttributes.OfType<OperationBehaviorAttribute>().Select(b => b.CreateBehavior(configuration)).ToList();
         }
     }
 }

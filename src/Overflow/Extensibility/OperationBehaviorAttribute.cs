@@ -17,7 +17,8 @@ namespace Overflow.Extensibility
         /// Create the desired behavior instance. This behavior will always be
         /// applied for operations having defiend the attribute.
         /// </summary>
+        /// <param name="configuration">The configuration of the executing workflow</param>
         /// <returns>The behavior instance, uninitialized</returns>
-        public abstract OperationBehavior CreateBehavior();
+        public abstract OperationBehavior CreateBehavior(WorkflowConfiguration configuration);
     }
 }

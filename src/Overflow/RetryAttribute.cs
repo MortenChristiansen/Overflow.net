@@ -30,8 +30,9 @@ namespace Overflow
         /// <summary>
         /// Create the retry behavior.
         /// </summary>
+        /// <param name="configuration">The configuration of the executing workflow</param>
         /// <returns>The created beahvior</returns>
-        public override OperationBehavior CreateBehavior()
+        public override OperationBehavior CreateBehavior(WorkflowConfiguration configuration)
         {
             return new RetryBehavior(_timesToRetry, TimeSpan.FromMilliseconds(_retryDelayInMilliSeconds), _retryExeptionTypes);
         }

@@ -38,6 +38,16 @@ namespace Overflow.Test.Behaviors
             Assert.Throws<ArgumentNullException>(() => sut.CreateBehaviors(null, configuration));
         }
 
+        [Theory, AutoMoqData]
+        public void Behaviors_are_created_with_the_workflow_configuration(WorkflowConfiguration configuration, BehaviorOperation operation)
+        {
+            var sut = new OperationBehaviorAttributeFactory();
+
+            var result = (FakeOperationBehavior)sut.CreateBehaviors(operation, configuration)[0];
+
+            Assert.Equal(configuration, result.Configuration);
+        }
+
         [FakeOperationBehavior]
         public class BehaviorOperation : Operation { }
     }

@@ -11,7 +11,8 @@ namespace Overflow
         /// <summary>
         /// Creates a new OperationBehavior instance.
         /// </summary>
-        public override OperationBehavior CreateBehavior()
+        /// <param name="configuration">The configuration of the executing workflow</param>
+        public override OperationBehavior CreateBehavior(WorkflowConfiguration configuration)
         {
             return new ContinueOnFailureBehavior();
         }

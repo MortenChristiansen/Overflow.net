@@ -10,7 +10,7 @@ namespace Overflow.Test
         {
             var sut = new AtomicAttribute();
 
-            var result = sut.CreateBehavior();
+            var result = sut.CreateBehavior(null);
 
             Assert.NotNull(result);
             Assert.IsType<AtomicBehavior>(result);
