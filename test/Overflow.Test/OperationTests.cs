@@ -239,6 +239,20 @@ namespace Overflow.Test
             Assert.Equal(started.AddSeconds(1), executionInfo.Completed);
         }
 
+        [Fact]
+        public void Errors_creating_operations_are_wrapped_in_an_OperationCreationException()
+        {
+            Assert.Throws<OperationCreationException<ErrorOperation>>(() => Operation.Create<ErrorOperation>(new FakeWorkflowConfiguration().WithResolver(new SimpleOperationResolver())));
+        }
+
+        private class ErrorOperation: Operation
+        {
+            public ErrorOperation()
+            {
+                throw new Exception();
+            }
+        }
+
         private class TestOperation : Operation {
             public WorkflowConfiguration Configuration { get; private set; }
 

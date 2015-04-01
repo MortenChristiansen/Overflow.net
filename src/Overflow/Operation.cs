@@ -93,9 +93,16 @@ namespace Overflow
             Verify.Operation(configuration != null, "Operation.Configuration was not set.");
             Verify.Operation(configuration.Resolver != null, "Operation.Configuration.Resolver was not set. You can set it to a SimpleOperationResolver instance or add a more full featured, external implementation.");
 
-            var operation = configuration.Resolver.Resolve<TOperation>(configuration);
-            operation.Initialize(configuration);
-            return operation;
+            try
+            {
+                var operation = configuration.Resolver.Resolve<TOperation>(configuration);
+                operation.Initialize(configuration);
+                return operation;
+            }
+            catch (Exception e)
+            {
+                throw new OperationCreationException<TOperation>(e);
+            }
         }
 
         /// <summary>
