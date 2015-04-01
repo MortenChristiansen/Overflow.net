@@ -1,4 +1,3 @@
-using System;
 using Overflow.Extensibility;
 using Overflow.Utilities;
 
@@ -25,6 +24,8 @@ namespace Overflow.Behaviors
             try { base.Execute(); }
             catch
             {
+                var context = OperationContext.Create(InnerOperation.GetInnermostOperation());
+                context.ProvideInputs(_operation);
                 _operation.Execute();
                 throw;
             }

@@ -2,7 +2,9 @@ using System;
 using Overflow.Behaviors;
 using Overflow.Extensibility;
 using Overflow.Test.Fakes;
+using Overflow.Test.TestingInfrastructure;
 using Xunit;
+using Xunit.Extensions;
 
 namespace Overflow.Test.Behaviors
 {
@@ -44,6 +46,22 @@ namespace Overflow.Test.Behaviors
         public void You_cannot_create_a_compensating_operation_behavior_without_an_operation_to_compensate_with()
         {
             Assert.Throws<ArgumentNullException>(() => new CompensatingOperationBehavior(null));
+        }
+
+        [Theory, AutoMoqData]
+        public void Compensating_operations_have_input_values_supplied_from_the_original_operation(object input)
+        {
+            var operation = new FakeInputOperation<object> { ThrowOnExecute = new Exception() };
+            var compensatingOperation = new FakeInputOperation<object>();
+            var sut = new CompensatingOperationBehavior(compensatingOperation);
+            operation.Input(input);
+            var parentOperation = new FakeOperation(new FakeOutputOperation<object> { OutputValue = input }, sut.Attach( new FakeOperationBehavior().Attach(operation)));
+
+            try { parentOperation.Execute(); }
+            catch { }
+
+            Assert.True(compensatingOperation.InputWasProvided);
+            Assert.Equal(input, compensatingOperation.ProvidedInput);
         }
 
         // What about the execution context of the compensating operation? And input data? And what about the
