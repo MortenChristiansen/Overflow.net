@@ -37,6 +37,7 @@ namespace Overflow.Behaviors
 
         private void ExecuteCompensatingOperation()
         {
+            BehaviorWasApplied("Executing compensating operation");
             var context = OperationContext.Create(InnerOperation.GetInnermostOperation());
             context.ProvideInputs(_operation);
             _operation.Execute();
