@@ -64,14 +64,61 @@ namespace Overflow.Test.Behaviors
             Assert.Equal(input, compensatingOperation.ProvidedInput);
         }
 
-        // What about the execution context of the compensating operation? And input data? And what about the
-        // impact of retry behaviors?
+        [Theory, AutoMoqData]
+        public void You_can_specify_compensated_error_types_with_exception_types(IOperation operation)
+        {
+            new CompensatingOperationBehavior(operation, typeof(Exception));
+        }
+
+        [Theory, AutoMoqData]
+        public void You_cannot_specify_compensated_error_types_with_non_exception_types(IOperation operation)
+        {
+            Assert.Throws<ArgumentException>(() => new CompensatingOperationBehavior(operation, typeof(object)));
+        }
+
+        [Fact]
+        public void When_specifying_a_compensated_exception_type_other_types_of_exceptions_will_not_be_compensated()
+        {
+            var operation = new FakeOperation { ThrowOnExecute = new Exception() };
+            var compensatingOperation = new FakeOperation();
+            var sut = new CompensatingOperationBehavior(compensatingOperation, typeof(ArgumentException));
+            sut.Attach(operation);
+
+            try { sut.Execute(); }
+            catch { }
+
+            Assert.False(compensatingOperation.HasExecuted);
+        }
+
+        [Fact]
+        public void When_specifying_a_compensated_exception_type_the_compensating_operation_will_be_executed_in_case_of_such_an_exception()
+        {
+            var operation = new FakeOperation { ThrowOnExecute = new ArgumentException() };
+            var compensatingOperation = new FakeOperation();
+            var sut = new CompensatingOperationBehavior(compensatingOperation, typeof(ArgumentException));
+            sut.Attach(operation);
+
+            try { sut.Execute(); }
+            catch { }
+
+            Assert.True(compensatingOperation.HasExecuted);
+        }
+
+        [Fact]
+        public void When_specifying_a_compensated_exception_type_the_compensating_operation_will_be_executed_in_case_of_an_exception_inheriting_from_this_exception()
+        {
+            var operation = new FakeOperation { ThrowOnExecute = new ArgumentException() };
+            var compensatingOperation = new FakeOperation();
+            var sut = new CompensatingOperationBehavior(compensatingOperation, typeof(Exception));
+            sut.Attach(operation);
+
+            try { sut.Execute(); }
+            catch { }
+
+            Assert.True(compensatingOperation.HasExecuted);
+        }
 
         /* Questions
-         * - Should the CO have input data?
-         * - Should the CO provide output data?
-         * - Should the CO be allowed the full behavior support?
-         * - How to handle failures in the CO? It would not be logged as a failure if the logging behavior is not applied
          * - How to handle multiple applications of the behavior? Disallow? I think we should disallow multiple values to keep it simple
          * 
          * I think there are too many issues running the operation outside of the normal flow. I would have to think about how every future

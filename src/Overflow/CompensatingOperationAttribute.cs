@@ -9,18 +9,20 @@ namespace Overflow
     public class CompensatingOperationAttribute : OperationBehaviorAttribute
     {
         private readonly Type _operationType;
+        private readonly Type[] _compensatedExceptionTypes;
 
-        public CompensatingOperationAttribute(Type operationType)
+        public CompensatingOperationAttribute(Type operationType, params Type[] compensatedExceptionTypes)
         {
             Verify.NotNull(operationType, "operationType");
             Verify.Argument(typeof(IOperation).IsAssignableFrom(operationType), "The operation type must implement the IOperation interface");
 
             _operationType = operationType;
+            _compensatedExceptionTypes = compensatedExceptionTypes;
         }
 
         public override OperationBehavior CreateBehavior(WorkflowConfiguration configuration)
         {
-            return new CompensatingOperationBehavior(CreateCompensatingOperation(configuration));
+            return new CompensatingOperationBehavior(CreateCompensatingOperation(configuration), _compensatedExceptionTypes);
         }
 
         private Operation CreateCompensatingOperation(WorkflowConfiguration configuration)
