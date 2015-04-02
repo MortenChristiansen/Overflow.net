@@ -18,8 +18,9 @@ namespace Overflow.Testing
         /// </summary>
         /// <param name="operation">The operation to verify child operations for</param>
         /// <param name="expectedOperationTypes">The types of child operations expected</param>
-        public static void HasExecutedChildOperations(this IOperation operation, params Type[] expectedOperationTypes)
+        public static void ExecutesChildOperations(this IOperation operation, params Type[] expectedOperationTypes)
         {
+            new ContinueOnFailureBehavior().AttachTo(operation).Execute();
             VerifyExecutedOperations(operation, expectedOperationTypes, allowOperationFailures: true);
         }
 
