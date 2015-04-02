@@ -1,3 +1,4 @@
+using System;
 using Overflow.Test.Fakes;
 using Overflow.Test.TestingInfrastructure;
 using Xunit;
@@ -81,14 +82,59 @@ namespace Overflow.Test.Testing
             Assert.Equal(formattedErrorMessage, exception.Message);
         }
 
-        private class Operation1 : Operation
+        [Fact]
+        public void You_can_verify_that_executing_an_operation_has_executed_a_specific_sequence_of_child_operations_without_failures()
         {
-            protected override void OnExecute() { }
+            var operation = new FakeOperation(new Operation1(), new FakeOperation(new Operation2()));
+
+            operation.ExecutesChildOperationsWithoutErrors(typeof(Operation1), typeof(FakeOperation), typeof(Operation2));
         }
 
-        private class Operation2 : Operation
+        [Fact]
+        public void Asserting_a_sequence_of_child_operation_executions_without_failures_highlight_differences_between_expected_and_execute_operations()
         {
-            protected override void OnExecute() { }
+            var operation = new FakeOperation(new Operation1(), new FakeOperation(new Operation1()));
+            AssertionException exception = null;
+
+            try { operation.ExecutesChildOperationsWithoutErrors(typeof(Operation1), typeof(FakeOperation), typeof(Operation2)); }
+            catch (AssertionException e) { exception = e; }
+
+            var formattedErrorMessage = string.Format("Operations{0}=========={0}Operation1 [match]{0}FakeOperation [match]{0}Operation1 [error: expected Operation2]", NL);
+            Assert.Equal(formattedErrorMessage, exception.Message);
+        }
+
+        [Fact]
+        public void Asserting_a_sequence_of_child_operation_executions_without_failures_throws_an_exception_when_an_operation_has_failed()
+        {
+            var operation = new FakeOperation(new ContinuingOperation());
+
+            Assert.Throws<AssertionException>(() => operation.ExecutesChildOperationsWithoutErrors(typeof (ContinuingOperation)));
+        }
+
+        [Fact]
+        public void Asserting_a_sequence_of_child_operation_executions_without_failures_highlight_when_an_operation_failed_but_matched_the_expected_type()
+        {
+            var operation = new FakeOperation(new ContinuingOperation());
+            AssertionException exception = null;
+
+            try { operation.ExecutesChildOperationsWithoutErrors(typeof(ContinuingOperation)); }
+            catch (AssertionException e) { exception = e; }
+
+            var formattedErrorMessage = string.Format("Operations{0}=========={0}ContinuingOperation [match, failed]", NL);
+            Assert.Equal(formattedErrorMessage, exception.Message);
+        }
+
+        private class Operation1 : Operation { }
+
+        private class Operation2 : Operation { }
+
+        [ContinueOnFailure]
+        private class ContinuingOperation : Operation
+        {
+            protected override void OnExecute()
+            {
+                throw new Exception();
+            }
         }
     }
 }

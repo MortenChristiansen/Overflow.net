@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Overflow.Behaviors;
 using Overflow.Utilities;
 
 namespace Overflow.Testing
@@ -18,6 +19,11 @@ namespace Overflow.Testing
         /// <param name="operation">The operation to verify child operations for</param>
         /// <param name="expectedOperationTypes">The types of child operations expected</param>
         public static void HasExecutedChildOperations(this IOperation operation, params Type[] expectedOperationTypes)
+        {
+            VerifyExecutedOperations(operation, expectedOperationTypes, allowOperationFailures: true);
+        }
+
+        private static void VerifyExecutedOperations(IOperation operation, Type[] expectedOperationTypes, bool allowOperationFailures)
         {
             Verify.NotNull(operation, "operation");
             Verify.NotNull(expectedOperationTypes, "expectedOperationTypes");
@@ -51,11 +57,28 @@ namespace Overflow.Testing
                     continue;
                 }
 
-                messageParts.Add(expectedOperationTypes[i].Name + " [match]");
+                var hasFailedOperation = !allowOperationFailures && executedOperations[i].Error != null;
+                hasErrors = hasErrors || hasFailedOperation;
+                var matchMessage = hasFailedOperation ? " [match, failed]" : " [match]";
+                messageParts.Add(expectedOperationTypes[i].Name + matchMessage);
             }
 
             if (hasErrors)
                 throw new AssertionException(string.Join(Environment.NewLine, messageParts));
+        }
+
+        /// <summary>
+        /// Assert that the operation has executed child operations of the specified
+        /// types, in the specified order. The entire hierarchy of child operations is
+        /// included. It is verified that none of the executed operations has thrown an
+        /// exception.
+        /// </summary>
+        /// <param name="operation">The operation to verify child operations for</param>
+        /// <param name="expectedOperationTypes">The types of child operations expected</param>
+        public static void ExecutesChildOperationsWithoutErrors(this IOperation operation, params Type[] expectedOperationTypes)
+        {
+            new ContinueOnFailureBehavior().AttachTo(operation).Execute();
+            VerifyExecutedOperations(operation, expectedOperationTypes, allowOperationFailures: false);
         }
     }
 }
