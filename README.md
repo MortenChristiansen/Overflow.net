@@ -155,9 +155,7 @@ For verifying that your workflows executed as expected, the library provides an 
     {
         var workflow = new SendPartyInvitesOperation();
 
-        workflow.Execute();
-
-        workflow.HasExecutedChildOperations(
+        workflow.ExecutesChildOperationsWithoutErrors(
             typeof(FindGuestListOperation),
             typeof(PrepareInviteTemplateOperation),
             typeof(CreateInviteNotificationsOperation),
@@ -170,6 +168,8 @@ When the expectations are not met, the AssertionException provides a descriptive
     Operations
     ==========
     FindGuestListOperation [match]
-    PrepareInviteTemplateOperation [match]
+    PrepareInviteTemplateOperation [match, failed]
     none [error: expected CreateInviteNotificationsOperation]
     none [error: expected SendNotificationsOperation]
+
+If you want to test that the proper workflow is executed in case of errors, use the similar but less strict method `ExecutesChildOperations` instead.
