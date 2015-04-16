@@ -1,16 +1,11 @@
 language: csharp
 solution: Overflow.net.sln
-before_install:
-- sudo bash -c "echo deb http://badgerports.org precise main >> /etc/apt/sources.list"
-- sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 0E1FAD0C
-- sudo apt-get update
-- sudo apt-get install mono-devel
 install:
 - nuget restore Overflow.net.sln
 - nuget install xunit.runner.console -Version 2.0.0 -OutputDirectory testrunner
 script:
 - xbuild /p:Configuration=Release Overflow.net.sln
-- mono ./testrunner/xunit.runner.console.2.0.0/tools/xunit.console.exe ./test/Overflow.Test/bin/Release/Overflow.Test.dll
+#- mono ./testrunner/xunit.runner.console.2.0.0/tools/xunit.console.exe ./test/Overflow.Test/bin/Release/Overflow.Test.dll
 notifications:
   slack:
     secure: RwlN5jiS9z6oJAQRl10mIjcEP4KU+jaHdlQK7VV7zTG/O1SKVwwmW7OlZmUojIRKV5GQ0KE7z4NyPL+qsiudbsQfeZ4ZqKD9c2eUTgMbVZp9A7MPy3eYsmpbeuTaB7mX+8pAysp+IJGH/5U3rj0ez1pCd4HwK+Leoddmn+xHsmo=
