@@ -5,7 +5,6 @@ using Overflow.Test.Fakes;
 using Overflow.Test.TestingInfrastructure;
 using Overflow.Utilities;
 using Xunit;
-using Xunit.Extensions;
 
 namespace Overflow.Test.Behaviors
 {

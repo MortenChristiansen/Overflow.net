@@ -2,7 +2,6 @@ using Overflow.Behaviors;
 using Overflow.Test.Fakes;
 using Overflow.Test.TestingInfrastructure;
 using Xunit;
-using Xunit.Extensions;
 
 namespace Overflow.Test.Behaviors
 {

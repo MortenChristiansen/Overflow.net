@@ -1,7 +1,6 @@
 using System;
 using Overflow.Test.TestingInfrastructure;
 using Xunit;
-using Xunit.Extensions;
 
 namespace Overflow.Test
 {
