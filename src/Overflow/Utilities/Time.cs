@@ -8,22 +8,16 @@ namespace Overflow.Utilities
     {
         private static DateTimeOffset? _stoppedAt;
 
-        public static DateTimeOffset OffsetUtcNow { get { return _stoppedAt ?? DateTimeOffset.UtcNow; } }
+        public static DateTimeOffset OffsetUtcNow => _stoppedAt ?? DateTimeOffset.UtcNow;
 
-        public static void Stop(DateTimeOffset stoppedAt)
-        {
+        public static void Stop(DateTimeOffset stoppedAt) =>
             _stoppedAt = stoppedAt;
-        }
 
-        public static void Stop()
-        {
+        public static void Stop() => 
             _stoppedAt = DateTimeOffset.UtcNow;
-        }
 
-        public static void Start()
-        {
+        public static void Start() =>
             _stoppedAt = null;
-        }
 
         public static void Wait(TimeSpan timeSpan)
         {
@@ -33,10 +27,8 @@ namespace Overflow.Utilities
                 _stoppedAt += timeSpan;
         }
 
-        public static Measurement Measure()
-        {
-            return new Measurement();
-        }
+        public static Measurement Measure() =>
+            new Measurement();
 
         public class Measurement
         {

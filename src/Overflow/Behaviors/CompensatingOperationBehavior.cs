@@ -10,10 +10,7 @@ namespace Overflow.Behaviors
         private readonly IOperation _operation;
         private readonly Type[] _compensatedExceptionTypes;
 
-        public override BehaviorPrecedence Precedence
-        {
-            get { return BehaviorPrecedence.WorkCompensation; }
-        }
+        public override BehaviorPrecedence Precedence => BehaviorPrecedence.WorkCompensation;
 
         public CompensatingOperationBehavior(IOperation operation, params Type[] compensatedExceptionTypes)
         {

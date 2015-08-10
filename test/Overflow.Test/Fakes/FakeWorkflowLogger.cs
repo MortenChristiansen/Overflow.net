@@ -6,25 +6,14 @@ namespace Overflow.Test.Fakes
 {
     public class FakeWorkflowLogger : IWorkflowLogger
     {
-        public IList<IOperation> StartedOperations { get; private set; }
-        public IList<IOperation> FinishedOperations { get; private set; }
-        public IList<TimeSpan> FinishedOperationDurations { get; private set; }
-        public IDictionary<IOperation, IList<Exception>> OperationFailures { get; private set; }
-        public IList<BehaviorApplication> AppliedBehaviors { get; private set; }
+        public IList<IOperation> StartedOperations { get; } = new List<IOperation>();
+        public IList<IOperation> FinishedOperations { get; } = new List<IOperation>();
+        public IList<TimeSpan> FinishedOperationDurations { get; } = new List<TimeSpan>();
+        public IDictionary<IOperation, IList<Exception>> OperationFailures { get; } = new Dictionary<IOperation, IList<Exception>>();
+        public IList<BehaviorApplication> AppliedBehaviors { get; } = new List<BehaviorApplication>();
 
-        public FakeWorkflowLogger()
-        {
-            StartedOperations = new List<IOperation>();
-            FinishedOperations = new List<IOperation>();
-            FinishedOperationDurations = new List<TimeSpan>();
-            OperationFailures = new Dictionary<IOperation, IList<Exception>>();
-            AppliedBehaviors = new List<BehaviorApplication>();
-        }
-
-        public void OperationStarted(IOperation operation)
-        {
+        public void OperationStarted(IOperation operation) =>
             StartedOperations.Add(operation);
-        }
 
         public void OperationFinished(IOperation operation, TimeSpan duration)
         {

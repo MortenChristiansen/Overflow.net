@@ -134,15 +134,10 @@ namespace Overflow.Test.Extensibility
 
         private class TestBehavior : OperationBehavior
         {
-            public override BehaviorPrecedence Precedence
-            {
-                get { return BehaviorPrecedence.Logging; }
-            }
+            public override BehaviorPrecedence Precedence => BehaviorPrecedence.Logging;
 
-            public void ApplyBahviorLog(string description)
-            {
+            public void ApplyBahviorLog(string description) =>
                 BehaviorWasApplied(description);
-            }
         }
     }
 }

@@ -255,10 +255,8 @@ namespace Overflow.Test
         private class TestOperation : Operation {
             public WorkflowConfiguration Configuration { get; private set; }
 
-            public override void Initialize(WorkflowConfiguration configuration)
-            {
+            public override void Initialize(WorkflowConfiguration configuration) =>
                 Configuration = configuration;
-            }
         }
 
         private class OutputtingOperation : Operation
@@ -291,10 +289,8 @@ namespace Overflow.Test
         {
             public object InputValue { get; private set; }
 
-            public void Input(object input)
-            {
+            public void Input(object input) =>
                 InputValue = input;
-            }
         }
     }
 }

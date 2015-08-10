@@ -4,9 +4,7 @@ namespace Overflow.Test.Fakes
     {
         public IOperation Operation { get; set; }
 
-        public override IOperation CreateOperation()
-        {
-            return Operation;
-        }
+        public override IOperation CreateOperation() =>
+            Operation;
     }
 }

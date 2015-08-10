@@ -27,8 +27,7 @@ namespace Overflow.Test.Fakes
             HasExecuted = true;
             ExecutedOperations.Add(this);
 
-            if (ExecuteAction != null)
-                ExecuteAction();
+            ExecuteAction?.Invoke();
 
             if (ThrowOnExecute != null && ErrorCount-- != 0)
                 throw ThrowOnExecute;

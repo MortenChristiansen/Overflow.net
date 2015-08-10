@@ -10,7 +10,7 @@ namespace Overflow.Extensibility
     /// If sufficient, this is the best way to attach behaviors since it avoids the
     /// need to create a custom behavior factory.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public abstract class OperationBehaviorAttribute : Attribute
     {
         /// <summary>

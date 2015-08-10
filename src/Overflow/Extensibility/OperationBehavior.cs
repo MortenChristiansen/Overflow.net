@@ -41,7 +41,7 @@ namespace Overflow.Extensibility
         /// <summary>
         /// Gets the child operations which have been executed.
         /// </summary>
-        public IEnumerable<ExecutionInfo> ExecutedChildOperations { get { return InnerOperation.ExecutedChildOperations; } }
+        public IEnumerable<ExecutionInfo> ExecutedChildOperations => InnerOperation.ExecutedChildOperations;
 
         /// <summary>
         /// Initialize the behavior and the decorated operation.
@@ -61,20 +61,16 @@ namespace Overflow.Extensibility
         /// Execute the behavior. The behavior has a chance to apply special logic before
         /// or after invoking the Execute method on the inner operation.
         /// </summary>
-        public virtual void Execute()
-        {
+        public virtual void Execute() => 
             InnerOperation.Execute();
-        }
 
         /// <summary>
         /// Get child operations for the decorated operation. The behavior has a chance to
         /// perform special logic before or after retreiving the operations.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerable<IOperation> GetChildOperations()
-        {
-            return InnerOperation.GetChildOperations();
-        }
+        public virtual IEnumerable<IOperation> GetChildOperations() =>  
+            InnerOperation.GetChildOperations();
 
         /// <summary>
         /// Register the application of a behavior. Use this when the behavior causes the normal
@@ -86,8 +82,7 @@ namespace Overflow.Extensibility
         {
             Verify.NotNull(description, "description");
 
-            if (_logger != null)
-                _logger.BehaviorWasApplied(InnerOperation.GetInnermostOperation(), this, description);
+            _logger?.BehaviorWasApplied(InnerOperation.GetInnermostOperation(), this, description);
         }
     }
 }

@@ -4,9 +4,7 @@ namespace Overflow.Test.Fakes
 {
     class FakeOperationBehaviorAttribute : OperationBehaviorAttribute
     {
-        public override OperationBehavior CreateBehavior(WorkflowConfiguration configuration)
-        {
-            return new FakeOperationBehavior(configuration);
-        }
+        public override OperationBehavior CreateBehavior(WorkflowConfiguration configuration) =>
+            new FakeOperationBehavior(configuration);
     }
 }

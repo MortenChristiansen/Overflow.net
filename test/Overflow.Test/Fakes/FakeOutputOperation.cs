@@ -7,14 +7,10 @@ namespace Overflow.Test.Fakes
         public Action<TOutput> OnReceiveOutput { get; private set; }
         public TOutput OutputValue { get; set; }
 
-        protected override void OnExecute()
-        {
+        protected override void OnExecute() =>
             OnReceiveOutput(OutputValue);
-        }
 
-        public void Output(Action<TOutput> onReceiveOutput)
-        {
+        public void Output(Action<TOutput> onReceiveOutput) =>
             OnReceiveOutput = onReceiveOutput;
-        }
     }
 }

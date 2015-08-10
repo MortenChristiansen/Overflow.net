@@ -214,7 +214,7 @@ namespace Overflow.Test
 
         private class OperationWithInterfaceDependency : Operation
         {
-            public IDependency Dependency { get; private set; }
+            public IDependency Dependency { get; }
 
             public OperationWithInterfaceDependency(IDependency dependency)
             {

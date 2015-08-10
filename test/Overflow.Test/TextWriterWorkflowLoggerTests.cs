@@ -100,7 +100,7 @@ namespace Overflow.Test
                 sut.OperationStarted(new FakeOperation());
                 sut.OperationStarted(new FakeOperation());
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation", NL), sw.ToString());
+                Assert.Equal($"FakeOperation {{{NL}  FakeOperation", sw.ToString());
             }
         }
 
@@ -116,7 +116,7 @@ namespace Overflow.Test
                 sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
                 sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation [duration: 0ms]{0}}} [duration: 0ms]", NL), sw.ToString());
+                Assert.Equal($"FakeOperation {{{NL}  FakeOperation [duration: 0ms]{NL}}} [duration: 0ms]", sw.ToString());
             }
         }
 
@@ -134,7 +134,7 @@ namespace Overflow.Test
                 sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
                 sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation [duration: 0ms]{0}{0}  FakeOperation [duration: 0ms]{0}}} [duration: 0ms]", NL), sw.ToString());
+                Assert.Equal($"FakeOperation {{{NL}  FakeOperation [duration: 0ms]{NL}{NL}  FakeOperation [duration: 0ms]{NL}}} [duration: 0ms]", sw.ToString());
             }
         }
 
@@ -150,7 +150,7 @@ namespace Overflow.Test
                 sut.OperationStarted(new FakeOperation());
                 sut.OperationStarted(new FakeOperation());
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation {{{0}    FakeOperation {{{0}      FakeOperation", NL), sw.ToString());
+                Assert.Equal($"FakeOperation {{{NL}  FakeOperation {{{NL}    FakeOperation {{{NL}      FakeOperation", sw.ToString());
             }
         }
 
@@ -165,7 +165,7 @@ namespace Overflow.Test
                 sut.OperationFailed(new FakeOperation(), new InvalidOperationException("MESSAGE"));
                 sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  Error [InvalidOperationException]: MESSAGE{0}}} [duration: 0ms]", NL), sw.ToString());
+                Assert.Equal($"FakeOperation {{{NL}  Error [InvalidOperationException]: MESSAGE{NL}}} [duration: 0ms]", sw.ToString());
             }
         }
 
@@ -182,7 +182,7 @@ namespace Overflow.Test
                 sut.OperationFailed(new FakeOperation(), new InvalidOperationException("MESSAGE"));
                 sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation [duration: 0ms]{0}{0}  Error [InvalidOperationException]: MESSAGE{0}}} [duration: 0ms]", NL), sw.ToString());
+                Assert.Equal($"FakeOperation {{{NL}  FakeOperation [duration: 0ms]{NL}{NL}  Error [InvalidOperationException]: MESSAGE{NL}}} [duration: 0ms]", sw.ToString());
             }
         }
 
@@ -245,7 +245,7 @@ namespace Overflow.Test
                 sut.BehaviorWasApplied(new FakeOperation(), new FakeOperationBehavior(), "DESCRIPTION");
                 sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperationBehavior: DESCRIPTION{0}}} [duration: 0ms]", NL), sw.ToString());
+                Assert.Equal($"FakeOperation {{{NL}  FakeOperationBehavior: DESCRIPTION{NL}}} [duration: 0ms]", sw.ToString());
             }
         }
 
@@ -262,7 +262,7 @@ namespace Overflow.Test
                 sut.BehaviorWasApplied(new FakeOperation(), new FakeOperationBehavior(), "DESCRIPTION");
                 sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation [duration: 0ms]{0}{0}  FakeOperationBehavior: DESCRIPTION{0}}} [duration: 0ms]", NL), sw.ToString());
+                Assert.Equal($"FakeOperation {{{NL}  FakeOperation [duration: 0ms]{NL}{NL}  FakeOperationBehavior: DESCRIPTION{NL}}} [duration: 0ms]", sw.ToString());
             }
         }
 
@@ -304,7 +304,7 @@ namespace Overflow.Test
                 sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
                 sut.OperationFinished(new FakeOperation(), TimeSpan.Zero);
 
-                Assert.Equal(string.Format("FakeOperation {{{0}  FakeOperation {{{0}    FakeOperation [duration: 0ms]{0}  }} [duration: 0ms]{0}}} [duration: 0ms]", NL), sw.ToString());
+                Assert.Equal($"FakeOperation {{{NL}  FakeOperation {{{NL}    FakeOperation [duration: 0ms]{NL}  }} [duration: 0ms]{NL}}} [duration: 0ms]", sw.ToString());
             }
         }
     }

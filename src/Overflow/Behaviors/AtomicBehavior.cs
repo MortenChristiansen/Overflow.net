@@ -5,10 +5,7 @@ namespace Overflow.Behaviors
 {
     class AtomicBehavior : OperationBehavior
     {
-        public override BehaviorPrecedence Precedence
-        {
-            get { return BehaviorPrecedence.StateRecovery; }
-        }
+        public override BehaviorPrecedence Precedence => BehaviorPrecedence.StateRecovery;
 
         public override void Execute()
         {

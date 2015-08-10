@@ -9,14 +9,14 @@ namespace Overflow.Test.TestingInfrastructure
     {
         protected static readonly string NL = Environment.NewLine;
 
-        public IFixture Fixture { get; private set; }
+        public IFixture Fixture { get; }
 
         protected TestBase()
         {
             Fixture = new Fixture().Customize(new AutoMoqCustomization());
         }
 
-        protected void VerifyConstructorGuards<TSut>()
+        protected void VerifyConstructorGuards()
         {
             var assertion = new GuardClauseAssertion(Fixture);
             assertion.Verify(GetType().GetConstructors());
@@ -30,7 +30,7 @@ namespace Overflow.Test.TestingInfrastructure
 
         protected void VerifyGuards<TSut>()
         {
-            VerifyConstructorGuards<TSut>();
+            VerifyConstructorGuards();
             VerifyMethodGuards<TSut>();
         }
     }

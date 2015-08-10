@@ -4,10 +4,7 @@ namespace Overflow.Behaviors
 {
     class ConditionalExecutionBehavior : OperationBehavior
     {
-        public override BehaviorPrecedence Precedence
-        {
-            get { return BehaviorPrecedence.Staging; }
-        }
+        public override BehaviorPrecedence Precedence => BehaviorPrecedence.Staging;
 
         public override void Execute()
         {

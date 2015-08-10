@@ -7,10 +7,7 @@ namespace Overflow.Behaviors
     {
         private readonly IWorkflowLogger _logger;
 
-        public override BehaviorPrecedence Precedence
-        {
-            get { return BehaviorPrecedence.PreRecovery; }
-        }
+        public override BehaviorPrecedence Precedence => BehaviorPrecedence.PreRecovery;
 
         public OperationErrorLoggingBehavior(IWorkflowLogger logger)
         {

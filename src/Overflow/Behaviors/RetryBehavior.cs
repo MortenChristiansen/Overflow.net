@@ -8,9 +8,9 @@ namespace Overflow.Behaviors
 {
     class RetryBehavior : OperationBehavior
     {
-        public IEnumerable<Type> RetryExceptionTypes { get; private set; }
+        public IEnumerable<Type> RetryExceptionTypes { get; }
         public int TimesToRetry { get; private set; }
-        public TimeSpan RetryDelay { get; private set; }
+        public TimeSpan RetryDelay { get; }
 
         public RetryBehavior(int timesToRetry, TimeSpan retryDelay, params Type[] retryExceptionTypes)
         {
@@ -23,21 +23,15 @@ namespace Overflow.Behaviors
             RetryDelay = retryDelay;
         }
 
-        public override BehaviorPrecedence Precedence
-        {
-            get { return BehaviorPrecedence.WorkRecovery; }
-        }
+        public override BehaviorPrecedence Precedence => BehaviorPrecedence.WorkRecovery;
 
         public override void Execute()
         {
             if (TimesToRetry-- > 0)
             {
                 try { base.Execute(); }
-                catch (Exception e)
+                catch (Exception e) when (!HasExecutedNonIndempotentChildOperations() && IsConfiguredToRetryType(e.GetType()))
                 {
-                    if (HasExecutedNonIndempotentChildOperations() || !IsConfiguredToRetryType(e.GetType()))
-                        throw;
-
                     Time.Wait(RetryDelay);
                     BehaviorWasApplied("Operation retried");
                     Execute();

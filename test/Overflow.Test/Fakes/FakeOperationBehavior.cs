@@ -7,10 +7,7 @@ namespace Overflow.Test.Fakes
         public BehaviorPrecedence SetPrecedence { get; set; }
         public WorkflowConfiguration Configuration { get; private set; }
 
-        public override BehaviorPrecedence Precedence
-        {
-            get { return SetPrecedence; }
-        }
+        public override BehaviorPrecedence Precedence => SetPrecedence;
 
         public FakeOperationBehavior()
         {

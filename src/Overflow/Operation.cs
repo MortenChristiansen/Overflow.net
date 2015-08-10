@@ -23,7 +23,7 @@ namespace Overflow
         /// Get the child operations which have been executed during the execution of this
         /// operation.
         /// </summary>
-        public IEnumerable<ExecutionInfo> ExecutedChildOperations { get { return _executedChildOperations; }}
+        public IEnumerable<ExecutionInfo> ExecutedChildOperations => _executedChildOperations;
 
         /// <summary>
         /// Initialize the operation. 
@@ -76,10 +76,8 @@ namespace Overflow
         /// </summary>
         /// <returns>Any child operations. Note that the execution of each child operation can
         /// influence the next sibling operations.</returns>
-        public virtual IEnumerable<IOperation> GetChildOperations()
-        {
-            return new IOperation[0];
-        }
+        public virtual IEnumerable<IOperation> GetChildOperations() =>
+            new IOperation[0];
 
         /// <summary>
         /// Create a new initialized instance of an operation type.
