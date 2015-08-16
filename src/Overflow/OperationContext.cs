@@ -41,7 +41,6 @@ namespace Overflow
             return Delegate.CreateDelegate(actionT, this, genericMethod);
         }
 
-        // Used with generics
         private void OnOutput<TOutput>(TOutput output)
         {
             var key = typeof (TOutput);
