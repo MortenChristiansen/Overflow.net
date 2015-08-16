@@ -10,7 +10,7 @@ namespace Overflow.Extensibility
     {
         /// <summary>
         /// Creates all the applicable beahviors and applies them to
-        /// the orperation in the correct order.
+        /// the operation in the correct order.
         /// </summary>
         /// <param name="operation">The original workflow operation with no
         /// behaviors attached</param>
