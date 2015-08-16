@@ -93,9 +93,7 @@ namespace Overflow
 
         private static readonly ConditionalWeakTable<IOperation, Dictionary<Type, object>> _operationData = new ConditionalWeakTable<IOperation, Dictionary<Type, object>>();
 
-        public static OperationContext Create(IOperation operation)
-        {
-            return new OperationContext(_operationData.GetOrCreateValue(operation));
-        }
+        public static OperationContext Create(IOperation operation) =>
+            new OperationContext(_operationData.GetOrCreateValue(operation));
     }
 }
