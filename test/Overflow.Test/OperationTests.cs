@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Overflow.Test
 {
-    public class OperationTests
+    public class OperationTests : TestBase
     {
         [Fact]
         public void Executing_an_operation_calls_the_OnExecute_method()
@@ -216,8 +216,7 @@ namespace Overflow.Test
             var childOperation = new FakeOperation { ThrowOnExecute = error };
             var sut = new FakeOperation(childOperation);
 
-            try { sut.Execute(); }
-            catch { }
+            ExecuteIgnoringErrors(sut.Execute);
 
             Assert.Equal(1, sut.ExecutedChildOperations.Count());
             Assert.Equal(childOperation.ThrowOnExecute, sut.ExecutedChildOperations.ElementAt(0).Error);

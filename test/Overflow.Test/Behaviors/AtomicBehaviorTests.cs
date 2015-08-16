@@ -2,11 +2,12 @@ using System;
 using System.Transactions;
 using Overflow.Behaviors;
 using Overflow.Extensibility;
+using Overflow.Test.TestingInfrastructure;
 using Xunit;
 
 namespace Overflow.Test.Behaviors
 {
-    public class AtomicBehaviorTests
+    public class AtomicBehaviorTests : TestBase
     {
         [Fact]
         public void The_behavior_has_state_recovery_level_precedence()
@@ -44,8 +45,7 @@ namespace Overflow.Test.Behaviors
             var operation = new TransactionOperation { ThrowOnExecute = new Exception() };
             var sut = new AtomicBehavior().AttachTo(operation);
 
-            try { sut.Execute(); }
-            catch {}
+            ExecuteIgnoringErrors(sut.Execute);
 
             Assert.False(operation.TransactionCommitted);
         }

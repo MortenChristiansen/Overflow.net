@@ -23,8 +23,7 @@ namespace Overflow.Test.Behaviors
             var innerOperation = new FakeOperation { ThrowOnExecute = error };
             var sut = new OperationErrorLoggingBehavior(logger).AttachTo(innerOperation);
 
-            try { sut.Execute(); }
-            catch { }
+            ExecuteIgnoringErrors(sut.Execute);
 
             Assert.Equal(1, logger.OperationFailures.Count);
             Assert.Equal(1, logger.OperationFailures[innerOperation].Count);
@@ -38,8 +37,7 @@ namespace Overflow.Test.Behaviors
             var behavior = new FakeOperationBehavior().AttachTo(innerOperation);
             var sut = new OperationErrorLoggingBehavior(logger).AttachTo(behavior);
 
-            try { sut.Execute(); }
-            catch { }
+            ExecuteIgnoringErrors(sut.Execute);
 
             Assert.Equal(1, logger.OperationFailures[innerOperation].Count);
         }

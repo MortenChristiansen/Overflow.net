@@ -33,5 +33,16 @@ namespace Overflow.Test.TestingInfrastructure
             VerifyConstructorGuards();
             VerifyMethodGuards<TSut>();
         }
+
+        protected void ExecuteIgnoringErrors(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception)
+            {
+            }
+        }
     }
 }

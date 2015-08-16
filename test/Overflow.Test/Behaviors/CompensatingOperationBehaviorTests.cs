@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Overflow.Test.Behaviors
 {
-    public class CompensatingOperationBehaviorTests
+    public class CompensatingOperationBehaviorTests : TestBase
     {
         [Fact]
         public void The_behavior_has_work_compensation_level_precedence()
@@ -35,8 +35,7 @@ namespace Overflow.Test.Behaviors
             var sut = new CompensatingOperationBehavior(compensatingOperation);
             sut.AttachTo(operation);
 
-            try { sut.Execute(); }
-            catch { }
+            ExecuteIgnoringErrors(sut.Execute);
 
             Assert.True(compensatingOperation.HasExecuted);
         }
@@ -56,8 +55,7 @@ namespace Overflow.Test.Behaviors
             operation.Input(input);
             var parentOperation = new FakeOperation(new FakeOutputOperation<object> { OutputValue = input }, sut.AttachTo(new FakeOperationBehavior().AttachTo(operation)));
 
-            try { parentOperation.Execute(); }
-            catch { }
+            ExecuteIgnoringErrors(parentOperation.Execute);
 
             Assert.True(compensatingOperation.InputWasProvided);
             Assert.Equal(input, compensatingOperation.ProvidedInput);
@@ -83,8 +81,7 @@ namespace Overflow.Test.Behaviors
             var sut = new CompensatingOperationBehavior(compensatingOperation, typeof(ArgumentException));
             sut.AttachTo(operation);
 
-            try { sut.Execute(); }
-            catch { }
+            ExecuteIgnoringErrors(sut.Execute);
 
             Assert.False(compensatingOperation.HasExecuted);
         }
@@ -97,8 +94,7 @@ namespace Overflow.Test.Behaviors
             var sut = new CompensatingOperationBehavior(compensatingOperation, typeof(ArgumentException));
             sut.AttachTo(operation);
 
-            try { sut.Execute(); }
-            catch { }
+            ExecuteIgnoringErrors(sut.Execute);
 
             Assert.True(compensatingOperation.HasExecuted);
         }
@@ -111,8 +107,7 @@ namespace Overflow.Test.Behaviors
             var sut = new CompensatingOperationBehavior(compensatingOperation, typeof(Exception));
             sut.AttachTo(operation);
 
-            try { sut.Execute(); }
-            catch { }
+            ExecuteIgnoringErrors(sut.Execute);
 
             Assert.True(compensatingOperation.HasExecuted);
         }
@@ -126,8 +121,7 @@ namespace Overflow.Test.Behaviors
             sut.AttachTo(operation);
             sut.Initialize(new FakeWorkflowConfiguration { Logger = log });
 
-            try { sut.Execute(); }
-            catch { }
+            ExecuteIgnoringErrors(sut.Execute);
 
             Assert.Equal(1, log.AppliedBehaviors.Count);
             Assert.Equal("Executing compensating operation", log.AppliedBehaviors[0].Description);
@@ -142,8 +136,7 @@ namespace Overflow.Test.Behaviors
             sut.AttachTo(operation);
             sut.Initialize(new FakeWorkflowConfiguration { Logger = log });
 
-            try { sut.Execute(); }
-            catch { }
+            ExecuteIgnoringErrors(sut.Execute);
 
             Assert.Equal(0, log.AppliedBehaviors.Count);
         }

@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Overflow.Test.Behaviors
 {
-    public class OperationExecutionLoggingBehaviorTests
+    public class OperationExecutionLoggingBehaviorTests : TestBase
     {
         [Theory, AutoMoqData]
         public void The_behavior_has_logging_level_precedence(IWorkflowLogger logger)
@@ -48,8 +48,7 @@ namespace Overflow.Test.Behaviors
             var innerOperation = new FakeOperation { ThrowOnExecute = new Exception() };
             var sut = new OperationExecutionLoggingBehavior(logger).AttachTo(innerOperation);
 
-            try { sut.Execute(); }
-            catch { }
+            ExecuteIgnoringErrors(sut.Execute);
 
             Assert.Equal(1, logger.StartedOperations.Count);
             Assert.Equal(1, logger.FinishedOperations.Count);
