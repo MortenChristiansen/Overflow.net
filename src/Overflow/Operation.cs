@@ -31,7 +31,7 @@ namespace Overflow
         /// <param name="configuration">The global configuration of the workflow</param>
         public virtual void Initialize(WorkflowConfiguration configuration)
         {
-            Verify.NotNull(configuration, "configuration");
+            Verify.NotNull(configuration, nameof(configuration));
 
             _configuration = configuration;
         }

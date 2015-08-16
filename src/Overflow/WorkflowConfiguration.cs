@@ -107,7 +107,7 @@ namespace Overflow
         /// <returns>The updated configuration</returns>
         public WorkflowConfiguration WithBehaviorFactory(IOperationBehaviorFactory factory)
         {
-            Verify.NotNull(factory, "factory");
+            Verify.NotNull(factory, nameof(factory));
 
             BehaviorFactories.Add(factory);
 

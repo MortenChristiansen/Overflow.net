@@ -22,7 +22,7 @@ namespace Overflow
         /// to log to the console.</param>
         public TextWriterWorkflowLogger(TextWriter writer)
         {
-            Verify.NotNull(writer, "writer");
+            Verify.NotNull(writer, nameof(writer));
 
             _writer = writer;
         }
@@ -35,7 +35,7 @@ namespace Overflow
         /// <param name="operation">The executing operation</param>
         public void OperationStarted(IOperation operation)
         {
-            Verify.NotNull(operation, "operation");
+            Verify.NotNull(operation, nameof(operation));
 
             PrepareForChildItem();
 
@@ -76,7 +76,7 @@ namespace Overflow
         /// was logged.</param>
         public void OperationFinished(IOperation operation, TimeSpan duration)
         {
-            Verify.NotNull(operation, "operation");
+            Verify.NotNull(operation, nameof(operation));
             Verify.Operation(_levelInfo.Count > 0, "No operation was logged as started so a finished operation cannot be logged.");
 
             var levelInfo = _levelInfo.Pop();
@@ -98,8 +98,8 @@ namespace Overflow
         /// <param name="error">The exception being thrown</param>
         public void OperationFailed(IOperation operation, Exception error)
         {
-            Verify.NotNull(operation, "operation");
-            Verify.NotNull(error, "error");
+            Verify.NotNull(operation, nameof(operation));
+            Verify.NotNull(error, nameof(error));
             Verify.Operation(_levelInfo.Count > 0, "No operation was logged as started so an operation failure cannot be logged.");
 
             PrepareForChildItem();
@@ -117,9 +117,9 @@ namespace Overflow
         /// flow</param>
         public void BehaviorWasApplied(IOperation operation, OperationBehavior behavior, string description)
         {
-            Verify.NotNull(operation, "operation");
-            Verify.NotNull(behavior, "behavior");
-            Verify.NotNull(description, "description");
+            Verify.NotNull(operation, nameof(operation));
+            Verify.NotNull(behavior, nameof(behavior));
+            Verify.NotNull(description, nameof(description));
             Verify.Operation(_levelInfo.Count > 0, "No operation was logged as started so an operation behavior cannot be logged.");
             
             PrepareForChildItem();

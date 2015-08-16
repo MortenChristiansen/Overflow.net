@@ -8,8 +8,8 @@ namespace Overflow.Behaviors
     {
         public IList<OperationBehavior> CreateBehaviors(IOperation operation, WorkflowConfiguration configuration)
         {
-            Verify.NotNull(operation, "operation");
-            Verify.NotNull(configuration, "configuration");
+            Verify.NotNull(operation, nameof(operation));
+            Verify.NotNull(configuration, nameof(configuration));
 
             if (configuration.Logger == null)
                 return new OperationBehavior[0];

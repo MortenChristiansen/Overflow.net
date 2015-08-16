@@ -31,7 +31,7 @@ namespace Overflow.Extensibility
         /// <returns>Returns the behavior.</returns>
         public IOperation AttachTo(IOperation innerOperation)
         {
-            Verify.NotNull(innerOperation, "innerOperation");
+            Verify.NotNull(innerOperation, nameof(innerOperation));
 
             InnerOperation = innerOperation;
 
@@ -50,7 +50,7 @@ namespace Overflow.Extensibility
         /// workflow</param>
         public void Initialize(WorkflowConfiguration configuration)
         {
-            Verify.NotNull(configuration, "configuration");
+            Verify.NotNull(configuration, nameof(configuration));
 
             _logger = configuration.Logger;
 
@@ -80,7 +80,7 @@ namespace Overflow.Extensibility
         /// <param name="description">A text describing how the workflow was modified by the behavior</param>
         protected void BehaviorWasApplied(string description)
         {
-            Verify.NotNull(description, "description");
+            Verify.NotNull(description, nameof(description));
 
             _logger?.BehaviorWasApplied(InnerOperation.GetInnermostOperation(), this, description);
         }

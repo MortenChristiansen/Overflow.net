@@ -26,8 +26,8 @@ namespace Overflow.Testing
 
         private static void VerifyExecutedOperations(IOperation operation, Type[] expectedOperationTypes, bool allowOperationFailures)
         {
-            Verify.NotNull(operation, "operation");
-            Verify.NotNull(expectedOperationTypes, "expectedOperationTypes");
+            Verify.NotNull(operation, nameof(operation));
+            Verify.NotNull(expectedOperationTypes, nameof(expectedOperationTypes));
 
             var messageParts = new List<string>(expectedOperationTypes.Length + 2) { "Operations", "==========" };
             var executedOperations = operation.GetExecutedChildOperationsForOperationHierarchy().ToList();

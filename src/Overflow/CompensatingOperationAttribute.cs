@@ -36,7 +36,7 @@ namespace Overflow
         /// as well. The types must inherit from Exception.</param>
         public CompensatingOperationAttribute(Type operationType, params Type[] compensatedExceptionTypes)
         {
-            Verify.NotNull(operationType, "operationType");
+            Verify.NotNull(operationType, nameof(operationType));
             Verify.Argument(typeof(IOperation).IsAssignableFrom(operationType), "The operation type must implement the IOperation interface");
 
             _operationType = operationType;

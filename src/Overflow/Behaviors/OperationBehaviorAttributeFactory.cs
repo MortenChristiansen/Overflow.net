@@ -9,7 +9,7 @@ namespace Overflow.Behaviors
     {
         public IList<OperationBehavior> CreateBehaviors(IOperation operation, WorkflowConfiguration configuration)
         {
-            Verify.NotNull(operation, "operation");
+            Verify.NotNull(operation, nameof(operation));
 
             var decoratorAttributes = operation.GetType().GetCustomAttributes(typeof(OperationBehaviorAttribute), inherit: false);
             return decoratorAttributes.OfType<OperationBehaviorAttribute>().Select(b => b.CreateBehavior(configuration)).ToList();

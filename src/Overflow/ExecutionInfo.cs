@@ -35,7 +35,7 @@ namespace Overflow
         /// <param name="completed">When the operation execution was completed</param>
         public ExecutionInfo(IOperation operation, Exception error, DateTimeOffset started, DateTimeOffset completed)
         {
-            Verify.NotNull(operation, "operation");
+            Verify.NotNull(operation, nameof(operation));
 
             Operation = operation;
             Error = error;

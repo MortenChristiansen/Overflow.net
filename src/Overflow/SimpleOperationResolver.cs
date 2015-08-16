@@ -45,7 +45,7 @@ namespace Overflow
         /// <returns>The new, uninitialized operation</returns>
         public IOperation Resolve<TOperation>(WorkflowConfiguration configuration) where TOperation : IOperation
         {
-            Verify.NotNull(configuration, "configuration");
+            Verify.NotNull(configuration, nameof(configuration));
 
             var actualOperation = GetActualOperation<TOperation>();
             return OperationResolverHelper.ApplyBehaviors(actualOperation, configuration);

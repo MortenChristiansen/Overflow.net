@@ -49,7 +49,7 @@ namespace Overflow
         /// <returns>All executed child operations</returns>
         public static IList<ExecutionInfo> GetExecutedChildOperationsForOperationHierarchy(this IOperation parentOperation)
         {
-            Verify.NotNull(parentOperation, "parentOperation");
+            Verify.NotNull(parentOperation, nameof(parentOperation));
 
             var result = new List<ExecutionInfo>();
 
@@ -69,7 +69,7 @@ namespace Overflow
         /// <returns>The original operation</returns>
         public static IOperation GetInnermostOperation(this IOperation operation)
         {
-            Verify.NotNull(operation, "operation");
+            Verify.NotNull(operation, nameof(operation));
 
             while (true)
             {

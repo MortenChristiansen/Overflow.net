@@ -14,7 +14,7 @@ namespace Overflow.Behaviors
 
         public CompensatingOperationBehavior(IOperation operation, params Type[] compensatedExceptionTypes)
         {
-            Verify.NotNull(operation, "operation");
+            Verify.NotNull(operation, nameof(operation));
             Verify.Argument(compensatedExceptionTypes.All(t => typeof(Exception).IsAssignableFrom(t)), "Only exception types are valid.");
 
             _operation = operation;

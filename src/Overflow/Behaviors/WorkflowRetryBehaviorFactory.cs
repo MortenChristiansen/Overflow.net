@@ -9,7 +9,7 @@ namespace Overflow.Behaviors
     {
         public IList<OperationBehavior> CreateBehaviors(IOperation operation, WorkflowConfiguration configuration)
         {
-            Verify.NotNull(configuration, "configuration");
+            Verify.NotNull(configuration, nameof(configuration));
 
             if (configuration.RetryExceptionTypes.Count == 0)
                 return new OperationBehavior[0];
