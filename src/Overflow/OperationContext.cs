@@ -27,7 +27,7 @@ namespace Overflow
         private void RegisterOutputHandler(IOperation operation, Type outputOperationType)
         {
             var outputType = outputOperationType.GetGenericArguments()[0];
-            var registerHandlerMethod = outputOperationType.GetMethod("Output");
+            var registerHandlerMethod = outputOperationType.GetMethod(nameof(IOutputOperation<object>.Output));
 
             var outputHandler = CreateOutputHandler(outputType);
             registerHandlerMethod.Invoke(operation, new object[] { outputHandler });
@@ -35,7 +35,7 @@ namespace Overflow
 
         private Delegate CreateOutputHandler(Type type)
         {
-            var method = typeof (OperationContext).GetMethod("OnOutput", BindingFlags.NonPublic | BindingFlags.Instance);
+            var method = typeof (OperationContext).GetMethod(nameof(OnOutput), BindingFlags.NonPublic | BindingFlags.Instance);
             var genericMethod = method.MakeGenericMethod(type);
             var actionT = typeof(Action<>).MakeGenericType(type);
             return Delegate.CreateDelegate(actionT, this, genericMethod);
@@ -63,7 +63,7 @@ namespace Overflow
         private void ProvideInput(IOperation operation, Type inputOperationType)
         {
             var inputType = inputOperationType.GetGenericArguments()[0];
-            var provideInputMethod = inputOperationType.GetMethod("Input");
+            var provideInputMethod = inputOperationType.GetMethod(nameof(IInputOperation<object>.Input));
 
             var output = GetOutput(inputType);
             if (output != null)
