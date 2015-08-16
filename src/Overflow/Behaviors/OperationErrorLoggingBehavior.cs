@@ -18,10 +18,13 @@ namespace Overflow.Behaviors
         {
             try { base.Execute(); }
             catch (Exception e)
-            {
-                _logger.OperationFailed(InnerOperation.GetInnermostOperation(), e);
-                throw;
-            }
+            when (Log(e)) { }
+        }
+
+        private bool Log(Exception e)
+        {
+            _logger.OperationFailed(InnerOperation.GetInnermostOperation(), e);
+            return false;
         }
     }
 }

@@ -59,14 +59,17 @@ namespace Overflow
             try
             {
                 childOperation.Execute();
-                _executedChildOperations.Add(new ExecutionInfo(childOperation, null, started, Time.OffsetUtcNow));
+                RegisterExecutedChildOperation(null, started, childOperation);
                 
             }
             catch (Exception e)
-            {
-                _executedChildOperations.Add(new ExecutionInfo(childOperation, e, started, Time.OffsetUtcNow));
-                throw;
-            }
+            when (RegisterExecutedChildOperation(e, started, childOperation)) { }
+        }
+
+        private bool RegisterExecutedChildOperation(Exception e, DateTimeOffset started, IOperation childOperation)
+        {
+            _executedChildOperations.Add(new ExecutionInfo(childOperation, e, started, Time.OffsetUtcNow));
+            return false;
         }
 
         /// <summary>

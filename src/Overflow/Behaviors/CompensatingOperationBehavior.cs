@@ -24,12 +24,16 @@ namespace Overflow.Behaviors
         public override void Execute()
         {
             try { base.Execute(); }
-            catch (Exception e)
-            {
-                if (_compensatedExceptionTypes.Length == 0 || _compensatedExceptionTypes.Any(t => t.IsInstanceOfType(e)))
-                    ExecuteCompensatingOperation();
-                throw;
-            }
+            catch (Exception e) 
+            when (ExecuteCompensatingOperation(e)) {}
+        }
+
+        private bool ExecuteCompensatingOperation(Exception e)
+        {
+            if (_compensatedExceptionTypes.Length == 0 || _compensatedExceptionTypes.Any(t => t.IsInstanceOfType(e)))
+                ExecuteCompensatingOperation();
+
+            return false;
         }
 
         private void ExecuteCompensatingOperation()
