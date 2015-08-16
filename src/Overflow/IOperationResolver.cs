@@ -6,7 +6,7 @@
     public interface IOperationResolver
     {
         /// <summary>
-        /// Create a new instance of an operation. All beahviors are correctly attached
+        /// Create a new instance of an operation. All behaviors are correctly attached
         /// and initialized. Constructor arguments are supplied.
         /// </summary>
         /// <typeparam name="TOperation">The IOperation implementation to create</typeparam>

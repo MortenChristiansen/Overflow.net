@@ -6,7 +6,7 @@ namespace ConsoleWorkflows.Operations
 {
     /// <summary>
     /// A workflow that checks if there have been defined any tasks
-    /// for users, which have not been completed and which has not
+    /// for users, which have not been completed and which have not
     /// already had notifications sent for them.
     /// 
     /// For each task, it sends a corresponding notification and
