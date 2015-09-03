@@ -151,7 +151,7 @@ The first behavior type to run, logging behaviors can be used to document the wo
 For verifying that your workflows executed as expected, the library provides an assertion method which can be used like this:
 
     [Fact]
-    public void GG()
+    public void Test()
     {
         var workflow = new SendPartyInvitesOperation();
 
