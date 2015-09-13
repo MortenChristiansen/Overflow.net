@@ -4,7 +4,7 @@
 
 ####[![Build status](https://ci.appveyor.com/api/projects/status/m8qkwl9p91jwncjo/branch/master?svg=true)](https://ci.appveyor.com/project/MortenChristiansen/overflow-net/branch/master) // windows / .net
 
-####[![Build Status](https://travis-ci.org/MortenChristiansen/Overflow.net.svg?branch=creating-operations-and-resolving-dependencies)](https://travis-ci.org/MortenChristiansen/Overflow.net) // linux / mono
+####[![Build Status](https://travis-ci.org/MortenChristiansen/Overflow.net.svg?branch=master)](https://travis-ci.org/MortenChristiansen/Overflow.net) // linux / mono
 
 ####[![Coverage Status](https://coveralls.io/repos/MortenChristiansen/Overflow.net/badge.svg)](https://coveralls.io/r/MortenChristiansen/Overflow.net)
 
