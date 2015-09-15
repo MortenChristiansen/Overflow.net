@@ -41,6 +41,19 @@ namespace Overflow.Test.Behaviors
         }
 
         [Fact]
+        public void When_no_error_occurs_in_the_operation_the_compensating_operation_is_not_executed()
+        {
+            var operation = new FakeOperation();
+            var compensatingOperation = new FakeOperation();
+            var sut = new CompensatingOperationBehavior(compensatingOperation);
+            sut.AttachTo(operation);
+
+            sut.Execute();
+
+            Assert.False(compensatingOperation.HasExecuted);
+        }
+
+        [Fact]
         public void You_cannot_create_a_compensating_operation_behavior_without_an_operation_to_compensate_with()
         {
             Assert.Throws<ArgumentNullException>(() => new CompensatingOperationBehavior(null));
