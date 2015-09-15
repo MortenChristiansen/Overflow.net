@@ -5,7 +5,9 @@ using Overflow.Extensibility;
 namespace Overflow
 {
     /// <summary>
-    /// Applies the Retry behavior. Failures are retried a number of times.
+    /// Applies the Retry behavior. Failures are retried a number of times. It 
+    /// can be limited to only retry specific exceptions. Note that only 
+    /// child operations with the Indempotent attribute can be retried.
     /// </summary>
     public class RetryAttribute : OperationBehaviorAttribute
     {

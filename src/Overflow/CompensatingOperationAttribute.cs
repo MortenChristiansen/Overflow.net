@@ -8,7 +8,7 @@ namespace Overflow
 {
     /// <summary>
     /// Applies the Compensating Operation beahvior. When errors occur during the execution
-    /// of the operation, an instance of the specified operation type is created and executed.
+    /// of the operation, an instance of the specified compensating operation type is created and executed.
     /// This operation gets behaviors applied as normal and can implement the IInputOperation
     /// interface. The IOutputOperation interface will be ignored.
     /// 

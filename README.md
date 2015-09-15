@@ -10,6 +10,8 @@
 
 Overflow is an open source C# library for modeling workflows using simple objects. It allows you to define workflows using a simple and clean syntax, while you apply operational behaviors such as error handling strategies in a declarative fashion using attributes.
 
+The following code sample illustrates how a workflow for sending out party invites could be created. The workflow is a hierarchical set of operations, starting with the root operation `SendPartyInvitesOperation`. As it executes, it instantiates child operations and executes these in order. Each child operation can have further child operations if needed.
+
     public class SendPartyInvitesOperation : Operation
     {
         public override IEnumerable<IOperation> GetChildOperations()
@@ -41,14 +43,44 @@ Overflow is an open source C# library for modeling workflows using simple object
             workflow.Execute();
         }
     }
+	
+The attributes are generally used for handling unforeseen events during execution or for gaining insight into runtime issues for later analysis.
+	
+For further samples, see the `examples` folder in the source code.
 
-The library is in the very early stages of development and is still very much in a state of flux while the central APIs get defined.
+## Behaviors
+
+These are the behaviors that come out of the box with Overflow, which you can use to annotate your operations, though you can easily build your own. See the section on extensibility for more details on how to do this.
+
+### `AtomicAttribute`
+
+The operation is wrapped in a transaction which is committed if the operation does not fail.
+
+### `CompensatingOperationAttribute`
+
+When errors occur during the execution of the operation, an instance of the specified compensating operation type is created and executed. This operation gets behaviors applied as normal and can implement the `IInputOperation` interface. The `IOutputOperation` interface will be ignored.
+
+Note that the exception thrown in the original exception is rethrown once the compensating operation is done executing. Consider using the ContinueOnFailure attribute if this is not the desired behavior.
+
+If the compensating operation throws an exception, the original exception is not rethrown, and the new exception bubbles up instead. To avoid this, make the compensating operation use the ContinueOnFailure attribute.
+
+### `ContinueOnFailureAttribute`
+
+Failures executing the operation are ignored.
+
+### `RetryAttribute`
+
+Failures are retried a number of times. It can be limited to only retry specific exceptions. Note that only child operations with the `Indempotent` attribute can be retried.
+
+### `IConditionalOperation` (interface)
+
+The operation can determine whether it should be executed or not.
 
 ## Installation
 
 To install Overflow.net, run the following command in the Package Manager Console:
 
-`Install-Package Overflow.net -Pre`
+`Install-Package Overflow.net`
 
 ##Extensibility - Custom Behaviors
 
