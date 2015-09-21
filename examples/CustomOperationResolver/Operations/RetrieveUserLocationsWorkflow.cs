@@ -6,7 +6,7 @@ namespace CustomOperationResolver.Operations
 {
     /// <summary>
     /// A workflow that takes all the users which have not yet had their
-    /// location identified and looks it up using an online location service.
+    /// location identified and looks them up using an online location service.
     /// 
     /// The UpdateUserLocationOperation is marked with Retry behavior, which
     /// means that if there are any errors connecting to the service, it will
