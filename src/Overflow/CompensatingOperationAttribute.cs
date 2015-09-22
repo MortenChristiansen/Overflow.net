@@ -52,11 +52,11 @@ namespace Overflow
             return new CompensatingOperationBehavior(CreateCompensatingOperation(configuration), _compensatedExceptionTypes);
         }
 
-        private Operation CreateCompensatingOperation(WorkflowConfiguration configuration)
+        private IOperation CreateCompensatingOperation(WorkflowConfiguration configuration)
         {
             var createMethod = typeof (Operation).GetMethod("Create", BindingFlags.Public | BindingFlags.Static);
             var methodWithTypeArgument = createMethod.MakeGenericMethod(_operationType);
-            return (Operation)methodWithTypeArgument.Invoke(null, new object[] { configuration });
+            return (IOperation)methodWithTypeArgument.Invoke(null, new object[] { configuration });
         }
     }
 }

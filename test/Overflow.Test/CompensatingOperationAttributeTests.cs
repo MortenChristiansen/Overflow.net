@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Overflow.Behaviors;
 using Overflow.Test.TestingInfrastructure;
 using Xunit;
@@ -43,6 +44,16 @@ namespace Overflow.Test
             Assert.Throws<ArgumentException>(() => new CompensatingOperationAttribute(typeof(object)));
         }
 
-        private class TestOperation : Operation { }
+        private class TestOperation : IOperation {
+            public IEnumerable<ExecutionInfo> ExecutedChildOperations { get; }
+            public void Initialize(WorkflowConfiguration configuration) { }
+
+            public void Execute() { }
+
+            public IEnumerable<IOperation> GetChildOperations()
+            {
+                yield break;
+            }
+        }
     }
 }
