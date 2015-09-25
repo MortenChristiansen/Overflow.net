@@ -5,7 +5,7 @@ namespace Overflow.Extensibility
 {
     /// <summary>
     /// The base class for custom behaviors. Inheriting from this class
-    /// and overriding the Initialize or GetChildOperations method allows
+    /// and overriding the Execute or GetChildOperations method allows
     /// you to inject the special behavior functionality. Use a 
     /// IOperationBehaviorFactory to define when the behaviors should be
     /// created.
