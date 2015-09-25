@@ -11,20 +11,20 @@ namespace Overflow
         /// <summary>
         /// Gets the executed operation.
         /// </summary>
-        public IOperation Operation { get; private set; }
+        public IOperation Operation { get; }
         /// <summary>
         /// Gets any Exception which might have been thrown during the execution.
         /// Returns null if no exceptions where thrown.
         /// </summary>
-        public Exception Error { get; private set; }
+        public Exception Error { get; }
         /// <summary>
         /// The time at which the execution started.
         /// </summary>
-        public DateTimeOffset Started { get; private set; }
+        public DateTimeOffset Started { get; }
         /// <summary>
         /// The time at which the execution completed.
         /// </summary>
-        public DateTimeOffset Completed { get; private set; }
+        public DateTimeOffset Completed { get; }
 
         /// <summary>
         /// Create new execution info.
