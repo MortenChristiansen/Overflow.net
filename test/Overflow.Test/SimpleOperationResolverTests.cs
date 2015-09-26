@@ -30,6 +30,17 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
+        public void The_simple_resolver_can_resolve_operations_with_registered_instance_dependencies(WorkflowConfiguration configuration)
+        {
+            var sut = new SimpleOperationResolver();
+            sut.RegisterOperationDependencyInstance(new SimpleDependency());
+
+            var result = sut.Resolve<OperationWithDependencies>(configuration);
+
+            Assert.NotNull(result);
+        }
+
+        [Theory, AutoMoqData]
         public void You_can_register_the_same_dependency_more_than_once(WorkflowConfiguration configuration)
         {
             var sut = new SimpleOperationResolver();
@@ -39,6 +50,30 @@ namespace Overflow.Test
             var result = sut.Resolve<OperationWithDependencies>(configuration);
 
             Assert.NotNull(result);
+        }
+
+        [Theory, AutoMoqData]
+        public void You_can_register_the_same_instance_dependency_more_than_once(WorkflowConfiguration configuration)
+        {
+            var sut = new SimpleOperationResolver();
+            sut.RegisterOperationDependencyInstance(new SimpleDependency());
+            sut.RegisterOperationDependencyInstance(new SimpleDependency());
+
+            var result = sut.Resolve<OperationWithDependencies>(configuration);
+
+            Assert.NotNull(result);
+        }
+
+        [Theory, AutoMoqData]
+        public void Dependencies_registered_as_instances_are_preferred_over_instances_registered_as_types(WorkflowConfiguration configuration, SimpleDependency instance)
+        {
+            var sut = new SimpleOperationResolver();
+            sut.RegisterOperationDependency<SimpleDependency, SimpleDependency>();
+            sut.RegisterOperationDependencyInstance(instance);
+
+            var result = (OperationWithDependencies)sut.Resolve<OperationWithDependencies>(configuration);
+
+            Assert.Equal(instance, result.Dependency);
         }
 
         [Theory, AutoMoqData]
@@ -157,7 +192,7 @@ namespace Overflow.Test
 
         private class OperationWithDependencies : Operation
         {
-            public SimpleDependency Dependency { get; private set; }
+            public SimpleDependency Dependency { get; }
 
             public OperationWithDependencies(SimpleDependency dependency)
             {
@@ -168,7 +203,7 @@ namespace Overflow.Test
 
         private interface IDependency { }
 
-        private class SimpleDependency : IDependency { }
+        public class SimpleDependency : IDependency { }
 
         private class OperationWithComplexDependencies : Operation
         {

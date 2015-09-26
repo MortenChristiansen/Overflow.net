@@ -19,7 +19,8 @@ namespace Overflow
     /// </summary>
     public class SimpleOperationResolver : IOperationResolver
     {
-        private readonly IDictionary<Type, Type> _mappings = new Dictionary<Type, Type>(); 
+        private readonly IDictionary<Type, Type> _typeMappings = new Dictionary<Type, Type>(); 
+        private readonly IDictionary<Type, object> _instanceMappings = new Dictionary<Type, object>(); 
 
         /// <summary>
         /// Register a dependency type as being available to the resolved operations as a
@@ -31,9 +32,23 @@ namespace Overflow
             where TDependencyImplementation : class, TDependency
         {
             var dependencyType = typeof (TDependency);
-            if (_mappings.ContainsKey(dependencyType))
-                _mappings.Remove(dependencyType);
-            _mappings.Add(dependencyType, typeof(TDependencyImplementation));
+            if (_typeMappings.ContainsKey(dependencyType))
+                _typeMappings.Remove(dependencyType);
+            _typeMappings.Add(dependencyType, typeof(TDependencyImplementation));
+        }
+
+        /// <summary>
+        /// Register a dependency instance as being available to the resolved operations as a
+        /// constructor argument.
+        /// </summary>
+        /// <typeparam name="TDependency">The type of dependency to supply</typeparam>
+        public void RegisterOperationDependencyInstance<TDependency>(TDependency instance)
+            where TDependency : class
+        {
+            var dependencyType = typeof(TDependency);
+            if (_instanceMappings.ContainsKey(dependencyType))
+                _instanceMappings.Remove(dependencyType);
+            _instanceMappings.Add(dependencyType, instance);
         }
 
         /// <summary>
@@ -69,9 +84,12 @@ namespace Overflow
 
         private object ResolveConstructorParameter(Type parameterType)
         {
-            Verify.Operation(_mappings.ContainsKey(parameterType), "Type " + parameterType.Name + " could not be resolved.");
+            if (_instanceMappings.ContainsKey(parameterType))
+                return _instanceMappings[parameterType];
 
-            var implementationType = _mappings[parameterType];
+            Verify.Operation(_typeMappings.ContainsKey(parameterType), "Type " + parameterType.Name + " could not be resolved.");
+
+            var implementationType = _typeMappings[parameterType];
             var parameters = ResolveConstructorParameters(implementationType);
             return Activator.CreateInstance(implementationType, parameters);
 
