@@ -49,7 +49,7 @@
     <Compile Include="Extensibility\OperationResolverHelper.cs" />
     <Compile Include="IConditionalOperation.cs" />
     <Compile Include="ExecutionInfo.cs" />
-    <Compile Include="IndempotentAttribute.cs" />
+    <Compile Include="IdempotentAttribute.cs" />
     <Compile Include="Extensibility\IOperationBehaviorFactory.cs" />
     <Compile Include="IInputOperation.cs" />
     <Compile Include="IWorkflowLogger.cs" />
