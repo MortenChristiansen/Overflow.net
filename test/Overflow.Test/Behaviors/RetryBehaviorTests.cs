@@ -87,9 +87,9 @@ namespace Overflow.Test.Behaviors
         }
 
         [Fact]
-        public void You_cannot_retry_an_operation_where_a_non_indempotent_child_operation_has_executed()
+        public void You_cannot_retry_an_operation_where_a_non_idempotent_child_operation_has_executed()
         {
-            var operation = new FakeOperation(new IndempotentOperation(), new FakeOperation { ThrowOnExecute = new Exception(), ErrorCount = 1 });
+            var operation = new FakeOperation(new IdempotentOperation(), new FakeOperation { ThrowOnExecute = new Exception(), ErrorCount = 1 });
             var sut = new RetryBehavior(1, TimeSpan.Zero);
             sut.AttachTo(operation);
 
@@ -97,9 +97,9 @@ namespace Overflow.Test.Behaviors
         }
 
         [Fact]
-        public void You_can_retry_an_operation_where_an_indempotent_child_operation_has_executed()
+        public void You_can_retry_an_operation_where_an_idempotent_child_operation_has_executed()
         {
-            var operation = new FakeOperation(new IndempotentOperation { ThrowOnExecute = new Exception(), ErrorCount = 1 });
+            var operation = new FakeOperation(new IdempotentOperation { ThrowOnExecute = new Exception(), ErrorCount = 1 });
             var sut = new RetryBehavior(1, TimeSpan.Zero);
             sut.AttachTo(operation);
 
@@ -148,7 +148,7 @@ namespace Overflow.Test.Behaviors
             Assert.Equal("Operation retried", log.AppliedBehaviors[0].Description);
         }
 
-        [Indempotent]
-        private class IndempotentOperation : FakeOperation { }
+        [Idempotent]
+        private class IdempotentOperation : FakeOperation { }
     }
 }

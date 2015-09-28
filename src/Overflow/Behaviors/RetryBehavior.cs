@@ -30,7 +30,7 @@ namespace Overflow.Behaviors
             if (TimesToRetry-- > 0)
             {
                 try { base.Execute(); }
-                catch (Exception e) when (!HasExecutedNonIndempotentChildOperations() && IsConfiguredToRetryType(e.GetType()))
+                catch (Exception e) when (!HasExecutedNonIdempotentChildOperations() && IsConfiguredToRetryType(e.GetType()))
                 {
                     Time.Wait(RetryDelay);
                     BehaviorWasApplied("Operation retried");
@@ -48,14 +48,14 @@ namespace Overflow.Behaviors
             return RetryExceptionTypes == null || !RetryExceptionTypes.Any() || RetryExceptionTypes.Any(t => t.IsAssignableFrom(exceptionType));
         }
 
-        private bool HasExecutedNonIndempotentChildOperations()
+        private bool HasExecutedNonIdempotentChildOperations()
         {
-            return InnerOperation.GetExecutedChildOperationsForOperationHierarchy().Any(o => !IsIndempotent(o.Operation));
+            return InnerOperation.GetExecutedChildOperationsForOperationHierarchy().Any(o => !IsIdempotent(o.Operation));
         }
 
-        private static bool IsIndempotent(IOperation operation)
+        private static bool IsIdempotent(IOperation operation)
         {
-            return operation.GetType().GetCustomAttributes(typeof(IndempotentAttribute), false).Any();
+            return operation.GetType().GetCustomAttributes(typeof(IdempotentAttribute), false).Any();
         }
     }
 }
