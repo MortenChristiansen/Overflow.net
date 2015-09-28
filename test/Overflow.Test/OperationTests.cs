@@ -248,7 +248,7 @@ namespace Overflow.Test
         {
             var childInputOperation = new FakeInputOperation<object>();
             var sut = new FakeOperation(childInputOperation);
-            sut.ExecuteAction = () => sut.PublicMakeInputAvailableToChildOperations(input);
+            sut.ExecuteAction = () => sut.PublicPipeInputToChildOperations(input);
 
             sut.Execute();
 
@@ -260,7 +260,15 @@ namespace Overflow.Test
         {
             var sut = new FakeOperation();
 
-            Assert.Throws<InvalidOperationException>(() => sut.PublicMakeInputAvailableToChildOperations(input));
+            Assert.Throws<InvalidOperationException>(() => sut.PublicPipeInputToChildOperations(input));
+        }
+
+        [Theory, AutoMoqData]
+        public void You_can_only_get_child_output_during_execution(object input)
+        {
+            var sut = new FakeOperation();
+
+            Assert.Throws<InvalidOperationException>(() => sut.PublicGetChildOutputValue<object>());
         }
 
         private class ErrorOperation: Operation

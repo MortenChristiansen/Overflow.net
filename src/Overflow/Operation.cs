@@ -146,6 +146,8 @@ namespace Overflow
         protected TOutput GetChildOutputValue<TOutput>()
             where TOutput : class
         {
+            Verify.Operation(_context != null, $"The {nameof(GetChildOutputValue)} method can only be called during execution");
+
             return _context.GetOutput<TOutput>();
         }
 

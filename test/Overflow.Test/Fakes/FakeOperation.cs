@@ -62,5 +62,11 @@ namespace Overflow.Test.Fakes
         {
             PipeInputToChildOperations(input);
         }
+
+        public object PublicGetChildOutputValue<TOutput>()
+            where TOutput : class
+        {
+            return GetChildOutputValue<TOutput>();
+        }
     }
 }
