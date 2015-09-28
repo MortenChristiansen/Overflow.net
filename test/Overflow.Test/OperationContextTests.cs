@@ -181,5 +181,34 @@ namespace Overflow.Test
 
             Assert.Equal(outputOperation.OutputValue, inputOperation.ProvidedInput);
         }
+
+        [Theory, AutoMoqData]
+        public void Providing_inputs_sets_input_properties(IOperation op, object input)
+        {
+            var sut = OperationContext.Create(op);
+            sut.AddData(input);
+            var inputOperation = new TestInputOperation();
+
+            sut.ProvideInputs(inputOperation);
+
+            Assert.Equal(input, inputOperation.Input);
+        }
+
+        [Theory, AutoMoqData]
+        public void Providing_inputs_does_not_set_input_when_input_is_missing(IOperation op)
+        {
+            var sut = OperationContext.Create(op);
+            var inputOperation = new TestInputOperation();
+
+            sut.ProvideInputs(inputOperation);
+
+            Assert.Null(inputOperation.Input);
+        }
+
+        private class TestInputOperation : Operation
+        {
+            [Input]
+            public object Input { get; set; }
+        }
     }
 }

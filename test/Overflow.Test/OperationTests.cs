@@ -187,6 +187,19 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
+        public void Input_propery_data_automatically_flows_to_child_operations_when_consumed_in_parent_operation(object output)
+        {
+            var outputOperation = new FakeOutputOperation<object> { OutputValue = output };
+            var childInputOperation = new TestPropertyInputOperation();
+            var parentInputOperation = new TestPropertyInputOperation(childInputOperation);
+            var sut = new FakeOperation(outputOperation, parentInputOperation);
+
+            sut.Execute();
+
+            Assert.Equal(outputOperation.OutputValue, childInputOperation.Input);
+        }
+
+        [Theory, AutoMoqData]
         public void Input_data_flow_is_cut_off_from_child_operations_if_not_consumed_by_parent_operation(object output)
         {
             var outputOperation = new FakeOutputOperation<object> { OutputValue = output };
@@ -318,6 +331,18 @@ namespace Overflow.Test
 
             public void Input(object input) =>
                 InputValue = input;
+        }
+
+        private class TestPropertyInputOperation : FakeOperation
+        {
+            [Input]
+            public object Input { get; set; }
+
+            public TestPropertyInputOperation(params IOperation[] childOperations)
+                : base(childOperations)
+            {
+
+            }
         }
     }
 }

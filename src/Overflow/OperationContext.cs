@@ -49,10 +49,15 @@ namespace Overflow
         public void ProvideInputs(IOperation operation)
         {
             var innerOperation = operation.GetInnermostOperation();
+            var innerOperationType = innerOperation.GetType();
 
-            var inputOperationInterfaces = innerOperation.GetType().GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IInputOperation<>));
+            var inputOperationInterfaces = innerOperationType.GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IInputOperation<>));
             foreach (var inputOperationType in inputOperationInterfaces)
                 ProvideInput(innerOperation, inputOperationType);
+
+            var inputPropertyAttributes = innerOperationType.GetProperties().Where(p => p.GetCustomAttributes(typeof(InputAttribute), true).Any());
+            foreach (var inputProperty in inputPropertyAttributes)
+                ProvideInput(innerOperation, inputProperty);
         }
 
         private void ProvideInput(IOperation operation, Type inputOperationType)
@@ -65,6 +70,16 @@ namespace Overflow
             {
                 provideInputMethod.Invoke(operation, new[] { output });
                 SaveValueForFutureChildOperationContexts(operation, inputType, output);
+            }
+        }
+
+        private void ProvideInput(IOperation operation, PropertyInfo inputOperation)
+        {
+            var output = GetOutput(inputOperation.PropertyType);
+            if (output != null)
+            {
+                inputOperation.SetValue(operation, output, null);
+                SaveValueForFutureChildOperationContexts(operation, inputOperation.PropertyType, output);
             }
         }
 
