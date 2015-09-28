@@ -52,6 +52,7 @@
     <Compile Include="IdempotentAttribute.cs" />
     <Compile Include="Extensibility\IOperationBehaviorFactory.cs" />
     <Compile Include="IInputOperation.cs" />
+    <Compile Include="IndempotentAttribute.cs" />
     <Compile Include="IWorkflowLogger.cs" />
     <Compile Include="IOutputOperation.cs" />
     <Compile Include="IOperation.cs" />
