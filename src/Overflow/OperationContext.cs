@@ -43,11 +43,7 @@ namespace Overflow
 
         private void OnOutput<TOutput>(TOutput output)
         {
-            var key = typeof (TOutput);
-            if (_values.ContainsKey(key))
-                _values.Remove(key);
-
-            _values.Add(key, output);
+            AddData(output);
         }
 
         public void ProvideInputs(IOperation operation)
@@ -95,5 +91,14 @@ namespace Overflow
 
         public static OperationContext Create(IOperation operation) =>
             new OperationContext(_operationData.GetOrCreateValue(operation));
+
+        public void AddData<TData>(TData data)
+        {
+            var key = typeof(TData);
+            if (_values.ContainsKey(key))
+                _values.Remove(key);
+
+            _values.Add(key, data);
+        }
     }
 }

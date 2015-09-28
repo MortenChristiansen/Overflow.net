@@ -163,5 +163,17 @@ namespace Overflow
         {
             return GetChildOutputValue<IEnumerable<TOutput>>();
         }
+
+        /// <summary>
+        /// Makes the input available to child operations implementing the
+        /// IInputOperation&lt;TInput&gt; interface.
+        /// </summary>
+        /// <param name="input">The input data which should be available to child operations</param>
+        protected void PipeInputToChildOperations<TInput>(TInput input)
+        {
+            Verify.Operation(_context != null, $"The {nameof(PipeInputToChildOperations)} method can only be called during execution");
+
+            _context.AddData(input);
+        }
     }
 }

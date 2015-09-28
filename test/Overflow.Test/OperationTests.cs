@@ -243,6 +243,26 @@ namespace Overflow.Test
             Assert.Throws<OperationCreationException<ErrorOperation>>(() => Operation.Create<ErrorOperation>(new FakeWorkflowConfiguration().WithResolver(new SimpleOperationResolver())));
         }
 
+        [Theory, AutoMoqData]
+        public void You_can_make_data_available_to_child_operations(object input)
+        {
+            var childInputOperation = new FakeInputOperation<object>();
+            var sut = new FakeOperation(childInputOperation);
+            sut.ExecuteAction = () => sut.PublicMakeInputAvailableToChildOperations(input);
+
+            sut.Execute();
+
+            Assert.Equal(input, childInputOperation.ProvidedInput);
+        }
+
+        [Theory, AutoMoqData]
+        public void You_can_only_make_data_available_to_child_operations_during_execution(object input)
+        {
+            var sut = new FakeOperation();
+
+            Assert.Throws<InvalidOperationException>(() => sut.PublicMakeInputAvailableToChildOperations(input));
+        }
+
         private class ErrorOperation: Operation
         {
             public ErrorOperation()

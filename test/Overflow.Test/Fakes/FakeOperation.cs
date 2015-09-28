@@ -57,5 +57,10 @@ namespace Overflow.Test.Fakes
         {
             return Create<TOperation, TInput>(input);
         }
+
+        public void PublicPipeInputToChildOperations<TInput>(TInput input)
+        {
+            PipeInputToChildOperations(input);
+        }
     }
 }
