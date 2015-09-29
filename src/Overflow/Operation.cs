@@ -59,6 +59,7 @@ namespace Overflow
             try
             {
                 childOperation.Execute();
+                _context.AddOutput(childOperation);
                 RegisterExecutedChildOperation(null, started, childOperation);
                 
             }

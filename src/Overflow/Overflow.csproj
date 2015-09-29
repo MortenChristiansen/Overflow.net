@@ -62,6 +62,7 @@
     <Compile Include="Behaviors\OperationExecutionLoggingBehavior.cs" />
     <Compile Include="Extensibility\BehaviorPrecedence.cs" />
     <Compile Include="OperationCreationException.cs" />
+    <Compile Include="OutputAttribute.cs" />
     <Compile Include="RetryAttribute.cs" />
     <Compile Include="Behaviors\RetryBehavior.cs" />
     <Compile Include="Testing\AssertionException.cs" />

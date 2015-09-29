@@ -142,7 +142,7 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
-        public void Data_flows_between_child_operations(object output)
+        public void Data_flows_between_child_operations_from_interface_input_and_output(object output)
         {
             var inputOperation = new FakeInputOperation<object>();
             var outpuOperation = new FakeOutputOperation<object> { OutputValue = output };
@@ -151,6 +151,19 @@ namespace Overflow.Test
             sut.Execute();
 
             Assert.Equal(outpuOperation.OutputValue, inputOperation.ProvidedInput);
+        }
+
+        [Theory, AutoMoqData]
+        public void Data_flows_between_child_operations_from_property_input_and_output(object data)
+        {
+            var inputOperation = new TestPropertyInputOperation();
+            var outputOperation = new TestPropertyOutputOperation(inputOperation) { Output = data };
+            var sut = new FakeOperation(outputOperation, inputOperation);
+
+            sut.Execute();
+
+            Assert.Equal(data, outputOperation.Output);
+            Assert.Equal(data, inputOperation.Input);
         }
 
         [Theory, AutoMoqData]
@@ -339,6 +352,18 @@ namespace Overflow.Test
             public object Input { get; set; }
 
             public TestPropertyInputOperation(params IOperation[] childOperations)
+                : base(childOperations)
+            {
+
+            }
+        }
+
+        private class TestPropertyOutputOperation : FakeOperation
+        {
+            [Output]
+            public object Output { get; set; }
+
+            public TestPropertyOutputOperation(params IOperation[] childOperations)
                 : base(childOperations)
             {
 

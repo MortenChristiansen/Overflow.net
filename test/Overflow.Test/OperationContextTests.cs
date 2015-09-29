@@ -205,10 +205,38 @@ namespace Overflow.Test
             Assert.Null(inputOperation.Input);
         }
 
+        [Theory, AutoMoqData]
+        public void Adding_output_values_updates_the_context_data(IOperation op, object output)
+        {
+            var sut = OperationContext.Create(op);
+            var outputOperation = new TestOutputOperation { Output = output };
+
+            sut.AddOutput(outputOperation);
+
+            Assert.Equal(output, sut.GetOutput<object>());
+        }
+
+        [Theory, AutoMoqData]
+        public void Adding_output_values_does_not_update_the_context_data_when_not_supplied(IOperation op)
+        {
+            var sut = OperationContext.Create(op);
+            var outputOperation = new TestOutputOperation { Output = null };
+
+            sut.AddOutput(outputOperation);
+
+            Assert.Null(sut.GetOutput<object>());
+        }
+
         private class TestInputOperation : Operation
         {
             [Input]
             public object Input { get; set; }
+        }
+
+        private class TestOutputOperation : Operation
+        {
+            [Output]
+            public object Output { get; set; }
         }
     }
 }

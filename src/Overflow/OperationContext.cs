@@ -53,14 +53,14 @@ namespace Overflow
 
             var inputOperationInterfaces = innerOperationType.GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IInputOperation<>));
             foreach (var inputOperationType in inputOperationInterfaces)
-                ProvideInput(innerOperation, inputOperationType);
+                GetInput(innerOperation, inputOperationType);
 
             var inputPropertyAttributes = innerOperationType.GetProperties().Where(p => p.GetCustomAttributes(typeof(InputAttribute), true).Any());
             foreach (var inputProperty in inputPropertyAttributes)
-                ProvideInput(innerOperation, inputProperty);
+                GetInput(innerOperation, inputProperty);
         }
 
-        private void ProvideInput(IOperation operation, Type inputOperationType)
+        private void GetInput(IOperation operation, Type inputOperationType)
         {
             var inputType = inputOperationType.GetGenericArguments()[0];
             var provideInputMethod = inputOperationType.GetMethod(nameof(IInputOperation<object>.Input));
@@ -73,7 +73,7 @@ namespace Overflow
             }
         }
 
-        private void ProvideInput(IOperation operation, PropertyInfo inputOperation)
+        private void GetInput(IOperation operation, PropertyInfo inputOperation)
         {
             var output = GetOutput(inputOperation.PropertyType);
             if (output != null)
@@ -110,10 +110,29 @@ namespace Overflow
         public void AddData<TData>(TData data)
         {
             var key = typeof(TData);
+            AddData(key, data);
+        }
+
+        private void AddData(Type key, object data)
+        {
             if (_values.ContainsKey(key))
                 _values.Remove(key);
 
             _values.Add(key, data);
+        }
+
+        /// <summary>
+        /// Adds the value of any property with the OutputAttribute to the context.
+        /// </summary>
+        /// <param name="operation">The operation to parse for properties.</param>
+        public void AddOutput(IOperation operation)
+        {
+            var innerOperation = operation.GetInnermostOperation();
+            var innerOperationType = innerOperation.GetType();
+
+            var outputPropertyAttributes = innerOperationType.GetProperties().Where(p => p.GetCustomAttributes(typeof(OutputAttribute), true).Any());
+            foreach (var outputProperty in outputPropertyAttributes)
+                AddData(outputProperty.PropertyType, outputProperty.GetValue(operation, null));
         }
     }
 }
