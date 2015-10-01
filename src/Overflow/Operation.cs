@@ -138,6 +138,58 @@ namespace Overflow
             return operation;
         }
 
+        /// <summary>
+        /// Create a new initialized instance of an input operation type.
+        /// The operation is supplied with the specified input values.
+        /// </summary>
+        /// <typeparam name="TOperation">The type of operation to create</typeparam>
+        /// <typeparam name="TInput1">The type of the first input to provide it</typeparam>
+        /// <typeparam name="TInput2">The type of the second input to provide it</typeparam>
+        /// <param name="input1">The first input data</param>
+        /// <param name="input2">The second input data</param>
+        /// <returns>A new operation instance</returns>
+        protected IOperation Create<TOperation, TInput1, TInput2>(TInput1 input1, TInput2 input2)
+            where TInput1 : class
+            where TInput2 : class
+            where TOperation : IOperation
+        {
+            var operation = Create<TOperation>(_configuration);
+
+            var innerOperation = operation.GetInnermostOperation();
+            ProvideInput<TInput1, TOperation>(innerOperation, input1);
+            ProvideInput<TInput2, TOperation>(innerOperation, input2);
+
+            return operation;
+        }
+
+        /// <summary>
+        /// Create a new initialized instance of an input operation type.
+        /// The operation is supplied with the specified input values.
+        /// </summary>
+        /// <typeparam name="TOperation">The type of operation to create</typeparam>
+        /// <typeparam name="TInput1">The type of the first input to provide it</typeparam>
+        /// <typeparam name="TInput2">The type of the second input to provide it</typeparam>
+        /// <typeparam name="TInput3">The type of the third input to provide it</typeparam>
+        /// <param name="input1">The first input data</param>
+        /// <param name="input2">The second input data</param>
+        /// <param name="input2">The third input data</param>
+        /// <returns>A new operation instance</returns>
+        protected IOperation Create<TOperation, TInput1, TInput2, TInput3>(TInput1 input1, TInput2 input2, TInput3 input3)
+            where TInput1 : class
+            where TInput2 : class
+            where TInput3 : class
+            where TOperation : IOperation
+        {
+            var operation = Create<TOperation>(_configuration);
+
+            var innerOperation = operation.GetInnermostOperation();
+            ProvideInput<TInput1, TOperation>(innerOperation, input1);
+            ProvideInput<TInput2, TOperation>(innerOperation, input2);
+            ProvideInput<TInput3, TOperation>(innerOperation, input3);
+
+            return operation;
+        }
+
         private void ProvideInput<TInput, TOperation>(IOperation operation, TInput input)
             where TInput : class
             where TOperation : IOperation

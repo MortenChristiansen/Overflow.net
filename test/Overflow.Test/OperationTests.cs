@@ -112,7 +112,7 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
-        public void Created_input_operations_are_provided_with_input_values(object input)
+        public void Created_input_operations_are_provided_with_one_input_value(object input)
         {
             var resolver = new SimpleOperationResolver();
             var correctConfiguration = new FakeWorkflowConfiguration { Resolver = resolver };
@@ -123,6 +123,55 @@ namespace Overflow.Test
 
             Assert.NotNull(result.InputValue);
             Assert.Equal(input, result.InputValue);
+        }
+
+        [Theory, AutoMoqData]
+        public void Created_input_operations_are_provided_with_one_property_input_value(object input)
+        {
+            var resolver = new SimpleOperationResolver();
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = resolver };
+            var sut = new FakeOperation();
+            sut.Initialize(correctConfiguration);
+
+            var result = sut.PublicCreate<SimpleTestPropertyInputOperation, object>(input) as SimpleTestPropertyInputOperation;
+
+            Assert.NotNull(result.Input);
+            Assert.Equal(input, result.Input);
+        }
+
+        [Theory, AutoMoqData]
+        public void Created_input_operations_are_provided_with_two_input_values(Tuple<object> input1, Tuple<object, object> input2)
+        {
+            var resolver = new SimpleOperationResolver();
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = resolver };
+            var sut = new FakeOperation();
+            sut.Initialize(correctConfiguration);
+
+            var result = sut.PublicCreate<SimpleTestPropertyInputOperation<Tuple<object>, Tuple<object, object>, object>, Tuple<object>, Tuple<object, object>>(input1, input2) as SimpleTestPropertyInputOperation<Tuple<object>, Tuple<object, object>, object>;
+
+            Assert.NotNull(result.Input1);
+            Assert.Equal(input1, result.Input1);
+            Assert.NotNull(result.Input2);
+            Assert.Equal(input2, result.Input2);
+            Assert.Null(result.Input3);
+        }
+
+        [Theory, AutoMoqData]
+        public void Created_input_operations_are_provided_with_three_input_values(Tuple<object> input1, Tuple<object, object> input2, Tuple<object, object, object> input3)
+        {
+            var resolver = new SimpleOperationResolver();
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = resolver };
+            var sut = new FakeOperation();
+            sut.Initialize(correctConfiguration);
+
+            var result = sut.PublicCreate<SimpleTestPropertyInputOperation<Tuple<object>, Tuple<object, object>, Tuple<object, object, object>>, Tuple<object>, Tuple<object, object>, Tuple<object, object, object>>(input1, input2, input3) as SimpleTestPropertyInputOperation<Tuple<object>, Tuple<object, object>, Tuple<object, object, object>>;
+
+            Assert.NotNull(result.Input1);
+            Assert.Equal(input1, result.Input1);
+            Assert.NotNull(result.Input2);
+            Assert.Equal(input2, result.Input2);
+            Assert.NotNull(result.Input3);
+            Assert.Equal(input3, result.Input3);
         }
 
         [Theory, AutoMoqData]
@@ -375,6 +424,18 @@ namespace Overflow.Test
         {
             [Input]
             public object Input { get; set; }
+
+            public SimpleTestPropertyInputOperation() { }
+        }
+
+        private class SimpleTestPropertyInputOperation<TInput1, TInput2, TInput3> : Operation
+        {
+            [Input]
+            public TInput1 Input1 { get; set; }
+            [Input]
+            public TInput2 Input2 { get; set; }
+            [Input]
+            public TInput3 Input3 { get; set; }
 
             public SimpleTestPropertyInputOperation() { }
         }
