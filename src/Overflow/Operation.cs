@@ -128,7 +128,7 @@ namespace Overflow
         /// <returns>A new operation instance</returns>
         protected IOperation Create<TOperation, TInput>(TInput input)
             where TInput : class
-            where TOperation : IOperation, IInputOperation<TInput>
+            where TOperation : IOperation
         {
             var operation = Create<TOperation>(_configuration);
 
