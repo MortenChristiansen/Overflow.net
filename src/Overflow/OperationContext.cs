@@ -132,7 +132,7 @@ namespace Overflow
 
             var outputPropertyAttributes = innerOperationType.GetProperties().Where(p => p.GetCustomAttributes(typeof(OutputAttribute), true).Any());
             foreach (var outputProperty in outputPropertyAttributes)
-                AddData(outputProperty.PropertyType, outputProperty.GetValue(operation, null));
+                AddData(outputProperty.PropertyType, outputProperty.GetValue(innerOperation, null));
         }
     }
 }

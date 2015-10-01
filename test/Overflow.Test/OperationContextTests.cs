@@ -195,6 +195,19 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
+        public void Providing_inputs_to_a_decorated_operation_sets_input_properties(IOperation op, object input)
+        {
+            var sut = OperationContext.Create(op);
+            sut.AddData(input);
+            var innerOperation = new TestInputOperation();
+            var inputOperation = new FakeOperationBehavior().AttachTo(innerOperation);
+
+            sut.ProvideInputs(inputOperation);
+
+            Assert.Equal(input, innerOperation.Input);
+        }
+
+        [Theory, AutoMoqData]
         public void Providing_inputs_does_not_set_input_when_input_is_missing(IOperation op)
         {
             var sut = OperationContext.Create(op);
@@ -217,10 +230,21 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
+        public void Adding_output_values_to_a_decorated_operation_updates_the_context_data(IOperation op, object output)
+        {
+            var sut = OperationContext.Create(op);
+            var outputOperation = new TestOutputOperation { Output = output };
+
+            sut.AddOutput(outputOperation);
+
+            Assert.Equal(output, sut.GetOutput<object>());
+        }
+
+        [Theory, AutoMoqData]
         public void Adding_output_values_does_not_update_the_context_data_when_not_supplied(IOperation op)
         {
             var sut = OperationContext.Create(op);
-            var outputOperation = new TestOutputOperation { Output = null };
+            var outputOperation = new FakeOperationBehavior().AttachTo(new TestOutputOperation { Output = null });
 
             sut.AddOutput(outputOperation);
 
