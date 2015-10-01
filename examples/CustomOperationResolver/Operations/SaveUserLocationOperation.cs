@@ -3,24 +3,21 @@ using Overflow;
 
 namespace CustomOperationResolver.Operations
 {
-    class SaveUserLocationOperation : Operation, IInputOperation<User>
+    class SaveUserLocationOperation : Operation
     {
         private readonly UserRepository _repository;
-        private User _user;
+
+        [Input]
+        public User User { get; set; }
 
         public SaveUserLocationOperation(UserRepository repository)
         {
             _repository = repository;
         }
 
-        public void Input(User input)
-        {
-            _user = input;
-        }
-
         protected override void OnExecute()
         {
-            _repository.SaveChanges(_user);
+            _repository.SaveChanges(User);
         }
     }
 }
