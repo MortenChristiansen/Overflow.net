@@ -6,7 +6,7 @@
 
 ####[![Build Status](https://travis-ci.org/MortenChristiansen/Overflow.net.svg?branch=master)](https://travis-ci.org/MortenChristiansen/Overflow.net) // linux / mono
 
-####[![Coverage Status](https://coveralls.io/repos/MortenChristiansen/Overflow.net/badge.svg)](https://coveralls.io/r/MortenChristiansen/Overflow.net)
+####[![Coverage Status](https://coveralls.io/repos/MortenChristiansen/Overflow.net/badge.svg?branch=master&service=github)](https://coveralls.io/github/MortenChristiansen/Overflow.net?branch=master)
 
 Overflow is an open source C# library for modeling workflows using simple objects. It allows you to define workflows using a simple and clean syntax, while you apply operational behaviors such as error handling strategies in a declarative fashion using attributes.
 
