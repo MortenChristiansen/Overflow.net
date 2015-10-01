@@ -53,7 +53,7 @@ namespace Overflow.Test.Fakes
 
         public IOperation PublicCreate<TOperation, TInput>(TInput input)
             where TInput : class
-            where TOperation : IOperation, IInputOperation<TInput>
+            where TOperation : IOperation
         {
             return Create<TOperation, TInput>(input);
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Overflow.Utilities;
+using System.Linq;
 
 namespace Overflow
 {
@@ -132,9 +133,27 @@ namespace Overflow
         {
             var operation = Create<TOperation>(_configuration);
 
-            ((IInputOperation<TInput>)operation.GetInnermostOperation()).Input(input);
+            ProvideInput<TInput, TOperation>(operation.GetInnermostOperation(), input);
 
             return operation;
+        }
+
+        private void ProvideInput<TInput, TOperation>(IOperation operation, TInput input)
+            where TInput : class
+            where TOperation : IOperation
+        {
+            if (operation is IInputOperation<TInput>)
+            {
+                ((IInputOperation<TInput>)operation.GetInnermostOperation()).Input(input);
+            }
+            else
+            {
+                var inputProperty = typeof(TOperation).GetProperties().FirstOrDefault(p => p.PropertyType == typeof(TInput) && p.GetCustomAttributes(typeof(InputAttribute), true).Any());
+                if (inputProperty != null)
+                    inputProperty.SetValue(operation, input, null);
+                else
+                    throw new ArgumentException($"The operation type {typeof(TOperation).Name} does not have a public property of type {typeof(TInput).Name} with the {nameof(InputAttribute)}.");
+            }
         }
 
         /// <summary>

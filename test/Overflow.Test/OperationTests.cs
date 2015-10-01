@@ -135,10 +135,23 @@ namespace Overflow.Test
             var sut = new FakeOperation();
             sut.Initialize(correctConfiguration);
 
-            var result = sut.PublicCreate<TestInputOperation, object>(input).GetInnermostOperation() as TestInputOperation;
+            var result = sut.PublicCreate<SimpleTestPropertyInputOperation, object>(input).GetInnermostOperation() as SimpleTestPropertyInputOperation;
 
-            Assert.NotNull(result.InputValue);
-            Assert.Equal(input, result.InputValue);
+            Assert.NotNull(result.Input);
+            Assert.Equal(input, result.Input);
+        }
+
+        [Theory, AutoMoqData]
+        public void You_cannot_create_an_operation_with_an_input_value_without_specifying_an_input_property_with_the_proper_type(IEnumerable<string> input)
+        {
+            var resolver = new SimpleOperationResolver();
+            var factory = new FakeOperationBehaviorFactory();
+            factory.OperationBehaviors.Add(new FakeOperationBehavior());
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = resolver }.WithBehaviorFactory(factory);
+            var sut = new FakeOperation();
+            sut.Initialize(correctConfiguration);
+
+            Assert.Throws<ArgumentException>(() => sut.PublicCreate<SimpleTestPropertyInputOperation, IEnumerable<string>>(input));
         }
 
         [Theory, AutoMoqData]
@@ -356,6 +369,14 @@ namespace Overflow.Test
             {
 
             }
+        }
+
+        private class SimpleTestPropertyInputOperation : Operation
+        {
+            [Input]
+            public object Input { get; set; }
+
+            public SimpleTestPropertyInputOperation() { }
         }
 
         private class TestPropertyOutputOperation : FakeOperation
