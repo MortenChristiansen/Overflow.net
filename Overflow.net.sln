@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{0E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomOperationResolver", "examples\CustomOperationResolver\CustomOperationResolver.csproj", "{0B6B156E-034C-4D08-8F0A-F9008035383D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compact", "examples\Compact\Compact.csproj", "{9E6D9DA4-BB5B-4B88-A1C8-D66EF119AE45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{0B6B156E-034C-4D08-8F0A-F9008035383D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B6B156E-034C-4D08-8F0A-F9008035383D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B6B156E-034C-4D08-8F0A-F9008035383D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E6D9DA4-BB5B-4B88-A1C8-D66EF119AE45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E6D9DA4-BB5B-4B88-A1C8-D66EF119AE45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E6D9DA4-BB5B-4B88-A1C8-D66EF119AE45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E6D9DA4-BB5B-4B88-A1C8-D66EF119AE45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +60,6 @@ Global
 		{047FF64E-A72B-4569-BD96-970556D6F723} = {83A803C8-9CF2-491C-8448-E74DE4ACA21D}
 		{22BA955C-085E-4822-B11B-CEA798EDEE14} = {0ECC90F5-F1D3-49E1-BD3F-B4A4697CF29F}
 		{0B6B156E-034C-4D08-8F0A-F9008035383D} = {0ECC90F5-F1D3-49E1-BD3F-B4A4697CF29F}
+		{9E6D9DA4-BB5B-4B88-A1C8-D66EF119AE45} = {0ECC90F5-F1D3-49E1-BD3F-B4A4697CF29F}
 	EndGlobalSection
 EndGlobal
