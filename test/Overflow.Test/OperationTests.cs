@@ -241,11 +241,21 @@ namespace Overflow.Test
         [Theory, AutoMoqData]
         public void You_can_get_outputted_collection_values_from_within_the_operation(IEnumerable<object> output)
         {
-            var sut = new OutputtingCollectionOperation { ExpectedOutput = output };
+            var sut = new OutputtingEnumerableOperation { ExpectedOutput = output };
 
             sut.Execute();
 
-            Assert.Equal(sut.ExpectedOutput, sut.ActualOutput);
+            Assert.Equal(output, sut.ActualOutput);
+        }
+
+        [Theory, AutoMoqData]
+        public void You_can_get_outputted_collection_values_from_within_the_operation2(List<object> output)
+        {
+            var sut = new OutputtingListOperation { ExpectedOutput = output };
+
+            sut.Execute();
+
+            Assert.Equal(output, sut.ActualOutput);
         }
 
         [Theory, AutoMoqData]
@@ -386,7 +396,7 @@ namespace Overflow.Test
             }
         }
 
-        private class OutputtingCollectionOperation : Operation
+        private class OutputtingEnumerableOperation : Operation
         {
             public IEnumerable<object> ExpectedOutput { get; set; }
             public IEnumerable<object> ActualOutput { get; private set; }
@@ -396,6 +406,20 @@ namespace Overflow.Test
             public override IEnumerable<IOperation> GetChildOperations()
             {
                 yield return new FakeOutputOperation<IEnumerable<object>> { OutputValue = ExpectedOutput };
+                ActualOutput = GetChildOutputValues<object>();
+            }
+        }
+
+        private class OutputtingListOperation : Operation
+        {
+            public List<object> ExpectedOutput { get; set; }
+            public IEnumerable<object> ActualOutput { get; private set; }
+
+            protected override void OnExecute() { }
+
+            public override IEnumerable<IOperation> GetChildOperations()
+            {
+                yield return new FakeOutputOperation<List<object>> { OutputValue = ExpectedOutput };
                 ActualOutput = GetChildOutputValues<object>();
             }
         }

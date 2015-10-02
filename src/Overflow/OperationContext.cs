@@ -83,11 +83,12 @@ namespace Overflow
             }
         }
 
-        private object GetOutput(Type inputType)
+        private object GetOutput(Type inputType, bool allowSpecializedClasses = false)
         {
-            if (!_values.ContainsKey(inputType)) return null;
+            if (allowSpecializedClasses)
+                return _values.FirstOrDefault(v => inputType.IsAssignableFrom(v.Key)).Value;
 
-            return _values[inputType];
+            return !_values.ContainsKey(inputType) ? null : _values[inputType];
         }
 
         private static void SaveValueForFutureChildOperationContexts(IOperation operation, Type inputType, object output)
@@ -96,10 +97,10 @@ namespace Overflow
             operationData.Add(inputType, output);
         }
 
-        public TOutput GetOutput<TOutput>()
+        public TOutput GetOutput<TOutput>(bool allowSpecializedClasses = false)
             where TOutput : class
         {
-            return (TOutput)GetOutput(typeof(TOutput));
+            return (TOutput)GetOutput(typeof(TOutput), allowSpecializedClasses);
         }
 
         private static readonly ConditionalWeakTable<IOperation, Dictionary<Type, object>> _operationData = new ConditionalWeakTable<IOperation, Dictionary<Type, object>>();

@@ -115,6 +115,32 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
+        public void You_cannot_get_output_of_a_specialized_type_directly_from_the_context(IOperation op, string output)
+        {
+            var sut = OperationContext.Create(op);
+            var outputOperation = new FakeOutputOperation<string> { OutputValue = output };
+            sut.RegisterOutputHandlers(outputOperation);
+            outputOperation.Execute();
+
+            var result = sut.GetOutput<object>(allowSpecializedClasses: false);
+
+            Assert.Null(result);
+        }
+
+        [Theory, AutoMoqData]
+        public void You_can_get_output_of_a_specialized_type_directly_from_the_context_if_you_ask_for_it_explicitly(IOperation op, string output)
+        {
+            var sut = OperationContext.Create(op);
+            var outputOperation = new FakeOutputOperation<string> { OutputValue = output };
+            sut.RegisterOutputHandlers(outputOperation);
+            outputOperation.Execute();
+
+            var result = sut.GetOutput<object>(allowSpecializedClasses: true);
+
+            Assert.Equal(outputOperation.OutputValue, result);
+        }
+
+        [Theory, AutoMoqData]
         public void Getting_an_unavailable_output_type_from_the_context_returns_null(IOperation op)
         {
             var sut = OperationContext.Create(op);

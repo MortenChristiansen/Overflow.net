@@ -235,7 +235,9 @@ namespace Overflow
         protected IEnumerable<TOutput> GetChildOutputValues<TOutput>()
             where TOutput : class
         {
-            return GetChildOutputValue<IEnumerable<TOutput>>();
+            Verify.Operation(_context != null, $"The {nameof(GetChildOutputValue)} method can only be called during execution");
+
+            return _context.GetOutput<IEnumerable<TOutput>>(allowSpecializedClasses: true);
         }
 
         /// <summary>
