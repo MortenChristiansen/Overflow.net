@@ -172,7 +172,7 @@ namespace Overflow
         /// <typeparam name="TInput3">The type of the third input to provide it</typeparam>
         /// <param name="input1">The first input data</param>
         /// <param name="input2">The second input data</param>
-        /// <param name="input2">The third input data</param>
+        /// <param name="input3">The third input data</param>
         /// <returns>A new operation instance</returns>
         protected IOperation Create<TOperation, TInput1, TInput2, TInput3>(TInput1 input1, TInput2 input2, TInput3 input3)
             where TInput1 : class
