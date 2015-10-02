@@ -84,6 +84,18 @@ To install Overflow.net, run the following command in the Package Manager Consol
 
 `Install-Package Overflow.net`
 
+## Data flow
+
+A central part of most workflows will be the production and consumption of values. One operation might produce a collection of values by reading from a database and turning the results into objects. Each of these values might in turn be processed by its own operation. To facilitate this, properties can be adorned with the `Input` and `Output` attributes. The input property must have a public setter and the output property must have a public getter. Before each operation is executed, the runtime looks for and assigns previously outputted values to each matching input property. After each operation has executed, the value of each output property is read and stored for future input requests.
+
+Each operation maintains an operation context where operation values are stored. Once a value has been added to the context it becomes available to each child operation. If an operation takes a value as input and wants to  make it available to its child operations, it nees to call the `PipeInputToChildOperations<TInput>(TInput input)` method. This adds the value to the context of the operation.
+
+If an operation needs to access values produced by any of its already executed child operations, it can call the `GetChildOutputValue<TOutput>()` method. As a convenience, you can retrieve a collection of output values using the `GetChildOutputValues<TOutput>()` method. This method has a special behavior in that the collection can be outputted as any concrete implementation of `IEnumerable<TOutput>`. Normally, you can only get the exact types specified in the output properties, not base types.
+
+If you want to input one or more values directly to a child operation instead of adding it to the context, the child operation can be created with an overload of the `Create` method taking up to three input values. This can be useful when creating a child operation per value in an outputted collection, since the individual items are not available in the context.
+
+To get an idea of how all this fits together, take a loot at the operations in the [Compact example project](https://github.com/MortenChristiansen/Overflow.net/blob/master/examples/Compact/Operations/ImportUsersWorkflow.cs).
+
 ##Extensibility - Custom Behaviors
 
 Internally, the library uses its own extensibility model for attaching behaviors to operations. This is done by registering custom `IOperationBehaviorFactory` instances when configuring the workflow or by leveraging the built in factory `OperationBehaviorAttributeFactory`, which uses attributes to apply behaviors in a standard way.
