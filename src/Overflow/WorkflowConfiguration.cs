@@ -44,12 +44,12 @@ namespace Overflow
         /// The registered behavior factories. They define which behaviors can be used in the
         /// workflow.
         /// </summary>
-        public IList<IOperationBehaviorFactory> BehaviorFactories { get; private set; }
+        public IList<IOperationBehaviorFactory> BehaviorFactories { get; } = new List<IOperationBehaviorFactory>();
         /// <summary>
         /// Global rules for retrying operations. Can be overwritten in
         /// the individual Retry attributes.
         /// </summary>
-        public IList<Type> RetryExceptionTypes { get; private set; }
+        public IList<Type> RetryExceptionTypes { get; } = new List<Type>();
         /// <summary>
         /// Global rules for retrying operations. Can be overwritten in
         /// the individual Retry attributes.
@@ -66,15 +66,6 @@ namespace Overflow
         /// </summary>
         /// <returns>A new operation based on configuration.</returns>
         public abstract IOperation CreateOperation();
-
-        /// <summary>
-        /// Create a new configuration-
-        /// </summary>
-        protected WorkflowConfiguration()
-        {
-            BehaviorFactories = new List<IOperationBehaviorFactory>();
-            RetryExceptionTypes = new List<Type>();
-        }
 
         /// <summary>
         /// Fluent API for setting the operation resolver.
