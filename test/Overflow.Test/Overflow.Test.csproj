@@ -89,6 +89,7 @@
     <Compile Include="ExecutionInfoTests.cs" />
     <Compile Include="Extensibility\OperationResolverHelperTests.cs" />
     <Compile Include="IOerationTests.cs" />
+    <Compile Include="LogMultiplexerTests.cs" />
     <Compile Include="OperationCreationExceptionTests.cs" />
     <Compile Include="RetryAttributeTests.cs" />
     <Compile Include="Behaviors\RetryBehaviorTests.cs" />
