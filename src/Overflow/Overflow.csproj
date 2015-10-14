@@ -47,6 +47,7 @@
     <Compile Include="Behaviors\ConditionalExecutionBehaviorFactory.cs" />
     <Compile Include="Behaviors\OperationErrorLoggingBehavior.cs" />
     <Compile Include="CompensatingOperationAttribute.cs" />
+    <Compile Include="EventLogWorkflowLogger.cs" />
     <Compile Include="Extensibility\OperationResolverHelper.cs" />
     <Compile Include="IConditionalOperation.cs" />
     <Compile Include="ExecutionInfo.cs" />
