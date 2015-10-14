@@ -33,7 +33,7 @@ namespace Overflow
         /// Log that an operation has started executing.
         /// </summary>
         /// <param name="operation">The executing operation</param>
-        public void OperationStarted(IOperation operation)
+        public virtual void OperationStarted(IOperation operation)
         {
             Verify.NotNull(operation, nameof(operation));
 
@@ -74,7 +74,7 @@ namespace Overflow
         /// <param name="duration">The duration of the operation execution, including
         /// child operations and any behaviors running after the operation start
         /// was logged.</param>
-        public void OperationFinished(IOperation operation, TimeSpan duration)
+        public virtual void OperationFinished(IOperation operation, TimeSpan duration)
         {
             Verify.NotNull(operation, nameof(operation));
             Verify.Operation(_levelInfo.Count > 0, "No operation was logged as started so a finished operation cannot be logged.");
@@ -96,7 +96,7 @@ namespace Overflow
         /// </summary>
         /// <param name="operation">The executing operation</param>
         /// <param name="error">The exception being thrown</param>
-        public void OperationFailed(IOperation operation, Exception error)
+        public virtual void OperationFailed(IOperation operation, Exception error)
         {
             Verify.NotNull(operation, nameof(operation));
             Verify.NotNull(error, nameof(error));
@@ -115,7 +115,7 @@ namespace Overflow
         /// <param name="behavior">The beahvior being applied</param>
         /// <param name="description">A description of how the behavior modified the exectuion
         /// flow</param>
-        public void BehaviorWasApplied(IOperation operation, OperationBehavior behavior, string description)
+        public virtual void BehaviorWasApplied(IOperation operation, OperationBehavior behavior, string description)
         {
             Verify.NotNull(operation, nameof(operation));
             Verify.NotNull(behavior, nameof(behavior));
