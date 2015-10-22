@@ -17,6 +17,14 @@ namespace Overflow.Test.Testing
         }
 
         [Fact]
+        public void You_can_verify_that_executing_an_operation_has_executed_a_specific_sequence_of_child_operations_when_operations_have_behaviors()
+        {
+            var operation = new FakeOperation(new Operation1(), new FakeOperationBehavior().AttachTo(new FakeOperation(new Operation2())));
+
+            operation.ExecutesChildOperations(typeof(Operation1), typeof(FakeOperation), typeof(Operation2));
+        }
+
+        [Fact]
         public void You_get_an_assertion_exception_thrown_when_asserting_that_executing_an_operation_has_executed_a_specific_sequence_of_child_operations_when_it_has_not()
         {
             var operation = new FakeOperation(new FakeOperation(new Operation2()), new Operation1());

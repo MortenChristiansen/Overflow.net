@@ -37,7 +37,7 @@ namespace Overflow
         {
             Verify.NotNull(operation, nameof(operation));
 
-            Operation = operation;
+            Operation = operation.GetInnermostOperation();
             Error = error;
             Started = started;
             Completed = completed;
