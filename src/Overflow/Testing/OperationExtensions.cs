@@ -12,7 +12,7 @@ namespace Overflow.Testing
     public static class OperationExtensions
     {
         /// <summary>
-        /// Assert that the operation has executed child operations of the specified
+        /// Executes the operation and assert that the it has executed child operations of the specified
         /// types, in the specified order. The entire hierarchy of child operations is
         /// included.
         /// </summary>
@@ -69,7 +69,7 @@ namespace Overflow.Testing
         }
 
         /// <summary>
-        /// Assert that the operation has executed child operations of the specified
+        /// Executes the operation and assert that the it has executed child operations of the specified
         /// types, in the specified order. The entire hierarchy of child operations is
         /// included. It is verified that none of the executed operations has thrown an
         /// exception.
