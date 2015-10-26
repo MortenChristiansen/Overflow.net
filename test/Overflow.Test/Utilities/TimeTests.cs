@@ -63,17 +63,6 @@ namespace Overflow.Test.Utilities
         }
 
         [Fact]
-        public void Waiting_stops_execution_for_the_duration()
-        {
-            var before = Time.OffsetUtcNow;
-
-            Time.Wait(TimeSpan.FromMilliseconds(30));
-
-            var duration = Time.OffsetUtcNow - before;
-            Assert.True(duration.TotalMilliseconds > 5);
-        }
-
-        [Fact]
         public void Waiting_while_time_is_stopped_updates_the_time_appropriately()
         {
             Time.Stop();
