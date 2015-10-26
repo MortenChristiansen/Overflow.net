@@ -82,11 +82,8 @@ namespace Overflow
                 inputOperation.SetValue(operation, output, null);
                 SaveValueForFutureChildOperationContexts(operation, inputOperation.PropertyType, output);
 
-                if (pipeInputToChildOperation && operation is Operation)
-                {
-                    var pipeMethod = typeof(Operation).GetMethod("PipeInputToChildOperations", BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(inputOperation.PropertyType);
-                    pipeMethod.Invoke(operation, new[] { output });
-                }
+                if (pipeInputToChildOperation)
+                    (operation as Operation)?.InternalPipeInputToChildOperations(output);
             }
         }
 

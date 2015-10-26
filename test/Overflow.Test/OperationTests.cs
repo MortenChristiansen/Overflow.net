@@ -367,6 +367,14 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
+        public void You_can_only_make_data_available_to_child_operations_during_execution(object input)
+        {
+            var sut = new FakeOperation();
+
+            Assert.Throws<InvalidOperationException>(() => sut.PublicPipeInputToChildOperations(input));
+        }
+
+        [Theory, AutoMoqData]
         public void You_can_only_get_child_output_during_execution(object input)
         {
             var sut = new FakeOperation();

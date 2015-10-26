@@ -134,7 +134,7 @@ namespace Overflow
         {
             var operation = Create<TOperation>();
 
-            ProvideInput<TInput, TOperation>(operation.GetInnermostOperation(), input);
+            operation.GetInnermostOperation().ProvideInput(input);
 
             return operation;
         }
@@ -157,8 +157,8 @@ namespace Overflow
             var operation = Create<TOperation>();
 
             var innerOperation = operation.GetInnermostOperation();
-            ProvideInput<TInput1, TOperation>(innerOperation, input1);
-            ProvideInput<TInput2, TOperation>(innerOperation, input2);
+            innerOperation.ProvideInput(input1);
+            innerOperation.ProvideInput(input2);
 
             return operation;
         }
@@ -184,37 +184,14 @@ namespace Overflow
             var operation = Create<TOperation>();
 
             var innerOperation = operation.GetInnermostOperation();
-            ProvideInput<TInput1, TOperation>(innerOperation, input1);
-            ProvideInput<TInput2, TOperation>(innerOperation, input2);
-            ProvideInput<TInput3, TOperation>(innerOperation, input3);
+            innerOperation.ProvideInput(input1);
+            innerOperation.ProvideInput(input2);
+            innerOperation.ProvideInput(input3);
 
             return operation;
         }
 
-        private void ProvideInput<TInput, TOperation>(IOperation innermostOperation, TInput input)
-            where TInput : class
-            where TOperation : IOperation
-        {
-            if (innermostOperation is IInputOperation<TInput>)
-            {
-                ((IInputOperation<TInput>)innermostOperation).Input(input);
-            }
-            else
-            {
-                var inputData = typeof(TOperation).GetProperties().Where(p => p.PropertyType == typeof(TInput) && p.GetCustomAttributes(typeof(InputAttribute), true).Any()).Select(p => Tuple.Create(p, p.GetCustomAttributes(typeof(PipeAttribute), true).Any())).FirstOrDefault();
-                if (inputData?.Item1 != null)
-                {
-                    inputData.Item1.SetValue(innermostOperation, input, null);
-
-                    if (inputData.Item2)
-                        (innermostOperation as Operation)?.PipeInputToChildOperations(input);
-                }
-                else
-                {
-                    throw new ArgumentException($"The operation type {typeof(TOperation).Name} does not have a public property of type {typeof(TInput).Name} with the {nameof(InputAttribute)}.");
-                }
-            }
-        }
+        
 
         /// <summary>
         /// Find a value of a given type which has been produced as 
@@ -254,6 +231,13 @@ namespace Overflow
         /// </summary>
         /// <param name="input">The input data which should be available to child operations</param>
         protected void PipeInputToChildOperations<TInput>(TInput input)
+        {
+            Verify.Operation(_context != null, $"The {nameof(GetChildOutputValue)} method can only be called during execution");
+
+            _context.AddData(input);
+        }
+
+        internal void InternalPipeInputToChildOperations<TInput>(TInput input)
         {
             if (_context == null)
                 _context = OperationContext.Create(this);

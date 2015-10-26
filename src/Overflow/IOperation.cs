@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Overflow.Extensibility;
 using Overflow.Utilities;
 
@@ -81,6 +83,44 @@ namespace Overflow
                 }
 
                 return operation;
+            }
+        }
+
+        /// <summary>
+        /// Provides input explicitly for an operation. Normally, inputs are supplied by
+        /// the workflow infrastructure but if needed you can supply inputs directly 
+        /// using this method - for example to provide inputs for the root operation.
+        /// 
+        /// This method expects there to be a property of type TInput that is annotated 
+        /// with the Input attribute. This property will be assigned to the input value. 
+        /// If the property is also annotated with the Pipe attribute, the value will
+        /// be piped to child operations.
+        /// </summary>
+        /// <param name="operation">The operation to inspect for the input property.</param>
+        /// <param name="input">The value of the input to assign to the input property.</param>
+        public static void ProvideInput<TInput>(this IOperation operation, TInput input)
+            where TInput : class
+        {
+            var innermostOperation = operation.GetInnermostOperation();
+
+            if (innermostOperation is IInputOperation<TInput>)
+            {
+                ((IInputOperation<TInput>)innermostOperation).Input(input);
+            }
+            else
+            {
+                var inputData = innermostOperation.GetType().GetProperties().Where(p => p.PropertyType == typeof(TInput) && p.GetCustomAttributes(typeof(InputAttribute), true).Any()).Select(p => Tuple.Create(p, p.GetCustomAttributes(typeof(PipeAttribute), true).Any())).FirstOrDefault();
+                if (inputData?.Item1 != null)
+                {
+                    inputData.Item1.SetValue(innermostOperation, input, null);
+
+                    if (inputData.Item2)
+                        (innermostOperation as Operation)?.InternalPipeInputToChildOperations(input);
+                }
+                else
+                {
+                    throw new ArgumentException($"The operation type {innermostOperation.GetType().Name} does not have a public property of type {typeof(TInput).Name} with the {nameof(InputAttribute)}.");
+                }
             }
         }
     }
