@@ -92,6 +92,8 @@ Each operation maintains an operation context where operation values are stored.
 
 If an operation needs to access values produced by any of its already executed child operations, it can call the `GetChildOutputValue<TOutput>()` method. As a convenience, you can retrieve a collection of output values using the `GetChildOutputValues<TOutput>()` method. This method has a special behavior in that the collection can be outputted as any concrete implementation of `IEnumerable<TOutput>`. Normally, you can only get the exact types specified in the output properties, not base types.
 
+For operations that need to send input directly to or return outout from child operations without interacting with it directly, you can streamline the process by adding the `Pipe` attribute to the input or output property. This will make sure that the `PipeInputToChildOperations` (input piping) or `GetChildOutputValue` (output piping) method is used automatically to pipe the values to the proper destination.
+
 If you want to input one or more values directly to a child operation instead of adding it to the context, the child operation can be created with an overload of the `Create` method taking up to three input values. This can be useful when creating a child operation per value in an outputted collection, since the individual items are not available in the context.
 
 To get an idea of how all this fits together, take a loot at the operations in the [Compact example project](https://github.com/MortenChristiansen/Overflow.net/blob/master/examples/Compact/Operations/ImportUsersWorkflow.cs).
