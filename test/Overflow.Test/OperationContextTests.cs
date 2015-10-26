@@ -277,6 +277,20 @@ namespace Overflow.Test
             Assert.Null(sut.GetOutput<object>());
         }
 
+        [Theory, AutoMoqData]
+        public void Inputs_can_be_piped_to_child_operations(object input)
+        {
+            var innerInputOperation = new TestInputOperation();
+            var inputOperation = new TestPipedInputOperation(innerInputOperation) { Input = input };
+            var op = new FakeOperation(inputOperation);
+            var sut = OperationContext.Create(op);
+            sut.AddData(input);
+            
+            op.Execute();
+
+            Assert.Same(input, innerInputOperation.Input);
+        }
+
         private class TestInputOperation : Operation
         {
             [Input]
@@ -287,6 +301,26 @@ namespace Overflow.Test
         {
             [Output]
             public object Output { get; set; }
+        }
+
+        private class TestPipedInputOperation : FakeOperation
+        {
+            [Input, Pipe]
+            public object Input { get; set; }
+
+            public TestPipedInputOperation(params IOperation[] childOperations)
+                : base(childOperations)
+            { }
+        }
+
+        private class TestPipedOutputOperation : FakeOperation
+        {
+            [Output, Pipe]
+            public object Output { get; set; }
+
+            public TestPipedOutputOperation(params IOperation[] childOperations)
+                : base(childOperations)
+            { }
         }
     }
 }

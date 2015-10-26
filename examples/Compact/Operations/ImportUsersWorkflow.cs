@@ -47,8 +47,7 @@ namespace Compact.Operations
         {
             private readonly IExternalDatabase _db;
 
-            [Output]
-            public IEnumerable<ExternalUser> Users { get; private set; }
+            [Output] public IEnumerable<ExternalUser> Users { get; private set; }
 
             public LoadUserDataFromExternalDatabaseOperation(IExternalDatabase db)
             {
@@ -61,12 +60,10 @@ namespace Compact.Operations
         [ContinueOnFailure, Atomic]
         private class ImportExternalUserOperation : Operation
         {
-            [Input] public ExternalUser User { get; set; }
+            [Input, Pipe] public ExternalUser User { get; set; }
 
             public override IEnumerable<IOperation> GetChildOperations()
             {
-                PipeInputToChildOperations(User);
-
                 yield return Create<SanitizeExternalUserOperation>();
                 yield return Create<PersistImportedUserOperation>();
                 yield return Create<MarkUserAsImportedInExternalDatabaseOperation>();
@@ -75,10 +72,8 @@ namespace Compact.Operations
 
             private class SanitizeExternalUserOperation : Operation
             {
-                [Input]
-                public ExternalUser ExternalUser { get; set; }
-                [Output]
-                public User User { get; private set; }
+                [Input]  public ExternalUser ExternalUser { get; set; }
+                [Output] public User User { get; private set; }
 
                 protected override void OnExecute() => User = Sanitize(ExternalUser);
 
@@ -95,8 +90,7 @@ namespace Compact.Operations
             {
                 private readonly IDatabase _db;
 
-                [Input]
-                public User User { get; set; }
+                [Input] public User User { get; set; }
 
                 public PersistImportedUserOperation(IDatabase db)
                 {
@@ -111,8 +105,7 @@ namespace Compact.Operations
             {
                 private readonly IExternalDatabase _db;
 
-                [Input]
-                public ExternalUser ExternalUser { get; set; }
+                [Input] public ExternalUser ExternalUser { get; set; }
 
                 public MarkUserAsImportedInExternalDatabaseOperation(IExternalDatabase db)
                 {
@@ -131,8 +124,7 @@ namespace Compact.Operations
             {
                 private readonly IEmailService _emailService;
 
-                [Input]
-                public User User { get; set; }
+                [Input] public User User { get; set; }
 
                 public SendWelcomeEmailOperation(IEmailService emailService)
                 {
@@ -146,8 +138,7 @@ namespace Compact.Operations
             {
                 private readonly ISmsService _smsService;
 
-                [Input]
-                public User User { get; set; }
+                [Input] public User User { get; set; }
 
                 public SendWelcomeSmsOperation(ISmsService smsService)
                 {

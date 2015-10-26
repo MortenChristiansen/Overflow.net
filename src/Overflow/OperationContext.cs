@@ -55,9 +55,9 @@ namespace Overflow
             foreach (var inputOperationType in inputOperationInterfaces)
                 GetInput(innerOperation, inputOperationType);
 
-            var inputPropertyAttributes = innerOperationType.GetProperties().Where(p => p.GetCustomAttributes(typeof(InputAttribute), true).Any());
+            var inputPropertyAttributes = innerOperationType.GetProperties().Where(p => p.GetCustomAttributes(typeof(InputAttribute), true).Any()).Select(p => Tuple.Create(p, p.GetCustomAttributes(typeof(PipeAttribute), true).Any()));
             foreach (var inputProperty in inputPropertyAttributes)
-                GetInput(innerOperation, inputProperty);
+                GetInput(innerOperation, inputProperty.Item1, inputProperty.Item2);
         }
 
         private void GetInput(IOperation operation, Type inputOperationType)
@@ -73,13 +73,19 @@ namespace Overflow
             }
         }
 
-        private void GetInput(IOperation operation, PropertyInfo inputOperation)
+        private void GetInput(IOperation operation, PropertyInfo inputOperation, bool pipeInputToChildOperation)
         {
             var output = GetOutput(inputOperation.PropertyType);
             if (output != null)
             {
                 inputOperation.SetValue(operation, output, null);
                 SaveValueForFutureChildOperationContexts(operation, inputOperation.PropertyType, output);
+
+                if (pipeInputToChildOperation && operation is Operation)
+                {
+                    var pipeMethod = typeof(Operation).GetMethod("PipeInputToChildOperations", BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(inputOperation.PropertyType);
+                    pipeMethod.Invoke(operation, new[] { output });
+                }
             }
         }
 

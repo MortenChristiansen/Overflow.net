@@ -229,6 +229,19 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
+        public void Data_is_piped_to_child_operations_when_creating_the_piping_operation_using_explicit_input_values(object data)
+        {
+            var sut = new ParentInputOperation<TestPipedPropertyInputOperation<SimpleTestPropertyInputOperation>> { Input = data };
+            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = new SimpleOperationResolver() };
+            sut.Initialize(correctConfiguration);
+
+            sut.Execute();
+
+            var childOperation = (SimpleTestPropertyInputOperation) ((Operation)sut.ExecutedChildOperations.First().Operation).ExecutedChildOperations.First().Operation;
+            Assert.Equal(data, childOperation.Input);
+        }
+
+        [Theory, AutoMoqData]
         public void You_can_get_outputted_values_from_within_the_operation(object output)
         {
             var sut = new OutputtingOperation { ExpectedOutput = output };
@@ -354,14 +367,6 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
-        public void You_can_only_make_data_available_to_child_operations_during_execution(object input)
-        {
-            var sut = new FakeOperation();
-
-            Assert.Throws<InvalidOperationException>(() => sut.PublicPipeInputToChildOperations(input));
-        }
-
-        [Theory, AutoMoqData]
         public void You_can_only_get_child_output_during_execution(object input)
         {
             var sut = new FakeOperation();
@@ -441,6 +446,29 @@ namespace Overflow.Test
                 : base(childOperations)
             {
 
+            }
+        }
+
+        private class ParentInputOperation<TOperation> : Operation
+            where TOperation : IOperation
+        {
+            public object Input { get; set; }
+
+            public override IEnumerable<IOperation> GetChildOperations()
+            {
+                yield return Create<TOperation, object>(Input);
+            }
+        }
+
+        private class TestPipedPropertyInputOperation<TOperation> : FakeOperation
+            where TOperation : IOperation
+        {
+            [Input,Pipe]
+            public object Input { get; set; }
+
+            public override IEnumerable<IOperation> GetChildOperations()
+            {
+                yield return Create<TOperation>();
             }
         }
 

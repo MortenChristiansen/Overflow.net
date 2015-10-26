@@ -66,6 +66,7 @@
     <Compile Include="LogMultiplexer.cs" />
     <Compile Include="OperationCreationException.cs" />
     <Compile Include="OutputAttribute.cs" />
+    <Compile Include="PipeAttribute.cs" />
     <Compile Include="RetryAttribute.cs" />
     <Compile Include="Behaviors\RetryBehavior.cs" />
     <Compile Include="Testing\AssertionException.cs" />
