@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Overflow.Utilities;
 
 namespace Overflow
 {
@@ -131,15 +132,27 @@ namespace Overflow
         /// <summary>
         /// Adds the value of any property with the OutputAttribute to the context.
         /// </summary>
-        /// <param name="operation">The operation to parse for properties.</param>
-        public void AddOutput(IOperation operation)
+        /// <param name="childOperation">The operation to parse for properties.</param>
+        /// <param name="parentOperation">The parent operation for potentially piping output values.</param>
+        public void AddOutput(IOperation childOperation, IOperation parentOperation)
         {
-            var innerOperation = operation.GetInnermostOperation();
+            Verify.NotNull(parentOperation, nameof(parentOperation));
+
+            var innerOperation = childOperation.GetInnermostOperation();
             var innerOperationType = innerOperation.GetType();
+            var innerParentOperation = parentOperation.GetInnermostOperation();
+
+            var pipedOutputProperties = innerParentOperation.GetType().GetProperties().Where(p => p.GetCustomAttributes(typeof(OutputAttribute), true).Any() && p.GetCustomAttributes(typeof(PipeAttribute), true).Any()).ToList();
 
             var outputPropertyAttributes = innerOperationType.GetProperties().Where(p => p.GetCustomAttributes(typeof(OutputAttribute), true).Any());
             foreach (var outputProperty in outputPropertyAttributes)
-                AddData(outputProperty.PropertyType, outputProperty.GetValue(innerOperation, null));
+            {
+                var value = outputProperty.GetValue(innerOperation, null);
+                AddData(outputProperty.PropertyType, value);
+
+                var pipedOutputProperty = pipedOutputProperties.Find(p => p.PropertyType == outputProperty.PropertyType);
+                pipedOutputProperty?.SetValue(innerParentOperation, value, null);
+            }
         }
     }
 }

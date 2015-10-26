@@ -250,7 +250,7 @@ namespace Overflow.Test
             var sut = OperationContext.Create(op);
             var outputOperation = new TestOutputOperation { Output = output };
 
-            sut.AddOutput(outputOperation);
+            sut.AddOutput(outputOperation, op);
 
             Assert.Equal(output, sut.GetOutput<object>());
         }
@@ -261,7 +261,7 @@ namespace Overflow.Test
             var sut = OperationContext.Create(op);
             var outputOperation = new TestOutputOperation { Output = output };
 
-            sut.AddOutput(outputOperation);
+            sut.AddOutput(outputOperation, op);
 
             Assert.Equal(output, sut.GetOutput<object>());
         }
@@ -272,7 +272,7 @@ namespace Overflow.Test
             var sut = OperationContext.Create(op);
             var outputOperation = new FakeOperationBehavior().AttachTo(new TestOutputOperation { Output = null });
 
-            sut.AddOutput(outputOperation);
+            sut.AddOutput(outputOperation, op);
 
             Assert.Null(sut.GetOutput<object>());
         }
@@ -289,6 +289,18 @@ namespace Overflow.Test
             op.Execute();
 
             Assert.Same(input, innerInputOperation.Input);
+        }
+
+        [Theory, AutoMoqData]
+        public void Outputs_can_be_piped_to_parent_operations(object output)
+        {
+            var innerOutputOperation = new TestOutputOperation { Output = output };
+            var outputOperation = new TestPipedOutputOperation(innerOutputOperation);
+            var op = new FakeOperation(outputOperation);
+
+            op.Execute();
+
+            Assert.Same(output, outputOperation.Output);
         }
 
         private class TestInputOperation : Operation

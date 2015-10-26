@@ -1,7 +1,9 @@
-﻿using Compact.DomainClasses;
+﻿using System;
+using Compact.DomainClasses;
 using Compact.Services;
 using Overflow;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 
 namespace Compact.Operations
@@ -37,30 +39,53 @@ namespace Compact.Operations
     {
         public override IEnumerable<IOperation> GetChildOperations()
         {
-            yield return Create<LoadUserDataFromExternalDatabaseOperation>();
+            yield return Create<LoadUserDataFromConfigDefinedExternalDatabaseOperation>();
             foreach (var externalUser in GetChildOutputValues<ExternalUser>())
                 yield return Create<ImportExternalUserOperation, ExternalUser>(externalUser);
         }
 
-        [Retry]
-        private class LoadUserDataFromExternalDatabaseOperation : Operation
+        private class LoadUserDataFromConfigDefinedExternalDatabaseOperation : Operation
         {
-            private readonly IExternalDatabase _db;
+            private readonly Func<string, IExternalDatabase> _dbFactory;
 
-            [Output] public IEnumerable<ExternalUser> Users { get; private set; }
+            [Output]       public IExternalDatabase ExternalDb { get; private set; }
+            [Output, Pipe] public IEnumerable<ExternalUser> Users { get; private set; }
 
-            public LoadUserDataFromExternalDatabaseOperation(IExternalDatabase db)
+            public LoadUserDataFromConfigDefinedExternalDatabaseOperation(Func<string, IExternalDatabase> dbFactory)
             {
-                _db = db;
+                _dbFactory = dbFactory;
             }
 
-            protected override void OnExecute() => Users = _db.Users.Where(u => !u.IsImported).ToList();
+            protected override void OnExecute()
+            {
+                ExternalDb = _dbFactory(ConfigurationManager.AppSettings["ExternalDbConnectionString"]);
+            }
+
+            public override IEnumerable<IOperation> GetChildOperations()
+            {
+                yield return Create<LoadUserDataFromExternalDatabaseOperation, IExternalDatabase>(ExternalDb);
+            }
+
+            /// <summary>
+            /// Normally you might make this operation be at the same level as its parent operation, just running after
+            /// it. However, it is added as a nested operation to illustrate how you can use the Pipe attribute to
+            /// automatically pull output values out of child operations into an operation's own output property.
+            /// </summary>
+            [Retry]
+            private class LoadUserDataFromExternalDatabaseOperation : Operation
+            {
+                [Input]  public IExternalDatabase ExternalDb { get; set; }
+                [Output] public IEnumerable<ExternalUser> Users { get; private set; }
+
+                protected override void OnExecute() => Users = ExternalDb.Users.Where(u => !u.IsImported).ToList();
+            }
         }
 
         [ContinueOnFailure, Atomic]
         private class ImportExternalUserOperation : Operation
         {
             [Input, Pipe] public ExternalUser User { get; set; }
+            [Input, Pipe] public IExternalDatabase ExternalDb { get; set; }
 
             public override IEnumerable<IOperation> GetChildOperations()
             {
@@ -103,19 +128,13 @@ namespace Compact.Operations
             [Retry]
             private class MarkUserAsImportedInExternalDatabaseOperation : Operation
             {
-                private readonly IExternalDatabase _db;
-
                 [Input] public ExternalUser ExternalUser { get; set; }
-
-                public MarkUserAsImportedInExternalDatabaseOperation(IExternalDatabase db)
-                {
-                    _db = db;
-                }
+                [Input] public IExternalDatabase ExternalDb { get; set; }
 
                 protected override void OnExecute()
                 {
                     ExternalUser.IsImported = true;
-                    _db.Save(ExternalUser);
+                    ExternalDb.Save(ExternalUser);
                 }
             }
 

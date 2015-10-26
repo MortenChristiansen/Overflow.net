@@ -61,7 +61,7 @@ namespace Overflow
             try
             {
                 childOperation.Execute();
-                _context.AddOutput(childOperation);
+                _context.AddOutput(childOperation, this);
                 RegisterExecutedChildOperation(null, started, childOperation);
                 
             }
@@ -191,23 +191,23 @@ namespace Overflow
             return operation;
         }
 
-        private void ProvideInput<TInput, TOperation>(IOperation operation, TInput input)
+        private void ProvideInput<TInput, TOperation>(IOperation innermostOperation, TInput input)
             where TInput : class
             where TOperation : IOperation
         {
-            if (operation is IInputOperation<TInput>)
+            if (innermostOperation is IInputOperation<TInput>)
             {
-                ((IInputOperation<TInput>)operation.GetInnermostOperation()).Input(input);
+                ((IInputOperation<TInput>)innermostOperation).Input(input);
             }
             else
             {
                 var inputData = typeof(TOperation).GetProperties().Where(p => p.PropertyType == typeof(TInput) && p.GetCustomAttributes(typeof(InputAttribute), true).Any()).Select(p => Tuple.Create(p, p.GetCustomAttributes(typeof(PipeAttribute), true).Any())).FirstOrDefault();
                 if (inputData?.Item1 != null)
                 {
-                    inputData.Item1.SetValue(operation, input, null);
+                    inputData.Item1.SetValue(innermostOperation, input, null);
 
                     if (inputData.Item2)
-                        (operation as Operation)?.PipeInputToChildOperations(input);
+                        (innermostOperation as Operation)?.PipeInputToChildOperations(input);
                 }
                 else
                 {

@@ -10,7 +10,7 @@ namespace Compact
         static void Main(string[] args)
         {
             var resolver = new SimpleOperationResolver();
-            resolver.RegisterOperationDependency<IExternalDatabase, ExternalDatabase>();
+            resolver.RegisterOperationDependencyInstance<Func<string, IExternalDatabase>>(connectionString => new ExternalDatabase());
             resolver.RegisterOperationDependency<IDatabase, Database>();
             resolver.RegisterOperationDependency<IEmailService, EmailService>();
             resolver.RegisterOperationDependency<ISmsService, SmsService>();
