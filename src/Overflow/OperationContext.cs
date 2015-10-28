@@ -98,6 +98,10 @@ namespace Overflow
         private static void SaveValueForFutureChildOperationContexts(IOperation operation, Type inputType, object output)
         {
             var operationData = _operationData.GetOrCreateValue(operation);
+
+            if (operationData.ContainsKey(inputType))
+                operationData.Remove(inputType);
+
             operationData.Add(inputType, output);
         }
 
