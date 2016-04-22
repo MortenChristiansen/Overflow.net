@@ -53,6 +53,18 @@ namespace Overflow.Testing
                 _typeMappings.Add(requestType, fakeImplementation);
         }
 
+        /// <summary>
+        /// Create a new instance of an operation. All behaviors are correctly attached
+        /// and initialized. Constructor arguments are supplied.
+        /// 
+        /// In case an operation is requested where a fake implementation has been supplied,
+        /// the fake instance is returned instead. Whether behaviors are applied to this
+        /// instance is configured using the applyBehaviors constructor argument of this
+        /// class.
+        /// </summary>
+        /// <typeparam name="TOperation">The IOperation implementation to create</typeparam>
+        /// <param name="configuration">The global workflow configuration</param>
+        /// <returns>The newly created operation instance</returns>
         public IOperation Resolve<TOperation>(WorkflowConfiguration configuration) where TOperation : IOperation
         {
             var requestType = typeof(TOperation);
