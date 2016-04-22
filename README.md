@@ -221,3 +221,32 @@ When the expectations are not met, the AssertionException provides a descriptive
     none [error: expected SendNotificationsOperation]
 
 If you want to test that the proper workflow is executed in case of errors, use the similar but less strict method `ExecutesChildOperations` instead.
+
+I generally recommend you relegate the actual business logic as much as possible to the leaf nodes in you workflow hierarchy. This makes it simple to test the business logic and you can generally use the above testing utilities for verifying the overall flow of operations. If you do need to test a parent operation in a way that is decoupled from its child operations, the `FakeOperationResolver` provides a convenient alternative implementation of the `IOperationResolver` interface. It allows you to specify specific implementations of operations that will be resolved instead of the requested child operation types. Each fake implementation needs to inherit from the operation type it replaces and override the relevant methods.
+
+    [Fact]
+    public void Test()
+    {
+		var resolver = new FakeOperationResolver();
+		resolver.ProvideFakeOperation<SendEmailNotificationOperation>(new FakeSendEmailNotificationOperation());
+		var workflow = Workflow.Configure<SendPartyInvitesOperation>()
+                .WithResolver(resolver)
+                .CreateOperation();
+
+        workflow.Execute();
+
+        workflow.ExecutesChildOperationsWithoutErrors(
+            typeof(FindGuestListOperation),
+            typeof(PrepareInviteTemplateOperation),
+            typeof(CreateInviteNotificationsOperation),
+            typeof(SendNotificationsOperation)
+        );
+    }
+
+	class FakeSendEmailNotificationOperation : SendEmailNotificationOperation
+	{
+		// Does not send email!
+		public void override OnExecute() {}
+	}
+
+If you tend to supply dependencies which interface with external systems, such as sending email or talking to databases, through the constructor, you can just register fakes with the normal `SimpleOperationResolver` class. This code is provided in case your prefer to do these types of things directly in the child operations.

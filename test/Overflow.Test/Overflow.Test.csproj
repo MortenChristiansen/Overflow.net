@@ -97,6 +97,7 @@
     <Compile Include="TestingInfrastructure\AutoMoqDataAttribute.cs" />
     <Compile Include="TestingInfrastructure\TestBase.cs" />
     <Compile Include="Testing\AssertionExceptionTests.cs" />
+    <Compile Include="Testing\FakeOperationResolverTests.cs" />
     <Compile Include="Testing\OperationExtensionsTests.cs" />
     <Compile Include="TextWriterWorkflowLoggerTests.cs" />
     <Compile Include="ContinueOnFailureAttributeTests.cs" />

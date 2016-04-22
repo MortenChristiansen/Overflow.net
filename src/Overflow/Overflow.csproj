@@ -70,6 +70,7 @@
     <Compile Include="RetryAttribute.cs" />
     <Compile Include="Behaviors\RetryBehavior.cs" />
     <Compile Include="Testing\AssertionException.cs" />
+    <Compile Include="Testing\FakeOperationResolver.cs" />
     <Compile Include="Testing\OperationExtensions.cs" />
     <Compile Include="TextWriterWorkflowLogger.cs" />
     <Compile Include="Extensibility\OperationBehaviorAttribute.cs" />
