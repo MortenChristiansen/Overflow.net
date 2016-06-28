@@ -1,4 +1,4 @@
-using System.Transactions;
+//using System.Transactions;
 using Overflow.Extensibility;
 
 namespace Overflow.Behaviors
@@ -9,12 +9,13 @@ namespace Overflow.Behaviors
 
         public override void Execute()
         {
-            using (var ts = new TransactionScope())
+            //TODO: Use transactions when they become available
+            /*using (var ts = new TransactionScope())
             {
                 base.Execute();
 
                 ts.Complete();
-            }
+            }*/
         }
     }
 }

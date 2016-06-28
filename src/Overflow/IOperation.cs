@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Overflow.Extensibility;
 using Overflow.Utilities;
+using System.Reflection;
 
 namespace Overflow
 {
@@ -109,7 +110,7 @@ namespace Overflow
             }
             else
             {
-                var inputData = innermostOperation.GetType().GetProperties().Where(p => p.PropertyType == typeof(TInput) && p.GetCustomAttributes(typeof(InputAttribute), true).Any()).Select(p => Tuple.Create(p, p.GetCustomAttributes(typeof(PipeAttribute), true).Any())).FirstOrDefault();
+                var inputData = innermostOperation.GetType().GetTypeInfo().GetProperties().Where(p => p.PropertyType == typeof(TInput) && p.GetCustomAttributes(typeof(InputAttribute), true).Any()).Select(p => Tuple.Create(p, p.GetCustomAttributes(typeof(PipeAttribute), true).Any())).FirstOrDefault();
                 if (inputData?.Item1 != null)
                 {
                     inputData.Item1.SetValue(innermostOperation, input, null);

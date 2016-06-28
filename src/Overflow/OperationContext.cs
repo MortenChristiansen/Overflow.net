@@ -20,7 +20,7 @@ namespace Overflow
         {
             var innerOperation = operation.GetInnermostOperation();
 
-            var outputOperationInterfaces = innerOperation.GetType().GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IOutputOperation<>));
+            var outputOperationInterfaces = innerOperation.GetType().GetInterfaces().Where(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IOutputOperation<>));
             foreach (var outputOperationType in outputOperationInterfaces)
                 RegisterOutputHandler(innerOperation, outputOperationType);
         }
@@ -39,7 +39,7 @@ namespace Overflow
             var method = typeof (OperationContext).GetMethod(nameof(OnOutput), BindingFlags.NonPublic | BindingFlags.Instance);
             var genericMethod = method.MakeGenericMethod(type);
             var actionT = typeof(Action<>).MakeGenericType(type);
-            return Delegate.CreateDelegate(actionT, this, genericMethod);
+            return genericMethod.CreateDelegate(actionT, this);
         }
 
         private void OnOutput<TOutput>(TOutput output)
@@ -52,7 +52,7 @@ namespace Overflow
             var innerOperation = operation.GetInnermostOperation();
             var innerOperationType = innerOperation.GetType();
 
-            var inputOperationInterfaces = innerOperationType.GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IInputOperation<>));
+            var inputOperationInterfaces = innerOperationType.GetInterfaces().Where(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IInputOperation<>));
             foreach (var inputOperationType in inputOperationInterfaces)
                 GetInput(innerOperation, inputOperationType);
 

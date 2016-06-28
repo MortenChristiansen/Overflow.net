@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using Overflow.Extensibility;
@@ -88,7 +89,7 @@ namespace Overflow
                 _writer.Write("}");
             }
             
-            _writer.Write(string.Format(Thread.CurrentThread.CurrentCulture, " [duration: {0:#,###,###,##0}ms]", duration.TotalMilliseconds));
+            _writer.Write(string.Format(CultureInfo.CurrentCulture, " [duration: {0:#,###,###,##0}ms]", duration.TotalMilliseconds));
         }
 
         /// <summary>

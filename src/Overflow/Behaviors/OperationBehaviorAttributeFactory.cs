@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Overflow.Extensibility;
 using Overflow.Utilities;
+using System.Reflection;
 
 namespace Overflow.Behaviors
 {
@@ -11,7 +12,7 @@ namespace Overflow.Behaviors
         {
             Verify.NotNull(operation, nameof(operation));
 
-            var decoratorAttributes = operation.GetType().GetCustomAttributes(typeof(OperationBehaviorAttribute), inherit: false);
+            var decoratorAttributes = operation.GetType().GetTypeInfo().GetCustomAttributes(typeof(OperationBehaviorAttribute), inherit: false);
             return decoratorAttributes.OfType<OperationBehaviorAttribute>().Select(b => b.CreateBehavior(configuration)).ToList();
         }
     }

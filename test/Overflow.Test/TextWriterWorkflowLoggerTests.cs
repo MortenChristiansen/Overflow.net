@@ -1,10 +1,8 @@
 using System;
 using System.Globalization;
 using System.IO;
-using System.Threading;
 using Overflow.Test.Fakes;
 using Overflow.Test.TestingInfrastructure;
-using Ploeh.AutoFixture;
 using Xunit;
 
 namespace Overflow.Test
@@ -66,7 +64,7 @@ namespace Overflow.Test
             using (var sw = new StringWriter())
             {
                 var sut = new TextWriterWorkflowLogger(sw);
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("da-DK");
+                CultureInfo.CurrentCulture = new CultureInfo("da-DK");
 
                 sut.OperationStarted(new FakeOperation());
                 sut.OperationFinished(new FakeOperation(), TimeSpan.FromMilliseconds(1500000));
@@ -81,7 +79,7 @@ namespace Overflow.Test
             using (var sw = new StringWriter())
             {
                 var sut = new TextWriterWorkflowLogger(sw);
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+                CultureInfo.CurrentCulture = new CultureInfo("en-US");
 
                 sut.OperationStarted(new FakeOperation());
                 sut.OperationFinished(new FakeOperation(), TimeSpan.FromMilliseconds(1500000));

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Overflow.Extensibility;
 using Overflow.Utilities;
+using System.Reflection;
 
 namespace Overflow.Behaviors
 {
@@ -55,7 +56,7 @@ namespace Overflow.Behaviors
 
         private static bool IsIdempotent(IOperation operation)
         {
-            return operation.GetType().GetCustomAttributes(typeof(IdempotentAttribute), false).Any();
+            return operation.GetType().GetTypeInfo().GetCustomAttributes(typeof(IdempotentAttribute), false).Any();
         }
     }
 }

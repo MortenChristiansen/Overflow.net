@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading;
+using System.Globalization;
 using Overflow.Extensibility;
 using Overflow.Utilities;
 
@@ -54,7 +54,7 @@ namespace Overflow
         {
             Verify.NotNull(operation, nameof(operation));
 
-            var durationFormatted = string.Format(Thread.CurrentThread.CurrentCulture, "{0:#,###,###,##0}", duration.TotalMilliseconds);
+            var durationFormatted = string.Format(CultureInfo.CurrentCulture, "{0:#,###,###,##0}", duration.TotalMilliseconds);
             LogMessage($"{operation.GetType().Name} completed in {durationFormatted}ms");
         }
 

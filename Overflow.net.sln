@@ -1,29 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overflow", "src\Overflow\Overflow.csproj", "{8DF25299-1F2F-4A84-828F-51A098450ED5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CD0EE84D-9F93-40DA-9E87-6756406496FC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{870DCD51-5195-450E-B6FD-CCFAC60D0477}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{83A803C8-9CF2-491C-8448-E74DE4ACA21D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Overflow.Test", "test\Overflow.Test\Overflow.Test.csproj", "{047FF64E-A72B-4569-BD96-970556D6F723}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F9BEECB9-DF47-4106-8863-0280621462DA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1436C554-8D6A-4490-A595-77A6519D3170}"
 	ProjectSection(SolutionItems) = preProject
-		.travis.yml = .travis.yml
-		README.md = README.md
+		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataFlow", "examples\DataFlow\DataFlow.csproj", "{22BA955C-085E-4822-B11B-CEA798EDEE14}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Overflow", "src\Overflow\Overflow.xproj", "{5E9434B1-AEE8-463D-966A-626E40D959DB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{0ECC90F5-F1D3-49E1-BD3F-B4A4697CF29F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{34E8E0C4-CD4D-42B3-B6BC-0116C2245068}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomOperationResolver", "examples\CustomOperationResolver\CustomOperationResolver.csproj", "{0B6B156E-034C-4D08-8F0A-F9008035383D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compact", "examples\Compact\Compact.csproj", "{9E6D9DA4-BB5B-4B88-A1C8-D66EF119AE45}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Overflow.Test", "test\Overflow.Test\Overflow.Test.xproj", "{B439E4D4-E448-4A22-A421-7EE2BB6FA39D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,35 +22,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8DF25299-1F2F-4A84-828F-51A098450ED5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8DF25299-1F2F-4A84-828F-51A098450ED5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8DF25299-1F2F-4A84-828F-51A098450ED5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8DF25299-1F2F-4A84-828F-51A098450ED5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{047FF64E-A72B-4569-BD96-970556D6F723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{047FF64E-A72B-4569-BD96-970556D6F723}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{047FF64E-A72B-4569-BD96-970556D6F723}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{047FF64E-A72B-4569-BD96-970556D6F723}.Release|Any CPU.Build.0 = Release|Any CPU
-		{22BA955C-085E-4822-B11B-CEA798EDEE14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22BA955C-085E-4822-B11B-CEA798EDEE14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22BA955C-085E-4822-B11B-CEA798EDEE14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{22BA955C-085E-4822-B11B-CEA798EDEE14}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0B6B156E-034C-4D08-8F0A-F9008035383D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B6B156E-034C-4D08-8F0A-F9008035383D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0B6B156E-034C-4D08-8F0A-F9008035383D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0B6B156E-034C-4D08-8F0A-F9008035383D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9E6D9DA4-BB5B-4B88-A1C8-D66EF119AE45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E6D9DA4-BB5B-4B88-A1C8-D66EF119AE45}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9E6D9DA4-BB5B-4B88-A1C8-D66EF119AE45}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E6D9DA4-BB5B-4B88-A1C8-D66EF119AE45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E9434B1-AEE8-463D-966A-626E40D959DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E9434B1-AEE8-463D-966A-626E40D959DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E9434B1-AEE8-463D-966A-626E40D959DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E9434B1-AEE8-463D-966A-626E40D959DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B439E4D4-E448-4A22-A421-7EE2BB6FA39D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B439E4D4-E448-4A22-A421-7EE2BB6FA39D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B439E4D4-E448-4A22-A421-7EE2BB6FA39D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B439E4D4-E448-4A22-A421-7EE2BB6FA39D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{8DF25299-1F2F-4A84-828F-51A098450ED5} = {870DCD51-5195-450E-B6FD-CCFAC60D0477}
-		{047FF64E-A72B-4569-BD96-970556D6F723} = {83A803C8-9CF2-491C-8448-E74DE4ACA21D}
-		{22BA955C-085E-4822-B11B-CEA798EDEE14} = {0ECC90F5-F1D3-49E1-BD3F-B4A4697CF29F}
-		{0B6B156E-034C-4D08-8F0A-F9008035383D} = {0ECC90F5-F1D3-49E1-BD3F-B4A4697CF29F}
-		{9E6D9DA4-BB5B-4B88-A1C8-D66EF119AE45} = {0ECC90F5-F1D3-49E1-BD3F-B4A4697CF29F}
+		{5E9434B1-AEE8-463D-966A-626E40D959DB} = {CD0EE84D-9F93-40DA-9E87-6756406496FC}
+		{B439E4D4-E448-4A22-A421-7EE2BB6FA39D} = {34E8E0C4-CD4D-42B3-B6BC-0116C2245068}
 	EndGlobalSection
 EndGlobal

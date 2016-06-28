@@ -1,15 +1,17 @@
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.AutoMoq;
-using Ploeh.AutoFixture.Xunit2;
+using System;
+//using Ploeh.AutoFixture;
+//using Ploeh.AutoFixture.AutoMoq;
+//using Ploeh.AutoFixture.Xunit2;
 
 namespace Overflow.Test.TestingInfrastructure
 {
-    class AutoMoqDataAttribute : AutoDataAttribute
+    //TODO: Use AutoDataAttribute when Autofixture becomes available
+    class AutoMoqDataAttribute : Attribute /*: AutoDataAttribute*/
     {
-        public AutoMoqDataAttribute()
+        /*public AutoMoqDataAttribute()
             : base(new Fixture()
                 .Customize(new AutoMoqCustomization()))
         {
-        }
+        }*/
     }
 }

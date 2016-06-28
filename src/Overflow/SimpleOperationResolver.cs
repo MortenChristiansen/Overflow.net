@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Overflow.Extensibility;
 using Overflow.Utilities;
 
@@ -76,7 +77,7 @@ namespace Overflow
 
         private object[] ResolveConstructorParameters(Type type)
         {
-            var constructors = type.GetConstructors();
+            var constructors = type.GetTypeInfo().GetConstructors();
             Verify.Operation(constructors.Length == 1, "Type " + type.Name + " has more than one constructor. This is not supported.");
 
             return constructors[0].GetParameters().Select(p => ResolveConstructorParameter(p.ParameterType)).ToArray();
