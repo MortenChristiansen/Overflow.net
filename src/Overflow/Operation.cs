@@ -132,11 +132,7 @@ namespace Overflow
             where TInput : class
             where TOperation : IOperation
         {
-            var operation = Create<TOperation>();
-
-            operation.GetInnermostOperation().ProvideInput(input);
-
-            return operation;
+            return Create<TOperation>().ProvideInput(input);
         }
 
         /// <summary>
@@ -154,13 +150,7 @@ namespace Overflow
             where TInput2 : class
             where TOperation : IOperation
         {
-            var operation = Create<TOperation>();
-
-            var innerOperation = operation.GetInnermostOperation();
-            innerOperation.ProvideInput(input1);
-            innerOperation.ProvideInput(input2);
-
-            return operation;
+            return Create<TOperation>().ProvideInput(input1).ProvideInput(input2);
         }
 
         /// <summary>
@@ -181,14 +171,7 @@ namespace Overflow
             where TInput3 : class
             where TOperation : IOperation
         {
-            var operation = Create<TOperation>();
-
-            var innerOperation = operation.GetInnermostOperation();
-            innerOperation.ProvideInput(input1);
-            innerOperation.ProvideInput(input2);
-            innerOperation.ProvideInput(input3);
-
-            return operation;
+            return Create<TOperation>().ProvideInput(input1).ProvideInput(input2).ProvideInput(input3);
         }
 
         

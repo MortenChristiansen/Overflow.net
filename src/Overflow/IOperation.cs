@@ -98,7 +98,8 @@ namespace Overflow
         /// </summary>
         /// <param name="operation">The operation to inspect for the input property.</param>
         /// <param name="input">The value of the input to assign to the input property.</param>
-        public static void ProvideInput<TInput>(this IOperation operation, TInput input)
+        /// <returns>Returns the original operation to allow call chaining</returns>
+        public static IOperation ProvideInput<TInput>(this IOperation operation, TInput input)
             where TInput : class
         {
             var innermostOperation = operation.GetInnermostOperation();
@@ -122,6 +123,8 @@ namespace Overflow
                     throw new ArgumentException($"The operation type {innermostOperation.GetType().Name} does not have a public property of type {typeof(TInput).Name} with the {nameof(InputAttribute)}.");
                 }
             }
+
+            return operation;
         }
     }
 }
