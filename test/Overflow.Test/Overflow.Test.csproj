@@ -86,6 +86,7 @@
     <Compile Include="Behaviors\ConditionalExecutionBehaviorTests.cs" />
     <Compile Include="Behaviors\OperationErrorLoggingBehaviorTests.cs" />
     <Compile Include="CompensatingOperationAttributeTests.cs" />
+    <Compile Include="ComplexTests\LoggingTests.cs" />
     <Compile Include="EventLogWorkflowLoggerTests.cs" />
     <Compile Include="ExecutionInfoTests.cs" />
     <Compile Include="Extensibility\OperationResolverHelperTests.cs" />
