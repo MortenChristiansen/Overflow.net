@@ -130,7 +130,7 @@ namespace Overflow.Test.Behaviors
         public void When_retry_exception_types_are_specified_errors_of_different_types_will_not_be_retried()
         {
             var operation = new FakeOperation { ThrowOnExecute = new NullReferenceException(), ErrorCount = 1 };
-            var sut = new RetryBehavior(1, TimeSpan.Zero, typeof(InsufficientMemoryException));
+            var sut = new RetryBehavior(1, TimeSpan.Zero, typeof(FieldAccessException));
             sut.AttachTo(operation);
 
             Assert.Throws<NullReferenceException>(() => sut.Execute());

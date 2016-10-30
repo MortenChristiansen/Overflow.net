@@ -30,7 +30,7 @@ namespace Overflow.Test
         [Theory, AutoMoqData]
         public void You_can_create_an_operation_from_the_configuration(IOperationResolver resolver)
         {
-            var sut = new WorkflowConfiguration<TestOperation>() { Resolver = resolver };
+            var sut = new WorkflowConfiguration<TestOperation> { Resolver = resolver };
 
             var result = sut.CreateOperation();
 
@@ -40,7 +40,7 @@ namespace Overflow.Test
         [Theory, AutoMoqData]
         public void Created_operations_are_wrapped_in_ContinueOnFailure_behavior(IOperationResolver resolver)
         {
-            var sut = new WorkflowConfiguration<TestOperation>() { Resolver = resolver };
+            var sut = new WorkflowConfiguration<TestOperation> { Resolver = resolver };
 
             var result = sut.CreateOperation();
 

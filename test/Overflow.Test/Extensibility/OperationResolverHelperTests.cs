@@ -44,7 +44,7 @@ namespace Overflow.Test.Extensibility
             Assert.IsType<FakeOperationBehavior>(behavior4.InnerOperation);
             var behavior5 = (OperationBehavior)behavior4.InnerOperation;
             Assert.Equal(BehaviorPrecedence.PreRecovery, behavior5.Precedence);
-            Assert.IsType<FakeOperation>(behavior5.InnerOperation);
+            Assert.IsAssignableFrom<FakeOperation>(behavior5.InnerOperation);
         }
     }
 }

@@ -25,8 +25,6 @@ namespace Overflow.Test
         [Fact]
         public void Guards_are_verified()
         {
-            Fixture.Register(() => Console.Out);
-
             VerifyGuards<TextWriterWorkflowLogger>();
         }
 
