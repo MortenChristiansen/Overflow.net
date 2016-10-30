@@ -51,7 +51,7 @@ namespace Overflow.Test.Behaviors
         }
 
         [Fact]
-        public void Failing_operations_are_retried_aspoecific_number_of_times()
+        public void Failing_operations_are_retried_a_specific_number_of_times()
         {
             var operation = new FakeOperation { ThrowOnExecute = new Exception(), ErrorCount = 2 };
             var sut = new RetryBehavior(1, TimeSpan.Zero);
