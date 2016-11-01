@@ -9,10 +9,16 @@ namespace Overflow.Test.TestingInfrastructure
     {
         protected static readonly string NL = Environment.NewLine;
 
-        protected void VerifyConstructorGuards()
+        protected void VerifyGuards<TSut>()
         {
-            /*var assertion = new GuardClauseAssertion(Fixture);
-            assertion.Verify(GetType().GetConstructors());*/
+            VerifyConstructorGuards<TSut>();
+            VerifyMethodGuards<TSut>();
+        }
+
+        protected void VerifyConstructorGuards<TSut>()
+        {
+            foreach (var constructor in typeof(TSut).GetTypeInfo().GetConstructors())
+                Verify(constructor);
         }
 
         protected void VerifyMethodGuards<TSut>()
@@ -21,7 +27,7 @@ namespace Overflow.Test.TestingInfrastructure
                 Verify(method);
         }
 
-        private static void Verify(MethodInfo method)
+        private static void Verify(MethodBase method)
         {
             // Do not test the methods on object
             if (method.DeclaringType.Name.Equals("object", StringComparison.OrdinalIgnoreCase))
@@ -33,9 +39,10 @@ namespace Overflow.Test.TestingInfrastructure
                 return;
 
             // If the method is generic, we need to bind it to a concrete type
-            bool genericArgumentIsReferenceType;
-            Type genericType;
-            method = BindGenericMethod(method, out genericArgumentIsReferenceType, out genericType);
+            bool genericArgumentIsReferenceType = false;
+            Type genericType = null;
+            if (method is MethodInfo)
+                method = BindGenericMethod((MethodInfo) method, out genericArgumentIsReferenceType, out genericType);
 
             for (var i = 0; i < parameters.Length; i++)
                 VerifyParameterNullCheck(method, parameters, i, genericArgumentIsReferenceType, genericType);
@@ -58,9 +65,10 @@ namespace Overflow.Test.TestingInfrastructure
             return method.MakeGenericMethod(typeof(object));
         }
 
-        private static void VerifyParameterNullCheck(MethodInfo method, ParameterInfo[] parameters, int parameterIndex, bool genericArgumentIsReferenceType, Type genericType)
+        private static void VerifyParameterNullCheck(MethodBase method, ParameterInfo[] parameters, int parameterIndex, bool genericArgumentIsReferenceType, Type genericType)
         {
             var param = parameters[parameterIndex];
+            // Value types are allowed to be their default value
             if (param.ParameterType.GetTypeInfo().IsValueType)
                 return;
 
@@ -68,8 +76,7 @@ namespace Overflow.Test.TestingInfrastructure
                 return;
 
             var parameterObjects = PopulateMethodParameters(parameters, parameterIndex);
-            var instance = DataResolver.Resolve(method.DeclaringType);
-            VerifyMethodInvoke(method, instance, parameterObjects, param);
+            VerifyMethodInvoke(method, parameterObjects, param);
         }
 
         private static object[] PopulateMethodParameters(ParameterInfo[] parameters, int parameterIndex)
@@ -80,11 +87,14 @@ namespace Overflow.Test.TestingInfrastructure
             return parameterObjects;
         }
 
-        private static void VerifyMethodInvoke(MethodInfo method, object instance, object[] parameterObjects, ParameterInfo param)
+        private static void VerifyMethodInvoke(MethodBase method, object[] parameterObjects, ParameterInfo param)
         {
             try
             {
-                method.Invoke(instance, parameterObjects);
+                if (method is ConstructorInfo)
+                    ((ConstructorInfo)method).Invoke(parameterObjects);
+                else
+                    method.Invoke(DataResolver.Resolve(method.DeclaringType), parameterObjects);
             }
             catch (TargetInvocationException e)
             {
@@ -95,21 +105,13 @@ namespace Overflow.Test.TestingInfrastructure
             throw new AssertionException($"Method '{method.Name}' on type '{method.DeclaringType.Name}' did not test for null value for parameter '{param.Name}'");
         }
 
-        protected void VerifyGuards<TSut>()
-        {
-            VerifyConstructorGuards();
-            VerifyMethodGuards<TSut>();
-        }
-
         protected void ExecuteIgnoringErrors(Action action)
         {
             try
             {
                 action();
             }
-            catch (Exception)
-            {
-            }
+            catch (Exception) {}
         }
     }
 }
