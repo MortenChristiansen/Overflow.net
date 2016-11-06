@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ConsoleWorkflows.DomainClasses
+namespace DataFlow.DomainClasses
 {
     class TaskRepository
     {

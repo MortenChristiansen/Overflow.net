@@ -1,4 +1,4 @@
-using System.Net.Mail;
+using DataFlow.DomainClasses;
 
 namespace ConsoleWorkflows.DomainClasses
 {

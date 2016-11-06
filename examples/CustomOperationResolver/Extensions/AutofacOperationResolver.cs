@@ -19,7 +19,7 @@ namespace CustomOperationResolver.Extensions
         {
             return scope.BeginLifetimeScope(builder =>
             {
-                var assembly = Assembly.GetExecutingAssembly();
+                var assembly = Assembly.GetEntryAssembly();
                 var operationTypes = assembly.GetTypes().Where(t => typeof(Operation).IsAssignableFrom(t));
                 builder.RegisterTypes(operationTypes.ToArray());
             });

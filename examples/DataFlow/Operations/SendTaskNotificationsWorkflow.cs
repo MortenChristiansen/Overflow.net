@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using ConsoleWorkflows.DomainClasses;
 using Overflow;
 
-namespace ConsoleWorkflows.Operations
+namespace DataFlow.Operations
 {
     /// <summary>
     /// A workflow that checks if there have been defined any tasks

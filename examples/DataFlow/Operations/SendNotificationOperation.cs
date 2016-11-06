@@ -1,7 +1,8 @@
 using ConsoleWorkflows.DomainClasses;
+using DataFlow.DomainClasses;
 using Overflow;
 
-namespace ConsoleWorkflows.Operations
+namespace DataFlow.Operations
 {
     [ContinueOnFailure]
     class SendNotificationOperation : Operation

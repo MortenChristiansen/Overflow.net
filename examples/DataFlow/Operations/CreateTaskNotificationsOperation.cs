@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using ConsoleWorkflows.DomainClasses;
+using DataFlow.DomainClasses;
 using Overflow;
 
-namespace ConsoleWorkflows.Operations
+namespace DataFlow.Operations
 {
     class CreateTaskNotificationsOperation : Operation
     {

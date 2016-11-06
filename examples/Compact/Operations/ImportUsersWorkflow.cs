@@ -3,8 +3,8 @@ using Compact.DomainClasses;
 using Compact.Services;
 using Overflow;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 
 namespace Compact.Operations
 {
@@ -47,18 +47,20 @@ namespace Compact.Operations
         private class LoadUserDataFromConfigDefinedExternalDatabaseOperation : Operation
         {
             private readonly Func<string, IExternalDatabase> _dbFactory;
+            private readonly IConfiguration _config;
 
             [Output]       public IExternalDatabase ExternalDb { get; private set; }
             [Output, Pipe] public IEnumerable<ExternalUser> Users { get; private set; }
 
-            public LoadUserDataFromConfigDefinedExternalDatabaseOperation(Func<string, IExternalDatabase> dbFactory)
+            public LoadUserDataFromConfigDefinedExternalDatabaseOperation(Func<string, IExternalDatabase> dbFactory, IConfiguration config)
             {
                 _dbFactory = dbFactory;
+                _config = config;
             }
 
             protected override void OnExecute()
             {
-                ExternalDb = _dbFactory(ConfigurationManager.AppSettings["ExternalDbConnectionString"]);
+                ExternalDb = _dbFactory(_config["ExternalDbConnectionString"]);
             }
 
             public override IEnumerable<IOperation> GetChildOperations()

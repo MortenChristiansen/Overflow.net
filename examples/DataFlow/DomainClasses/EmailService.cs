@@ -1,6 +1,4 @@
-using System.Net.Mail;
-
-namespace ConsoleWorkflows.DomainClasses
+namespace DataFlow.DomainClasses
 {
     class EmailService
     {

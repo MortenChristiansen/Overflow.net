@@ -1,4 +1,4 @@
-namespace ConsoleWorkflows.DomainClasses
+namespace DataFlow.DomainClasses
 {
     class Task
     {
