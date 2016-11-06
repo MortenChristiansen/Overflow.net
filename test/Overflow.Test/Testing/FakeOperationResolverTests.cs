@@ -83,7 +83,7 @@ namespace Overflow.Test.Testing
 
             var result = resolver.Resolve<ChildOperation>(new FakeWorkflowConfiguration().WithBehaviorFactory(new OperationBehaviorAttributeFactory()));
 
-            Assert.IsType<AtomicBehavior>(result);
+            Assert.IsType<RetryBehavior>(result);
         }
 
         [Fact]
@@ -115,7 +115,7 @@ namespace Overflow.Test.Testing
                 ExecutedType = typeof(ChildOperation);
         }
 
-        [Atomic]
+        [Retry]
         class FakeChildOperation : ChildOperation
         {
             protected override void OnExecute() =>

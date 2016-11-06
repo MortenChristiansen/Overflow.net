@@ -54,10 +54,6 @@ You can view as well as comment and vote on upcoming features [here](https://tre
 
 These are the behaviors that come out of the box with Overflow, which you can use to annotate your operations, though you can easily build your own. See the section on extensibility for more details on how to do this.
 
-### `AtomicAttribute`
-
-The operation is wrapped in a transaction which is committed if the operation does not fail.
-
 ### `CompensatingOperationAttribute`
 
 When errors occur during the execution of the operation, an instance of the specified compensating operation type is created and executed. This operation gets behaviors applied as normal and can implement the `IInputOperation` interface. The `IOutputOperation` interface will be ignored.
@@ -77,6 +73,33 @@ Failures are retried a number of times. It can be limited to only retry specific
 ### `IConditionalOperation` (interface)
 
 The operation can determine whether it should be executed or not.
+
+### Bonus `AtomicAttribute`
+
+In version 1.* of the library, there was a behavior for wrapping an operation and its child operation in a transaction scope. To enable .NET Core support, this has been removed but you can easily add it if you're using the full framework:
+
+    class AtomicBehavior : OperationBehavior
+    {
+        public override BehaviorPrecedence Precedence => BehaviorPrecedence.StateRecovery;
+    
+        public override void Execute()
+        {
+            using (var ts = new TransactionScope())
+            {
+                base.Execute();
+    
+                ts.Complete();
+            }
+        }
+    }
+    
+    public class AtomicAttribute : OperationBehaviorAttribute
+    {
+        public override OperationBehavior CreateBehavior(WorkflowConfiguration configuration)
+        {
+            return new AtomicBehavior();
+        }
+    }
 
 ## Installation
 

@@ -83,7 +83,7 @@ namespace Compact.Operations
             }
         }
 
-        [ContinueOnFailure, Atomic]
+        [ContinueOnFailure]
         private class ImportExternalUserOperation : Operation
         {
             [Input, Pipe] public ExternalUser User { get; set; }
