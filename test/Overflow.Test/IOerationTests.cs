@@ -1,3 +1,4 @@
+using System;
 using Overflow.Test.Fakes;
 using Overflow.Test.TestingInfrastructure;
 using Xunit;
@@ -50,6 +51,40 @@ namespace Overflow.Test
             var result = sut.GetInnermostOperation();
 
             Assert.Equal(operation, result);
+        }
+
+        [Theory, AutoMoqData]
+        public void You_can_provide_input_to_an_operation(FakeInputOperation<object> operation, object input)
+        {
+            operation.ProvideInput(input);
+
+            Assert.Same(input, operation.ProvidedInput);
+        }
+
+        [Theory, AutoMoqData]
+        public void Inputs_Are_provided_to_the_innermost_operation(FakeInputOperation<object> operation, object input)
+        {
+            var outerOperation = new FakeOperationBehavior().AttachTo(operation);
+
+            outerOperation.ProvideInput(input);
+
+            Assert.Same(input, operation.ProvidedInput);
+        }
+
+        [Theory, AutoMoqData]
+        public void The_outer_operation_is_returned_when_providing_input(FakeInputOperation<object> operation, object input)
+        {
+            var outerOperation = new FakeOperationBehavior().AttachTo(operation);
+
+            var result = outerOperation.ProvideInput(input);
+
+            Assert.Same(outerOperation, result);
+        }
+
+        [Theory, AutoMoqData]
+        public void You_cannot_provide_input_for_which_there_is_no_input_attribute(FakeInputOperation<IOperation> operation, object input)
+        {
+            Assert.Throws<ArgumentException>(() => operation.ProvideInput(input));
         }
     }
 }

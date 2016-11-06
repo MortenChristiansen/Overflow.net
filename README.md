@@ -233,8 +233,6 @@ I generally recommend you relegate the actual business logic as much as possible
                 .WithResolver(resolver)
                 .CreateOperation();
 
-        workflow.Execute();
-
         workflow.ExecutesChildOperationsWithoutErrors(
             typeof(FindGuestListOperation),
             typeof(PrepareInviteTemplateOperation),

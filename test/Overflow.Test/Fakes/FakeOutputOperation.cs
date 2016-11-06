@@ -5,7 +5,7 @@ namespace Overflow.Test.Fakes
     public class FakeOutputOperation<TOutput> : Operation, IOutputOperation<TOutput> where TOutput : class
     {
         public Action<TOutput> OnReceiveOutput { get; private set; }
-        public TOutput OutputValue { get; set; }
+        [Output] public TOutput OutputValue { get; set; }
 
         protected override void OnExecute() =>
             OnReceiveOutput(OutputValue);

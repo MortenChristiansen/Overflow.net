@@ -22,10 +22,14 @@ namespace Overflow.Behaviors
             _logger.OperationStarted(innermostOperation);
             var measurement = Time.Measure();
             try { base.Execute(); }
-            finally
+            catch(Exception e) when(e.InnerException == null)
             {
                 _logger.OperationFinished(innermostOperation, TimeSpan.FromMilliseconds(measurement.GetElapsedMilliseconds()));
+                throw;
             }
+
+            // If this is done with finally, it is executed in the wrong order
+            _logger.OperationFinished(innermostOperation, TimeSpan.FromMilliseconds(measurement.GetElapsedMilliseconds()));
         }
     }
 }

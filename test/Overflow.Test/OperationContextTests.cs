@@ -221,6 +221,18 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
+        public void Providing_inputs_sets_input_properties_on_base_operation(IOperation op, object input)
+        {
+            var sut = OperationContext.Create(op);
+            sut.AddData(input);
+            var inputOperation = new TestInputOperationConcrete();
+
+            sut.ProvideInputs(inputOperation);
+
+            Assert.Equal(input, inputOperation.Input);
+        }
+
+        [Theory, AutoMoqData]
         public void Providing_inputs_to_a_decorated_operation_sets_input_properties(IOperation op, object input)
         {
             var sut = OperationContext.Create(op);
@@ -301,6 +313,15 @@ namespace Overflow.Test
             op.Execute();
 
             Assert.Same(output, outputOperation.Output);
+        }
+
+
+        private class TestInputOperationConcrete : TestInputOperationBase { }
+
+        private abstract class TestInputOperationBase : Operation
+        {
+            [Input]
+            public object Input { get; set; }
         }
 
         private class TestInputOperation : Operation
