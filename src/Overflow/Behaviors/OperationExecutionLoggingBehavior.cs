@@ -22,7 +22,7 @@ namespace Overflow.Behaviors
             _logger.OperationStarted(innermostOperation);
             var measurement = Time.Measure();
             try { base.Execute(); }
-            catch(Exception e) when(e.InnerException == null)
+            catch(Exception)
             {
                 _logger.OperationFinished(innermostOperation, TimeSpan.FromMilliseconds(measurement.GetElapsedMilliseconds()));
                 throw;
