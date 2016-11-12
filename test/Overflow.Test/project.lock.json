@@ -2743,7 +2743,6 @@
         "framework": ".NETStandard,Version=v1.3",
         "dependencies": {
           "CoreCompat.System.Diagnostics.EventLog": "4.2.3-r1",
-          "NETStandard.Library": "1.6.0",
           "System.Reflection": "4.1.0"
         },
         "compile": {
@@ -8166,7 +8165,6 @@
   "projectFileDependencyGroups": {
     "": [
       "Castle.Core >= 4.0.0-beta002",
-      "NETStandard.Library >= 1.6.0",
       "Overflow >= 1.0.0-*",
       "dotnet-test-xunit >= 2.2.0-preview2-build1029",
       "xUnit >= 2.2.0-beta3-build3402"
