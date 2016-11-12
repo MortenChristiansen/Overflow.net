@@ -7,13 +7,11 @@ environment:
 install:
 - cmd: set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
 build_script:
-- cmd: >-
-    GitVersion /output buildserver /updateassemblyinfo true
-
-    dotnet restore
-    dotnet build \src\Overflow\project.json
-    dotnet build \test\Overflow.Test\project.json
-    dotnet publish \src\Overflow\project.json
+- ps: GitVersion /output buildserver /updateassemblyinfo true
+- ps: dotnet restore
+- ps: dotnet build \src\Overflow\project.json
+- ps: dotnet build \test\Overflow.Test\project.json
+- ps: dotnet publish \src\Overflow\project.json
 test_script:
 - cmd: >-
     dotnet test test\Overflow.Test\project.json
