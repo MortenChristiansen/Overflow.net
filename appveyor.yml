@@ -1,0 +1,38 @@
+version: 1.0.{build}
+skip_tags: true
+image: Visual Studio 2015
+configuration: Release
+environment:
+  COVERALLS_REPO_TOKEN: HEYGrJ8nEoxdqkFqtvORxBDtAoRcT5lH6
+install:
+- cmd: set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+build_script:
+- cmd: >-
+    GitVersion /output buildserver /updateassemblyinfo true
+
+	dotnet restore
+	dotnet build \src\Overflow\project.json
+    dotnet build \test\Overflow.Test\project.json
+	dotnet publish \src\Overflow\project.json
+test_script:
+- cmd: >-
+	dotnet test test\Overflow.Test\project.json
+artifacts:
+- path: Overflow.net.$(GitVersion_LegacySemVer).nupkg
+  name: Overflow NuGet Package
+deploy:
+- provider: NuGet
+  api_key:
+    secure: DTypSVXBu0vx1vNbkSs1YJGCDjEXpSn4pFLEg0Nio2qwjzUd4XahEIdELiCBrc0D
+  skip_symbols: true
+  on:
+    branch: master
+    GitVersion_BuildMetaData: 
+notifications:
+- provider: Slack
+  auth_token:
+    secure: 4iNg8gS6A9XlxbHoJsoi9xQcW60sfYTFneV7GZJYhb4hV7xy6ic7MUbTYoA57Ddh
+  channel: appveyor-builds
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: false
