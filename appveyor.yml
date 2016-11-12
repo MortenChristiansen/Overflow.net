@@ -16,7 +16,7 @@ build_script:
     dotnet publish \src\Overflow\project.json
 test_script:
 - cmd: >-
-	dotnet test test\Overflow.Test\project.json
+    dotnet test test\Overflow.Test\project.json
 artifacts:
 - path: Overflow.net.$(GitVersion_LegacySemVer).nupkg
   name: Overflow NuGet Package
