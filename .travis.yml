@@ -1,4 +1,6 @@
 language: csharp
+mono: none
+dotnet: 1.0.1
 solution: Overflow.net.sln
 install:
 - nuget restore Overflow.net.sln
