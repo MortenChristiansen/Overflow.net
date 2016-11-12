@@ -10,10 +10,10 @@ build_script:
 - cmd: >-
     GitVersion /output buildserver /updateassemblyinfo true
 
-	dotnet restore
-	dotnet build \src\Overflow\project.json
+    dotnet restore
+    dotnet build \src\Overflow\project.json
     dotnet build \test\Overflow.Test\project.json
-	dotnet publish \src\Overflow\project.json
+    dotnet publish \src\Overflow\project.json
 test_script:
 - cmd: >-
 	dotnet test test\Overflow.Test\project.json
