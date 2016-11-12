@@ -2235,17 +2235,17 @@
       },
       "Overflow/1.0.0": {
         "type": "project",
-        "framework": ".NETStandard,Version=v1.6",
+        "framework": ".NETStandard,Version=v1.3",
         "dependencies": {
           "CoreCompat.System.Diagnostics.EventLog": "4.2.3-r1",
           "NETStandard.Library": "1.6.0",
           "System.Reflection": "4.1.0"
         },
         "compile": {
-          "netstandard1.6/Overflow.dll": {}
+          "netstandard1.3/Overflow.dll": {}
         },
         "runtime": {
-          "netstandard1.6/Overflow.dll": {}
+          "netstandard1.3/Overflow.dll": {}
         }
       }
     }

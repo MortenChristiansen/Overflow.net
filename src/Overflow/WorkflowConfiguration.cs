@@ -115,7 +115,7 @@ namespace Overflow
         /// <returns>The updated configuration</returns>
         public WorkflowConfiguration WithGlobalRetryBehavior(int timesToRetry, TimeSpan retryDelay, params Type[] retryExceptionTypes)
         {
-            Verify.Argument(retryExceptionTypes.All(t => typeof (Exception).GetTypeInfo().IsAssignableFrom(t)), "Only exception types are valid.");
+            Verify.Argument(retryExceptionTypes.All(t => typeof (Exception).IsAssignableFrom(t)), "Only exception types are valid.");
 
             TimesToRetry = timesToRetry;
             RetryDelay = retryDelay;
