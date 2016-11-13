@@ -4,7 +4,7 @@
   "testRunner": "xunit",
 
   "dependencies": {
-    "Overflow": "1.0.0-*",
+    "Overflow": "*",
     "xUnit": "2.2.0-beta3-build3402",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "Castle.Core": "4.0.0-beta002"
