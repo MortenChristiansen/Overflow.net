@@ -19,9 +19,9 @@ build_script:
     dotnet version $env:GitVersion_NuGetVersionV2
     dotnet pack -c Release
 test_script:
-- ps: .\BuildTools\OpenCover\tools\OpenCover.Console.exe "-target:C:\Program Files\dotnet\dotnet.exe" -targetargs:test -register:user -filter:"+[*]* -[xunit*]*" -output:coverage.xml -oldStyle
-- ps: dotnet test C:\projects\overflow-net\test\Overflow.Test\project.json
-- ps: .\BuildTools\coveralls.io\tools\coveralls.net.exe --opencover coverage.xml
+- cmd: .\BuildTools\OpenCover\tools\OpenCover.Console.exe "-target:C:\Program Files\dotnet\dotnet.exe" -targetargs:test -register:user -filter:"+[*]* -[xunit*]*" -output:coverage.xml -oldStyle
+#- ps: dotnet test C:\projects\overflow-net\test\Overflow.Test\project.json
+- cmd: .\BuildTools\coveralls.io\tools\coveralls.net.exe --opencover coverage.xml
 artifacts:
 - path: src\Overflow\bin\Release\Overflow.net.$(GitVersion_NuGetVersionV2).nupkg
   name: Overflow NuGet Package
