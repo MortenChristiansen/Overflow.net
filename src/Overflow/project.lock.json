@@ -4500,6 +4500,28 @@
     ],
     ".NETStandard,Version=v1.3": []
   },
-  "tools": {},
-  "projectFileToolGroups": {}
+  "tools": {
+    ".NETCoreApp,Version=v1.0": {
+      "dotnet-version/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.DotNet.ProjectModel": "1.0.0-rc3-003121",
+          "Microsoft.Extensions.Logging": "1.0.0",
+          "Microsoft.Extensions.Logging.Console": "1.0.0",
+          "Microsoft.NETCore.App": "1.0.0"
+        },
+        "compile": {
+          "lib/netcoreapp1.0/dotnet-version.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp1.0/dotnet-version.dll": {}
+        }
+      }
+    }
+  },
+  "projectFileToolGroups": {
+    ".NETCoreApp,Version=v1.0": [
+      "dotnet-version >= 1.1.0"
+    ]
+  }
 }

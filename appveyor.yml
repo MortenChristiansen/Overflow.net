@@ -9,9 +9,10 @@ install:
 build_script:
 - ps: GitVersion /output buildserver /updateassemblyinfo true
 - ps: dotnet restore
-- ps: dotnet build \src\Overflow\project.json
+- ps: dotnet build \src\Overflow\project.json -c Release
 - ps: dotnet build \test\Overflow.Test\project.json
-- ps: dotnet pack src\Overflow\project.json
+- ps: cd src\Overflow & dotnet version {GitVersion_NuGetVersionV2}
+- ps: dotnet pack src\Overflow\project.json -c Release
 test_script:
 - cmd: >-
     dotnet test test\Overflow.Test\project.json
