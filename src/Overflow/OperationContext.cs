@@ -16,62 +16,14 @@ namespace Overflow
             _values = values;
         }
 
-        public void RegisterOutputHandlers(IOperation operation)
-        {
-            var innerOperation = operation.GetInnermostOperation();
-
-            var outputOperationInterfaces = innerOperation.GetType().GetInterfaces().Where(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IOutputOperation<>));
-            foreach (var outputOperationType in outputOperationInterfaces)
-                RegisterOutputHandler(innerOperation, outputOperationType);
-        }
-
-        private void RegisterOutputHandler(IOperation operation, Type outputOperationType)
-        {
-            var outputType = outputOperationType.GetGenericArguments()[0];
-            var registerHandlerMethod = outputOperationType.GetMethod(nameof(IOutputOperation<object>.Output));
-
-            var outputHandler = CreateOutputHandler(outputType);
-            registerHandlerMethod.Invoke(operation, new object[] { outputHandler });
-        }
-
-        private Delegate CreateOutputHandler(Type type)
-        {
-            var method = typeof (OperationContext).GetMethod(nameof(OnOutput), BindingFlags.NonPublic | BindingFlags.Instance);
-            var genericMethod = method.MakeGenericMethod(type);
-            var actionT = typeof(Action<>).MakeGenericType(type);
-            return genericMethod.CreateDelegate(actionT, this);
-        }
-
-        private void OnOutput<TOutput>(TOutput output)
-        {
-            AddData(output);
-        }
-
         public void ProvideInputs(IOperation operation)
         {
             var innerOperation = operation.GetInnermostOperation();
             var innerOperationType = innerOperation.GetType();
 
-            var inputOperationInterfaces = innerOperationType.GetInterfaces().Where(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IInputOperation<>));
-            foreach (var inputOperationType in inputOperationInterfaces)
-                GetInput(innerOperation, inputOperationType);
-
             var inputPropertyAttributes = innerOperationType.GetProperties().Where(p => p.GetCustomAttributes(typeof(InputAttribute), true).Any()).Select(p => Tuple.Create(p, p.GetCustomAttributes(typeof(PipeAttribute), true).Any()));
             foreach (var inputProperty in inputPropertyAttributes)
                 GetInput(innerOperation, inputProperty.Item1, inputProperty.Item2);
-        }
-
-        private void GetInput(IOperation operation, Type inputOperationType)
-        {
-            var inputType = inputOperationType.GetGenericArguments()[0];
-            var provideInputMethod = inputOperationType.GetMethod(nameof(IInputOperation<object>.Input));
-
-            var output = GetOutput(inputType);
-            if (output != null)
-            {
-                provideInputMethod.Invoke(operation, new[] { output });
-                SaveValueForFutureChildOperationContexts(operation, inputType, output);
-            }
         }
 
         private void GetInput(IOperation operation, PropertyInfo inputOperation, bool pipeInputToChildOperation)

@@ -105,24 +105,17 @@ namespace Overflow
         {
             var innermostOperation = operation.GetInnermostOperation();
 
-            if (innermostOperation is IInputOperation<TInput>)
+            var inputData = innermostOperation.GetType().GetRuntimeProperties().Where(p => p.PropertyType == typeof(TInput) && p.GetCustomAttributes(typeof(InputAttribute), true).Any()).Select(p => Tuple.Create(p, p.GetCustomAttributes(typeof(PipeAttribute), true).Any())).FirstOrDefault();
+            if (inputData?.Item1 != null)
             {
-                ((IInputOperation<TInput>)innermostOperation).Input(input);
+                inputData.Item1.SetValue(innermostOperation, input, null);
+
+                if (inputData.Item2)
+                    (innermostOperation as Operation)?.InternalPipeInputToChildOperations(input);
             }
             else
             {
-                var inputData = innermostOperation.GetType().GetRuntimeProperties().Where(p => p.PropertyType == typeof(TInput) && p.GetCustomAttributes(typeof(InputAttribute), true).Any()).Select(p => Tuple.Create(p, p.GetCustomAttributes(typeof(PipeAttribute), true).Any())).FirstOrDefault();
-                if (inputData?.Item1 != null)
-                {
-                    inputData.Item1.SetValue(innermostOperation, input, null);
-
-                    if (inputData.Item2)
-                        (innermostOperation as Operation)?.InternalPipeInputToChildOperations(input);
-                }
-                else
-                {
-                    throw new ArgumentException($"The operation type {innermostOperation.GetType().Name} does not have a public property of type {typeof(TInput).Name} with the {nameof(InputAttribute)}.");
-                }
+                throw new ArgumentException($"The operation type {innermostOperation.GetType().Name} does not have a public property of type {typeof(TInput).Name} with the {nameof(InputAttribute)}.");
             }
 
             return operation;

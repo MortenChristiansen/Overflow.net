@@ -99,33 +99,6 @@ namespace Overflow.Test
         }
 
         [Theory, AutoMoqData]
-        public void You_can_create_a_new_input_operation_from_an_initialized_operation_instance(object input)
-        {
-            var resolver = new SimpleOperationResolver();
-            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = resolver };
-            var sut = new FakeOperation();
-            sut.Initialize(correctConfiguration);
-
-            var result = sut.PublicCreate<TestInputOperation, object>(input) as TestInputOperation;
-
-            Assert.NotNull(result);
-        }
-
-        [Theory, AutoMoqData]
-        public void Created_input_operations_are_provided_with_one_input_value(object input)
-        {
-            var resolver = new SimpleOperationResolver();
-            var correctConfiguration = new FakeWorkflowConfiguration { Resolver = resolver };
-            var sut = new FakeOperation();
-            sut.Initialize(correctConfiguration);
-
-            var result = sut.PublicCreate<TestInputOperation, object>(input) as TestInputOperation;
-
-            Assert.NotNull(result.InputValue);
-            Assert.Equal(input, result.InputValue);
-        }
-
-        [Theory, AutoMoqData]
         public void Created_input_operations_are_provided_with_one_property_input_value(object input)
         {
             var resolver = new SimpleOperationResolver();
@@ -435,14 +408,6 @@ namespace Overflow.Test
                 yield return new FakeOutputOperation<List<object>> { OutputValue = ExpectedOutput };
                 ActualOutput = GetChildOutputValues<object>();
             }
-        }
-
-        private class TestInputOperation : Operation, IInputOperation<object>
-        {
-            public object InputValue { get; private set; }
-
-            public void Input(object input) =>
-                InputValue = input;
         }
 
         private class TestPropertyInputOperation : FakeOperation

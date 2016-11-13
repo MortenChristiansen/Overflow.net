@@ -54,7 +54,6 @@ namespace Overflow
 
         private void ExecuteWithDataFlow(IOperation childOperation)
         {
-            _context.RegisterOutputHandlers(childOperation);
             _context.ProvideInputs(childOperation);
 
             var started = Time.OffsetUtcNow;

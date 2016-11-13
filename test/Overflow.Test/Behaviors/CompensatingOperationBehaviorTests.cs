@@ -62,10 +62,9 @@ namespace Overflow.Test.Behaviors
         [Theory, AutoMoqData]
         public void Compensating_operations_have_input_values_supplied_from_the_original_operation(object input)
         {
-            var operation = new FakeInputOperation<object> { ThrowOnExecute = new Exception() };
+            var operation = new FakeInputOperation<object> { ThrowOnExecute = new Exception(), ProvidedInput = input };
             var compensatingOperation = new FakeInputOperation<object>();
             var sut = new CompensatingOperationBehavior(compensatingOperation);
-            operation.Input(input);
             var parentOperation = new FakeOperation(new FakeOutputOperation<object> { OutputValue = input }, sut.AttachTo(new FakeOperationBehavior().AttachTo(operation)));
 
             ExecuteIgnoringErrors(parentOperation.Execute);

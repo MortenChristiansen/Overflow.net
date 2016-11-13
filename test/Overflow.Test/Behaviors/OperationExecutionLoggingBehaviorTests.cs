@@ -63,7 +63,8 @@ namespace Overflow.Test.Behaviors
 
             sut.Execute();
 
-            Assert.Equal(TimeSpan.FromMilliseconds(10).TotalMilliseconds, logger.FinishedOperationDurations[0].TotalMilliseconds);
+            var duration = logger.FinishedOperationDurations[0].TotalMilliseconds;
+            Assert.True(duration >= 10 && duration < 15);
         }
     }
 }
