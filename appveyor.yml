@@ -18,7 +18,7 @@ build_script:
 test_script:
 - ps: dotnet test C:\projects\overflow-net\test\Overflow.Test\project.json
 artifacts:
-- path: C:\projects\overflow-net\src\Overflow\bin\Release\Overflow.net.$(GitVersion_NuGetVersionV2).nupkg
+- path: src\Overflow\bin\Release\Overflow.net.$(GitVersion_NuGetVersionV2).nupkg
   name: Overflow NuGet Package
 deploy:
 - provider: NuGet
