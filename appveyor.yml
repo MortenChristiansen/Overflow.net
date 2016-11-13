@@ -13,7 +13,7 @@ build_script:
 - ps: dotnet build \test\Overflow.Test\project.json
 - ps: |
     cd src\Overflow
-    dotnet version {GitVersion_NuGetVersionV2}
+    dotnet version %GitVersion_NuGetVersionV2%
     dotnet pack -c Release
 test_script:
 - cmd: >-
