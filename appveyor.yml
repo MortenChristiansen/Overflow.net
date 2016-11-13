@@ -16,8 +16,7 @@ build_script:
     dotnet version $env:GitVersion_NuGetVersionV2
     dotnet pack -c Release
 test_script:
-- cmd: >-
-    dotnet test test\Overflow.Test\project.json
+- ps: dotnet test C:\projects\overflow-net\test\Overflow.Test\project.json
 artifacts:
 - path: Overflow.net.$(GitVersion_LegacySemVer).nupkg
   name: Overflow NuGet Package
