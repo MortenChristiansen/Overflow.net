@@ -11,8 +11,10 @@ build_script:
 - ps: dotnet restore
 - ps: dotnet build \src\Overflow\project.json -c Release
 - ps: dotnet build \test\Overflow.Test\project.json
-- ps: cd src\Overflow & dotnet version {GitVersion_NuGetVersionV2}
-- ps: dotnet pack src\Overflow\project.json -c Release
+- ps: >-
+      cd src\Overflow
+	  dotnet version {GitVersion_NuGetVersionV2}
+      dotnet pack -c Release
 test_script:
 - cmd: >-
     dotnet test test\Overflow.Test\project.json
