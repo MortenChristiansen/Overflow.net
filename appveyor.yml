@@ -11,7 +11,7 @@ build_script:
 - ps: dotnet restore
 - ps: dotnet build \src\Overflow\project.json
 - ps: dotnet build \test\Overflow.Test\project.json
-- ps: dotnet publish src\Overflow\project.json
+- ps: dotnet pack src\Overflow\project.json
 test_script:
 - cmd: >-
     dotnet test test\Overflow.Test\project.json
