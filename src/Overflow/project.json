@@ -11,7 +11,7 @@
         
       }
     },
-    "net461": {}
+    "net45": {}
   },
   "buildOptions": {
     "xmlDoc": true
