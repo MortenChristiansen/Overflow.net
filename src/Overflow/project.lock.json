@@ -4508,7 +4508,9 @@
     "": [
       "System.Reflection >= 4.*"
     ],
-    ".NETFramework,Version=v4.5": [],
+    ".NETFramework,Version=v4.5": [
+      "System.Transactions >= 4.0.0"
+    ],
     ".NETStandard,Version=v1.3": [
       "CoreCompat.System.Diagnostics.EventLog >= 4.2.3-r1"
     ]

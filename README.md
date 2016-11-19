@@ -70,36 +70,13 @@ Failures executing the operation are ignored.
 
 Failures are retried a number of times. It can be limited to only retry specific exceptions. Note that only child operations with the `Idempotent` attribute can be retried.
 
+### `AtomicAttribute` (Only available with full .NET)
+
+The operation is wrapped in a transaction which is committed if the operation does not fail.
+
 ### `IConditionalOperation` (interface)
 
 The operation can determine whether it should be executed or not.
-
-### Bonus `AtomicAttribute`
-
-In version 1.* of the library, there was a behavior for wrapping an operation and its child operation in a transaction scope. To enable .NET Core support, this has been removed but you can easily add it if you're using the full framework:
-
-    class AtomicBehavior : OperationBehavior
-    {
-        public override BehaviorPrecedence Precedence => BehaviorPrecedence.StateRecovery;
-    
-        public override void Execute()
-        {
-            using (var ts = new TransactionScope())
-            {
-                base.Execute();
-    
-                ts.Complete();
-            }
-        }
-    }
-    
-    public class AtomicAttribute : OperationBehaviorAttribute
-    {
-        public override OperationBehavior CreateBehavior(WorkflowConfiguration configuration)
-        {
-            return new AtomicBehavior();
-        }
-    }
 
 ## Installation
 

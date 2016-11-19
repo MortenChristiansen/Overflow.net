@@ -5,9 +5,9 @@ solution: Overflow.net.sln
 install:
 - dotnet restore
 - dotnet build /src/Overflow/project.json -f netstandard1.3
-- dotnet build /test/Overflow.Test/project.json
+- dotnet build /test/Overflow.Test/project.json -f netstandard1.3
 script:
-- dotnet test test/Overflow.Test/project.json
+- dotnet test test/Overflow.Test/project.json -f netstandard1.3
 notifications:
   slack:
     secure: RwlN5jiS9z6oJAQRl10mIjcEP4KU+jaHdlQK7VV7zTG/O1SKVwwmW7OlZmUojIRKV5GQ0KE7z4NyPL+qsiudbsQfeZ4ZqKD9c2eUTgMbVZp9A7MPy3eYsmpbeuTaB7mX+8pAysp+IJGH/5U3rj0ez1pCd4HwK+Leoddmn+xHsmo=

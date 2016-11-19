@@ -19,7 +19,15 @@
           "type": "platform",
           "version": "1.0.0"
         }
+      },
+      "buildOptions": {
+        "define": [ "NET_CORE" ]
       }
-    }
+    },
+    "net461": {
+      "buildOptions": {
+        "define": [ "NET_FULL" ]
+      }
+    } 
   }
 }

@@ -8,10 +8,19 @@
       "imports": "dnxcore50",
       "dependencies": {
         "CoreCompat.System.Diagnostics.EventLog": "4.2.3-r1"
-        
+      },
+      "buildOptions": {
+        "define": [ "NET_CORE" ]
       }
     },
-    "net45": {}
+    "net45": {
+      "buildOptions": {
+        "define": [ "NET_FULL" ]
+      },
+      "frameworkAssemblies": {
+        "System.Transactions": "4.0.0.0"
+      }
+    }
   },
   "buildOptions": {
     "xmlDoc": true
