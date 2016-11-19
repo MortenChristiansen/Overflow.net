@@ -4,7 +4,7 @@ dotnet: 1.0.0
 solution: Overflow.net.sln
 install:
 - dotnet restore
-- dotnet build /src/Overflow/project.json
+- dotnet build /src/Overflow/project.json -f netstandard1.3
 - dotnet build /test/Overflow.Test/project.json
 script:
 - dotnet test test/Overflow.Test/project.json
